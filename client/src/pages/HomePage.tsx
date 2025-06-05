@@ -1,81 +1,174 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { ArrowUpRight, ArrowDownLeft, Plus, BarChart2 } from "lucide-react"
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle
+} from "../components/ui/card"
+import { Button } from "../components/ui/button"
+import {
+  Home,
+  Camera,
+  PieChart,
+  MoreHorizontal,
+  Plus,
+  Banknote,
+  Wallet,
+  BarChart2
+} from "lucide-react"
+import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs"
 
-export default function HomePage() {
+import { Link } from "react-router-dom"
+
+import {
+  ResponsiveContainer,
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  Tooltip,
+  CartesianGrid,
+  PieChart as RePieChart,
+  Pie,
+  Cell,
+  Legend
+} from "recharts"
+
+const spendingData = [
+  { name: "Mon", amount: 200 },
+  { name: "Tue", amount: 100 },
+  { name: "Wed", amount: 350 },
+  { name: "Thu", amount: 250 },
+  { name: "Fri", amount: 400 },
+  { name: "Sat", amount: 300 },
+  { name: "Sun", amount: 150 },
+]
+
+const pieData = [
+  { name: "Expense", value: 650 },
+  { name: "Income", value: 950 },
+]
+
+const COLORS = ["#ef4444", "#22c55e"]
+
+
+
+export default function MobileHomePage() {
   return (
-    <div className="min-h-screen bg-muted px-4 py-6 md:px-12">
-      <div className="max-w-4xl mx-auto space-y-6">
-        {/* Header */}
-        <header className="flex justify-between items-center">
-          <h1 className="text-2xl font-semibold">Dashboard</h1>
-          <Button className="gap-2">
-            <Plus size={18} /> Add Transaction
-          </Button>
-        </header>
+    <div className="max-h-screen overflow-y-auto bg-background text-foreground p-4 space-y-4 pb-28">
+      {/* Greeting */}
+      <div className="space-y-1">
+        <p className="text-muted-foreground text-sm">What's up</p>
+        <h1 className="text-2xl font-bold">Alwin Albert</h1>
+      </div>
 
-        {/* Balance Summary */}
-        <Card className="bg-background shadow-xl rounded-2xl">
-          <CardHeader>
-            <CardTitle className="text-lg">Total Balance</CardTitle>
-          </CardHeader>
-          <CardContent className="text-3xl font-bold">₹12,480.00</CardContent>
-        </Card>
-
-        {/* Income & Expense Summary */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          <Card className="border-green-500">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-green-600 text-sm font-medium">Income</CardTitle>
-              <ArrowUpRight className="text-green-600" />
-            </CardHeader>
-            <CardContent className="text-xl font-semibold text-green-700">
-              ₹8,000.00
+      {/* Quick Access Cards */}
+       <div className="h-44 flex gap-3">
+        <Link to="/budget" className="flex-1">
+          <Card className="w-[100%] h-[100%] flex items-center justify-center hover:bg-accent transition-colors">
+            <CardContent className="text-center text-muted-foreground text-sm">
+              <Wallet size={20} className="mx-auto mb-1" />
+              Budget
             </CardContent>
           </Card>
-
-          <Card className="border-red-500">
-            <CardHeader className="flex flex-row items-center justify-between">
-              <CardTitle className="text-red-600 text-sm font-medium">Expenses</CardTitle>
-              <ArrowDownLeft className="text-red-600" />
-            </CardHeader>
-            <CardContent className="text-xl font-semibold text-red-700">
-              ₹3,200.00
-            </CardContent>
-          </Card>
-        </div>
-
-        {/* Charts and Stats */}
-        <Card className="shadow-md">
-          <CardHeader className="flex flex-row justify-between items-center">
-            <CardTitle className="text-base font-medium">Spending Overview</CardTitle>
-            <BarChart2 className="text-muted-foreground" />
-          </CardHeader>
-          <CardContent>
-            <div className="h-40 flex items-center justify-center text-muted">[Chart Placeholder]</div>
+        </Link>
+        <Card className="flex-1 border-primary border-2 rounded-xl">
+          <CardContent className="pt-4 pb-2 space-y-1">
+            <div className="text-sm font-bold">Bank</div>
+            <div className="text-xl font-semibold">₹0 INR</div>
+            <div className="text-xs text-muted-foreground">0 transactions</div>
           </CardContent>
         </Card>
+      </div>
 
-        {/* Recent Transactions */}
-        <Card>
-          <CardHeader>
-            <CardTitle className="text-base">Recent Transactions</CardTitle>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            {[1, 2, 3].map((item) => (
-              <div
-                key={item}
-                className="flex justify-between items-center border-b pb-2 last:border-none"
+      {/* Active Account Summary */}
+      <div className="flex gap-3">
+        
+
+      </div>
+<div className="flex gap-4 h-72" >
+      {/* Chart Section */}
+      <Card className="flex-grow basis-2/3">
+        <CardHeader className="flex items-center justify-between pb-2">
+          <CardTitle className="text-base">Spending Overview</CardTitle>
+          <BarChart2 className="text-muted-foreground" size={18} />
+        </CardHeader>
+        <CardContent className="h-40 px-2">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={spendingData}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="name" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="amount" stroke="#4f46e5" strokeWidth={2} dot={false} />
+            </LineChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+
+      {/*piechart section*/ }
+      <Card className="flex-grow basis-1/3">
+        <CardHeader className="pb-2">
+          <CardTitle className="text-base">Income vs Expense</CardTitle>
+        </CardHeader>
+        <CardContent className="h-48 flex items-center justify-center">
+          <ResponsiveContainer width="100%" height="100%">
+            <RePieChart>
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="name"
+                cx="50%"
+                cy="50%"
+                outerRadius={60}
+                label
               >
-                <div>
-                  <div className="font-medium">Groceries</div>
-                  <div className="text-xs text-muted-foreground">Jun 4, 2025</div>
-                </div>
-                <div className="text-red-600 font-semibold">- ₹550</div>
-              </div>
-            ))}
-          </CardContent>
-        </Card>
+                {pieData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+             
+              <Tooltip />
+            </RePieChart>
+          </ResponsiveContainer>
+        </CardContent>
+      </Card>
+      </div>
+
+      {/* Transaction Filter */}
+      <Tabs defaultValue="all" className="w-full">
+        <TabsList className="grid grid-cols-3">
+          <TabsTrigger value="all">All</TabsTrigger>
+          <TabsTrigger value="expense">Expense</TabsTrigger>
+          <TabsTrigger value="income">Income</TabsTrigger>
+        </TabsList>
+      </Tabs>
+
+      <Button variant="outline" className="w-full">View All Transactions</Button>
+
+      {/* Floating Add Button */}
+      <Link to="/add">
+        <Button size="icon" className="rounded-full w-14 h-14 fixed bottom-24 right-4 shadow-xl">
+          <Plus />
+        </Button>
+      </Link>
+      {/* Bottom Nav */}
+      <div className="fixed bottom-0 left-0 right-0 bg-card border-t flex justify-around py-2">
+        <Link to="/" className="flex flex-col items-center text-primary">
+          <Home size={20} />
+          <span className="text-xs">Home</span>
+        </Link>
+        <Link to="/transactions" className="flex flex-col items-center text-muted-foreground">
+          <Camera size={20} />
+          <span className="text-xs">Transactions</span>
+        </Link>
+        <Link to="/budgets" className="flex flex-col items-center text-muted-foreground">
+          <PieChart size={20} />
+          <span className="text-xs">Budgets</span>
+        </Link>
+        <Link to="/more" className="flex flex-col items-center text-muted-foreground">
+          <MoreHorizontal size={20} />
+          <span className="text-xs">More</span>
+        </Link>
       </div>
     </div>
   )

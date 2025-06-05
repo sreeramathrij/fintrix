@@ -1,26 +1,18 @@
-"use client"
-
-import { ThemeProvider as NextThemesProvider } from "next-themes"
-import type { JSX, ReactNode } from "react"
+import { useEffect, useState,  } from "react"
+import type { ReactNode } from "react"
 
 interface ThemeProviderProps {
-  children: ReactNode
-  defaultTheme?: "light" | "dark" | "system"
-  storageKey?: string
+children: ReactNode
 }
 
-export function ThemeProvider({
-  children,
-  defaultTheme = "system",
-  storageKey = "finance-theme",
-}: ThemeProviderProps): JSX.Element {
-  return (
-    <NextThemesProvider
-      attribute="class"
-      defaultTheme={defaultTheme}
-      storageKey={storageKey}
-    >
-      {children}
-    </NextThemesProvider>
-  )
+export function ThemeProvider({ children }: ThemeProviderProps) {
+const [theme, setTheme] = useState<"light" | "dark">("light")
+
+useEffect(() => {
+const storedTheme = localStorage.getItem("theme") as "light" | "dark" | null
+const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches
+const resolvedTheme = storedTheme ?? (prefersDark ? "dark" : "light")
+}, [])
+
+return <>{children}</>
 }
