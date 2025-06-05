@@ -1,9 +1,9 @@
 "use client"
 
 import { ThemeProvider as NextThemesProvider } from "next-themes"
-import type { ReactNode } from "react"
+import type { JSX, ReactNode } from "react"
 
-interface Props {
+interface ThemeProviderProps {
   children: ReactNode
   defaultTheme?: "light" | "dark" | "system"
   storageKey?: string
@@ -13,7 +13,7 @@ export function ThemeProvider({
   children,
   defaultTheme = "system",
   storageKey = "finance-theme",
-}: Props) {
+}: ThemeProviderProps): JSX.Element {
   return (
     <NextThemesProvider
       attribute="class"
