@@ -5,6 +5,8 @@ import morgan from "morgan";
 import cookieParser from "cookie-parser";
 import { connectDB } from "./config/db";
 import authRoutes from "./routes/auth.routes"
+import userRoutes from "./routes/user.routes"
+import transactionRoutes from "./routes/transaction.routes"
 
 dotenv.config();
 
@@ -16,10 +18,10 @@ app.use(express.json());
 app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
+app.use("/api/user", userRoutes);
+app.use("/api/transactions", transactionRoutes);
 
 app.get("/", (_: Request , res: Response) => res.send("API is running"));
-
-
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, ()=> {
