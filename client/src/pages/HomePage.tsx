@@ -6,12 +6,7 @@ import {
 } from "../components/ui/card"
 import { Button } from "../components/ui/button"
 import {
-  Home,
-  Camera,
-  PieChart,
-  MoreHorizontal,
   Plus,
-  Banknote,
   Wallet,
   BarChart2
 } from "lucide-react"
@@ -32,6 +27,7 @@ import {
   Cell,
 
 } from "recharts"
+import NavFooter from "@/components/NavFooter"
 
 const spendingData = [
   { name: "Mon", amount: 200 },
@@ -151,25 +147,9 @@ export default function MobileHomePage() {
           <Plus />
         </Button>
       </Link>
-      {/* Bottom Nav */}
-      <div className="fixed bottom-0 left-0 right-0 bg-card border-t flex justify-around py-2">
-        <Link to="/" className="flex flex-col items-center text-primary">
-          <Home size={20} />
-          <span className="text-xs">Home</span>
-        </Link>
-        <Link to="/transactions" className="flex flex-col items-center text-muted-foreground">
-          <Camera size={20} />
-          <span className="text-xs">Transactions</span>
-        </Link>
-        <Link to="/budgets" className="flex flex-col items-center text-muted-foreground">
-          <PieChart size={20} />
-          <span className="text-xs">Budgets</span>
-        </Link>
-        <Link to="/more" className="flex flex-col items-center text-muted-foreground">
-          <MoreHorizontal size={20} />
-          <span className="text-xs">More</span>
-        </Link>
+
+      <NavFooter/>
       </div>
-    </div>
+      
   )
 }

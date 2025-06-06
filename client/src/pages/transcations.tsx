@@ -1,18 +1,13 @@
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
-  Home,
-  Camera,
-  PieChart,
-  MoreHorizontal,
-  Plus,
   Search,
   Filter
 } from "lucide-react";
+import NavFooter from "@/components/NavFooter";
 
 export default function TransactionsScreen() {
   const [selectedMonth, setSelectedMonth] = useState("May");
-  const [searchQuery, setSearchQuery] = useState("");
   const [showFilters, setShowFilters] = useState(false);
 
   const months = [
@@ -47,7 +42,7 @@ export default function TransactionsScreen() {
       )}
 
       {/* Month Tabs */}
-      <div className="flex space-x-4 overflow-x-auto pb-2">
+      <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
         {months.map((month) => (
           <button
             key={month}
@@ -73,37 +68,7 @@ export default function TransactionsScreen() {
         <p className="text-gray-400 mt-4">No transactions for {selectedMonth}.</p>
       </div>
 
-      {/* Add Transaction Button */}
-      <div className="fixed bottom-20 right-4">
-        <Button className="bg-blue-500 text-white px-4 py-2 rounded-xl shadow-lg">
-          + Add Transaction
-        </Button>
-      </div>
-
-      {/* Bottom Navigation */}
-      <div className="fixed bottom-0 inset-x-0 bg-gray-900 py-3 border-t border-gray-800">
-        <div className="flex justify-around items-center text-white">
-          <Button variant="ghost">
-            <Home className="w-5 h-5" />
-            <span className="text-xs mt-1">Home</span>
-          </Button>
-          <Button variant="ghost">
-            <Camera className="w-5 h-5" />
-            <span className="text-xs mt-1">Transactions</span>
-          </Button>
-          <Button className="rounded-full w-12 h-12 bg-blue-500 text-white text-xl -mt-8 shadow-lg">
-            <Plus className="w-6 h-6" />
-          </Button>
-          <Button variant="ghost">
-            <PieChart className="w-5 h-5" />
-            <span className="text-xs mt-1">Budgets</span>
-          </Button>
-          <Button variant="ghost">
-            <MoreHorizontal className="w-5 h-5" />
-            <span className="text-xs mt-1">More</span>
-          </Button>
-        </div>
-      </div>
+     <NavFooter/>
     </div>
   );
 }
