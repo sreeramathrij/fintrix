@@ -30,7 +30,7 @@ import {
   PieChart as RePieChart,
   Pie,
   Cell,
-  Legend
+
 } from "recharts"
 
 const spendingData = [
