@@ -91,19 +91,19 @@ export default function MoreScreen() {
       </div>
 
       {sections.map((section, i) => (
-        <div key={i} className="space-y-3 mb-6">
+        <div key={i} className="space-y-3 mb-3">
           <div className="grid grid-cols-2 gap-3">
             {section.items.map((item, index) => (
               <Link
                 to={item.link || "#"}
                 key={index}
-                className="bg-secondary rounded-xl p-4 flex items-center space-x-4 hover:bg-muted-foreground transition"
+                className="bg-secondary rounded-xl p-4 flex items-center space-x-4 hover:bg-muted-foreground transition h-20"
               >
                 <item.icon className="w-5 h-5 text-primary" />
                 <div>
                   <p className="font-medium text-sm">{item.label}</p>
                   {"subtitle" in item && (
-                    <p className="text-xs text-gray-400 mt-1">{item.subtitle}</p>
+                    <p className="text-xs text-balance mt-1">{item.subtitle}</p>
                   )}
                 </div>
               </Link>

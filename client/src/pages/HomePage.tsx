@@ -134,7 +134,7 @@ export default function MobileHomePage() {
                   outerRadius={60}
                   label
                 >
-                  {pieData.map((entry, index) => (
+                  {pieData.map((_entry, index) => (
                     <Cell
                       key={`cell-${index}`}
                       fill={COLORS[index % COLORS.length]}

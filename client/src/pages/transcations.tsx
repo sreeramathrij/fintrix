@@ -17,7 +17,7 @@ export default function TransactionsScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-secondary text-primary px-4 py-6 pb-24">
+    <div className="min-h-screen bg-background text-primary px-4 py-6 pb-24">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Transactions</h1>
@@ -44,26 +44,28 @@ export default function TransactionsScreen() {
       )}
 
       {/* Month Tabs */}
-      <div className="flex space-x-4 overflow-x-auto pb-2 scrollbar-hide">
+      <div className="overflow-x-auto pb-2 scrollbar-hide">
+        <div className="flex gap-0 w-[100%]">
         {months.map((month) => (
           <button
             key={month}
-            className={`whitespace-nowrap px-3 py-1 rounded-full text-sm font-medium transition ${
+            className={`flex-1 whitespace-nowrap px-3 py-1 text-sm font-medium transition hover:bg-secondary ${
               selectedMonth === month
-                ? "bg-blue-500 text-white"
-                : "bg-gray-800 text-gray-300"
+                ? "bg-muted-foreground text-primary"
+                : "bg-background text-primary"
             }`}
             onClick={() => setSelectedMonth(month)}
           >
             {month}
           </button>
         ))}
+        </div>
       </div>
 
       {/* Empty State */}
       <div className="flex flex-col items-center mt-16 text-center">
         <img
-          src="/no-transactions.svg"
+          src="/no-transactions.png"
           alt="No transactions"
           className="w-64 h-64"
         />

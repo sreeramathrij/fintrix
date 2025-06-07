@@ -29,7 +29,7 @@ export default function BudgetsScreen() {
   return (
     
 
-    <div className="min-h-screen bg-secondary text-primary px-4 py-6 pb-32 sm:px-6 md:px-8">
+    <div className="min-h-screen bg-background text-primary px-4 py-6 pb-32 sm:px-6 md:px-8">
       <div className="relative mb-6 flex justify-between items-start">
         <h1 className="text-3xl font-bold tracking-tight">Budgets</h1>
         <div className="flex items-center gap-2">
