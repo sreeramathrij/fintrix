@@ -3,6 +3,7 @@ import {
   Clock,Pencil,
 } from "lucide-react";
 import NavFooter from "@/components/NavFooter";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function BudgetsScreen() {
   const [budget] = useState({
@@ -28,12 +29,15 @@ export default function BudgetsScreen() {
   return (
     
 
-    <div className="min-h-screen bg-white text-black px-4 py-6 pb-32 sm:px-6 md:px-8">
+    <div className="min-h-screen bg-secondary text-primary px-4 py-6 pb-32 sm:px-6 md:px-8">
       <div className="relative mb-6 flex justify-between items-start">
         <h1 className="text-3xl font-bold tracking-tight">Budgets</h1>
-        <button className="text-black p-2 rounded-full hover:bg-black/10 transition">
+        <div className="flex items-center gap-2">
+          <ThemeToggle/>
+        <button className=" p-2 rounded-full hover:bg-black/10 transition">
           <Pencil className="w-5 h-5" />
         </button>
+      </div>
       </div>
 
       <div className="bg-gradient-to-br from-[#B5C9FF] to-[#D5D5F7] text-black rounded-2xl px-4 pt-4 pb-6 shadow-md mb-6">

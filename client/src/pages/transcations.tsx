@@ -5,6 +5,7 @@ import {
   Filter
 } from "lucide-react";
 import NavFooter from "@/components/NavFooter";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function TransactionsScreen() {
   const [selectedMonth, setSelectedMonth] = useState("May");
@@ -16,11 +17,12 @@ export default function TransactionsScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-black px-4 py-6 pb-24">
+    <div className="min-h-screen bg-secondary text-primary px-4 py-6 pb-24">
       {/* Header */}
       <div className="flex justify-between items-center mb-4">
         <h1 className="text-2xl font-bold">Transactions</h1>
         <div className="flex gap-4">
+          <ThemeToggle/>
           <Button variant="ghost" size="icon" onClick={() => setShowFilters(!showFilters)}>
             <Filter className="w-5 h-5" />
           </Button>

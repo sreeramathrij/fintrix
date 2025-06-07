@@ -1,4 +1,4 @@
-import { Button } from "@/components/ui/button";
+
 import { Link } from "react-router-dom";
 import {
   User,
@@ -15,9 +15,11 @@ import {
   Tag,
   Type,
   MessageSquare,
-  ArrowRight
+  ArrowRight,
+  Info
 } from "lucide-react";
 import NavFooter from "@/components/NavFooter";
+import { ThemeToggle } from "@/components/ThemeToggle";
 
 export default function MoreScreen() {
   const sections = [
@@ -37,6 +39,7 @@ export default function MoreScreen() {
         }
       ]
     },
+    
     {
       items: [
         { icon: MessageSquare, label: "Feedback", link: "/feedback" },
@@ -47,7 +50,8 @@ export default function MoreScreen() {
         { icon: AlarmClock, label: "Scheduled", link: "/scheduled" },
         { icon: Wallet, label: "Subscriptions", link: "/subscriptions" },
         { icon: PiggyBank, label: "Goals", link: "/goals" },
-        { icon: Home, label: "Loans", link: "/loans" }
+        { icon: Home, label: "Loans", link: "/loans" },
+        {icon:Info,label:"About", subtitle:"Learn more about the app",link:"/about"},
       ]
     },
     {
@@ -61,13 +65,25 @@ export default function MoreScreen() {
   ];
 
   return (
-    <div className="min-h-screen bg-white text-white px-4 py-6 pb-28">
-      <h1 className="text-3xl font-bold tracking-tight mb-4">More Actions</h1>
+    
+    
+     <div className="min-h-screen bg-background text-primary px-4 py-6 pb-28">
+      {/* Top Row: Title + Theme Toggle */}
+      <div className="flex justify-between items-center mb-4">
+        <h1 className="text-3xl font-bold tracking-tight">More Actions</h1>
+        <ThemeToggle />
+      </div>
 
+      {/* Promo Card */}
       <div className="bg-gradient-to-r from-pink-200 via-purple-200 to-indigo-200 rounded-2xl p-4 text-black shadow mb-4">
         <div className="flex justify-between items-center">
           <div>
-            <p className="font-bold text-lg">Cashew <span className="bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full text-sm">Pro</span></p>
+            <p className="font-bold text-lg">
+              Cashew{" "}
+              <span className="bg-blue-200 text-blue-800 px-2 py-0.5 rounded-full text-sm">
+                Pro
+              </span>
+            </p>
             <p className="text-sm mt-1">Budget like a pro with Cashew Pro</p>
           </div>
           <ArrowRight className="w-5 h-5" />
@@ -81,9 +97,9 @@ export default function MoreScreen() {
               <Link
                 to={item.link || "#"}
                 key={index}
-                className="bg-[#2C2C2E] rounded-xl p-4 flex items-center space-x-4 hover:bg-[#3A3A3C] transition"
+                className="bg-secondary rounded-xl p-4 flex items-center space-x-4 hover:bg-muted-foreground transition"
               >
-                <item.icon className="w-5 h-5 text-white" />
+                <item.icon className="w-5 h-5 text-primary" />
                 <div>
                   <p className="font-medium text-sm">{item.label}</p>
                   {"subtitle" in item && (
