@@ -7,6 +7,7 @@ import TransactionsPage from "./pages/transcations"
 import BudgetsScreen from "./pages/budgets"
 import MoreScreen from "./pages/more"
 import RegisterPage from "./pages/Register"
+import LoginPage from "./pages/Login"
 
 export default function App() {
 return (
@@ -18,6 +19,7 @@ return (
 <Route path="/budgets" element={<BudgetsScreen />} />
 <Route path="/more" element={< MoreScreen/>} />
 <Route path="/Register" element={< RegisterPage/>} />
+<Route path="/Login" element={< LoginPage/>} />
 
 </Routes>
 </Layout>
