@@ -7,6 +7,7 @@ import { connectDB } from "./config/db";
 import authRoutes from "./routes/auth.routes"
 import userRoutes from "./routes/user.routes"
 import transactionRoutes from "./routes/transaction.routes"
+import categoryRoutes from "./routes/category.routes"
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use(cookieParser());
 
 app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
+app.use("/api/category", categoryRoutes);
 app.use("/api/transactions", transactionRoutes);
 
 app.get("/", (_: Request , res: Response) => res.send("API is running"));

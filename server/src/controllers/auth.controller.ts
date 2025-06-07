@@ -30,6 +30,7 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       email,
       password: hashedPassword,
       authProvider: "local",
+      profilePic: "https://ui-avatars.com/api/?name=User",
     })
 
     const token = jwt.sign({ userId: user._id}, JWT_SECRET, { expiresIn: "7d" })
@@ -92,7 +93,7 @@ export const logoutUser = (req: Request, res: Response) => {
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
     });
-    
+
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.log("Error in logoutUserController:", error );

@@ -7,7 +7,7 @@ import mongoose from "mongoose";
 export const addTransaction = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const parsed = transactionSchema.safeParse(req.body);
-    if(!parsed.success) {
+      if(!parsed.success) {
       res.status(400).json({ error: parsed.error.flatten() })
       return;
     }
@@ -31,7 +31,7 @@ export const getTransactions = async (req: AuthRequest, res: Response): Promise<
     const userId = req.user!._id;
     const transactions = await Transaction.find({
       user: userId,
-    });
+    }).sort({ date: -1 });
 
     res.status(200).json(transactions);
   } catch (error) {
@@ -43,11 +43,20 @@ export const getTransactions = async (req: AuthRequest, res: Response): Promise<
 export const getOneTransaction = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+      res.status(400).json({ error: "Invalid transaction ID "})
+      return;
+    }
 
     const transaction = await Transaction.findOne({
       _id: id,
       user:req.user!._id,
     }).populate("category")
+
+    if (!transaction) {
+      res.status(404).json({ message: "Transaction not found" });
+      return;
+    }
 
     res.status(200).json(transaction);
   } catch (error) {
@@ -59,6 +68,10 @@ export const getOneTransaction = async (req: AuthRequest, res: Response): Promis
 export const editTransaction = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+      res.status(400).json({ error: "Invalid transaction ID "})
+      return;
+    }
 
     const parsed = transactionSchema.safeParse(req.body);
     if(!parsed.success) {
@@ -79,12 +92,23 @@ export const editTransaction = async (req: AuthRequest, res: Response): Promise<
 
     res.status(200).json({ message: "Transaction Updated", transaction: updatedTransaction });
   } catch (error) {
-    console.error("Error in getOneTransaction controller: ", error);
+    console.error("Error in editTransaction controller: ", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 };
 
 export const deleteTransaction = async (req: AuthRequest, res: Response): Promise<void> => {
-  
+  try {
+    const { id } = req.params;
+    if(!mongoose.Types.ObjectId.isValid(id)){
+      res.status(400).json({ error: "Invalid transactionID "})
+      return;
+    }
+    const deletedTransaction = await Transaction.findOneAndDelete({ _id: id, user: req.user!._id })
+    res.status(200).json({ message: "Deleted Transaction", transaction: deletedTransaction });
+  } catch (error) {
+    console.error("Error in deleteTransaction controller: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
 };
 
