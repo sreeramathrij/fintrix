@@ -77,7 +77,7 @@ export default function BudgetsScreen() {
           You should save <span className="font-medium text-black">₹{dailyLimit}</span>/day for {daysLeft} more days
         </p>
       </div>
-   <NavFooter/>
+   <NavFooter page="budgetsPage" />
 </div>
   );
 }

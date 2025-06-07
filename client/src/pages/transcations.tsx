@@ -70,7 +70,7 @@ export default function TransactionsScreen() {
         <p className="text-gray-400 mt-4">No transactions for {selectedMonth}.</p>
       </div>
 
-     <NavFooter/>
+     <NavFooter page="transactionsPage"/>
     </div>
   );
 }

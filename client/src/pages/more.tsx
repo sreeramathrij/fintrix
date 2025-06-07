@@ -112,7 +112,7 @@ export default function MoreScreen() {
         </div>
       ))}
 
-      <NavFooter/>
+      <NavFooter page="morePage"/>
 
       </div>
   );
