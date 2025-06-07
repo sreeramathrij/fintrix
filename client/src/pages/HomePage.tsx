@@ -171,7 +171,7 @@ export default function MobileHomePage() {
         </Button>
       </Link>
 
-      <NavFooter />
+      <NavFooter page="homePage" />
     </div>
   );
 }
