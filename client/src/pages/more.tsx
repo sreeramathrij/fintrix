@@ -24,6 +24,7 @@ import { ThemeToggle } from "@/components/ThemeToggle";
 export default function MoreScreen() {
   const sections = [
     {
+      name:"Customization",
       items: [
         {
           icon: Settings,
@@ -41,25 +42,27 @@ export default function MoreScreen() {
     },
     
     {
+       name:"Info",
       items: [
-        { icon: MessageSquare, label: "Feedback", link: "/feedback" },
+       
         { icon: User, label: "Alwin Albert", link: "/profile" },
-        { icon: Bell, label: "Notifications", link: "/notifications" },
-        { icon: ClipboardList, label: "Activity Log", link: "/activity" },
+      
+       
         { icon: Calendar, label: "Calendar", link: "/calendar" },
         { icon: AlarmClock, label: "Scheduled", link: "/scheduled" },
-        { icon: Wallet, label: "Subscriptions", link: "/subscriptions" },
+       
         { icon: PiggyBank, label: "Goals", link: "/goals" },
-        { icon: Home, label: "Loans", link: "/loans" },
+       
         {icon:Info,label:"About", subtitle:"Learn more about the app",link:"/about"},
       ]
     },
     {
+       name:"Utilities",
       items: [
         { icon: Wallet, label: "Accounts", link: "/accounts" },
         { icon: BarChart2, label: "Budgets", link: "/budgets" },
         { icon: Tag, label: "Categories", link: "/categories" },
-        { icon: Type, label: "Titles", link: "/titles" }
+   
       ]
     }
   ];
@@ -91,15 +94,19 @@ export default function MoreScreen() {
       </div>
 
       {sections.map((section, i) => (
-        <div key={i} className="space-y-3 mb-3">
-          <div className="grid grid-cols-2 gap-3">
+        <div key={i} className="space-y-3 mb-8">
+           <div>
+              <p className="ml-4 text-xl font-bold">{section.name}</p>
+              </div>
+          <div className="grid grid-cols-4 gap-3">
+           
             {section.items.map((item, index) => (
               <Link
                 to={item.link || "#"}
                 key={index}
-                className="bg-secondary rounded-xl p-4 flex items-center space-x-4 hover:bg-muted-foreground transition h-20"
+                className="bg-background rounded-xl p-4 flex flex-col justify-center items-center space-x-4 hover:bg-secondary border-2 border-solid border-secondary hover:border-muted-foreground transition h-72"
               >
-                <item.icon className="w-5 h-5 text-primary" />
+                <item.icon className="size-32 text-primary" />
                 <div>
                   <p className="font-medium text-sm">{item.label}</p>
                   {"subtitle" in item && (
