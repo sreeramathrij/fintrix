@@ -52,13 +52,13 @@ export default function MobileHomePage() {
   return (
     <div className="max-h-screen overflow-y-auto bg-background text-foreground p-4 space-y-4 pb-28">
       {/* Greeting */}
-      <div className="flex justify-between items-start">
+      <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="space-y-1">
           <p className="text-muted-foreground text-sm">What's up</p>
           <h1 className="text-2xl font-bold">Alwin Albert</h1>
         </div>
 
-        <div className="flex flex-col items-end space-y-2">
+        <div className="flex flex-col items-start sm:items-end space-y-2">
           <ThemeToggle />
           <Link
             to="/register"
@@ -73,7 +73,7 @@ export default function MobileHomePage() {
       </div>
 
       {/* Quick Access Cards */}
-      <div className="h-44 flex gap-3">
+      <div className="flex flex-col md:flex-row gap-3 h-auto md:h-44">
         <Link to="/budget" className="flex-1">
           <Card className="w-full h-full flex items-center justify-center hover:bg-accent transition-colors">
             <CardContent className="text-center text-muted-foreground text-sm">
@@ -93,13 +93,13 @@ export default function MobileHomePage() {
       </div>
 
       {/* Charts Section */}
-      <div className="flex gap-4 h-72">
-        <Card className="flex-grow basis-2/3">
+      <div className="flex flex-col md:flex-row gap-4 h-auto md:h-72">
+        <Card className="w-full md:basis-2/3">
           <CardHeader className="flex items-center justify-between pb-2">
             <CardTitle className="text-base">Spending Overview</CardTitle>
             <BarChart2 className="text-muted-foreground" size={18} />
           </CardHeader>
-          <CardContent className="h-40 px-2">
+          <CardContent className="h-64 md:h-40 px-2">
             <ResponsiveContainer width="100%" height="100%">
               <LineChart data={spendingData}>
                 <CartesianGrid strokeDasharray="3 3" />
@@ -118,11 +118,11 @@ export default function MobileHomePage() {
           </CardContent>
         </Card>
 
-        <Card className="flex-grow basis-1/3">
+        <Card className="w-full md:basis-1/3">
           <CardHeader className="pb-2">
             <CardTitle className="text-base">Income vs Expense</CardTitle>
           </CardHeader>
-          <CardContent className="h-48 flex items-center justify-center">
+          <CardContent className="h-64 md:h-48 flex items-center justify-center">
             <ResponsiveContainer width="100%" height="100%">
               <RePieChart>
                 <Pie
