@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { ChevronLeft, Plus } from "lucide-react"
-import { cn } from "@/lib/utils"
+import { Plus } from "lucide-react"
+import {cn } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
 
 export default function CalendarPage() {
@@ -26,7 +26,7 @@ export default function CalendarPage() {
     <div className="p-4 pb-24 sm:pb-32 max-w-md mx-auto min-h-screen bg-background">
       {/* Header */}
       <div className="flex items-center gap-4 mb-6">
-        <ChevronLeft className="h-5 w-5 text-muted-foreground" />
+        
         <h1 className="text-2xl sm:text-3xl font-bold">Calendar</h1>
       </div>
 
