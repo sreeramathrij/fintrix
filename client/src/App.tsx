@@ -11,6 +11,9 @@ import LoginPage from "./pages/Login"
 import SettingsPage from "./pages/setting"
 import CalendarPage from "./pages/calender"
 import ScheduledPage from "./pages/scheduled"
+import AboutPage from "./pages/about"
+import EditCategories from "./pages/category"
+import AccountPage from "./pages/account."
 
 export default function App() {
 return (
@@ -26,6 +29,10 @@ return (
 <Route path="/settings" element={< SettingsPage />} />
 <Route path="/calendar" element={< CalendarPage />} />
 <Route path="/scheduled" element={< ScheduledPage />} />
+<Route path="/about" element={< AboutPage />} />
+<Route path="/categories" element={< EditCategories />} />
+<Route path="/accounts" element={< AccountPage />} />
+
 
 </Routes>
 </Layout>
