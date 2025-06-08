@@ -8,6 +8,9 @@ import BudgetsScreen from "./pages/budgets"
 import MoreScreen from "./pages/more"
 import RegisterPage from "./pages/Register"
 import LoginPage from "./pages/Login"
+import SettingsPage from "./pages/setting"
+import CalendarPage from "./pages/calender"
+import ScheduledPage from "./pages/scheduled"
 
 export default function App() {
 return (
@@ -20,6 +23,9 @@ return (
 <Route path="/more" element={< MoreScreen/>} />
 <Route path="/Register" element={< RegisterPage/>} />
 <Route path="/Login" element={< LoginPage/>} />
+<Route path="/settings" element={< SettingsPage />} />
+<Route path="/calendar" element={< CalendarPage />} />
+<Route path="/scheduled" element={< ScheduledPage />} />
 
 </Routes>
 </Layout>

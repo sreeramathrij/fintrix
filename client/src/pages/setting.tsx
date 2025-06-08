@@ -1,0 +1,101 @@
+import { useState } from "react"
+import { Switch } from "@/components/ui/switch"
+import { Label } from "@/components/ui/label"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue
+} from "@/components/ui/select"
+import { Card, CardContent } from "@/components/ui/card"
+import { Palette, Home, Globe, Moon } from "lucide-react"
+
+export default function SettingsPage() {
+  const [theme, setTheme] = useState("dark")
+  const [language, setLanguage] = useState("system")
+  const [accentColor, setAccentColor] = useState("indigo")
+
+  return (
+    <div className="px-4 py-6 sm:px-6 md:px-8 max-w-2xl mx-auto">
+      <h1 className="text-2xl font-bold mb-6">Settings</h1>
+
+      <div className="space-y-4">
+
+        {/* Accent Color */}
+        <Card className="hover:bg-muted transition-colors rounded-xl">
+          <CardContent className="flex items-center gap-4 p-4">
+            <Palette className="text-muted-foreground flex-shrink-0" />
+            <div className="flex flex-col flex-1">
+              <p className="font-medium">Accent Color</p>
+              <p className="text-sm text-muted-foreground">Select a color theme for the interface</p>
+            </div>
+            <Select value={accentColor} onValueChange={setAccentColor}>
+              <SelectTrigger className="min-w-[100px] w-auto focus-visible:outline-none">
+                <SelectValue placeholder="Color" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="indigo">Indigo</SelectItem>
+                <SelectItem value="emerald">Emerald</SelectItem>
+                <SelectItem value="rose">Rose</SelectItem>
+              </SelectContent>
+            </Select>
+          </CardContent>
+        </Card>
+
+        {/* Theme Mode */}
+        <Card className="hover:bg-muted transition-colors rounded-xl">
+          <CardContent className="flex items-center gap-4 p-4">
+            <Moon className="text-muted-foreground flex-shrink-0" />
+            <div className="flex flex-col flex-1">
+              <p className="font-medium">Theme Mode</p>
+              <p className="text-sm text-muted-foreground">Select light or dark theme</p>
+            </div>
+            <Select value={theme} onValueChange={setTheme}>
+              <SelectTrigger className="min-w-[80px] w-auto focus-visible:outline-none">
+                <SelectValue placeholder="Dark" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Light</SelectItem>
+                <SelectItem value="dark">Dark</SelectItem>
+              </SelectContent>
+            </Select>
+          </CardContent>
+        </Card>
+
+        {/* Edit Home Page */}
+        <Card className="hover:bg-muted transition-colors rounded-xl cursor-pointer">
+          <CardContent className="flex items-center gap-4 p-4">
+            <Home className="text-muted-foreground flex-shrink-0" />
+            <div className="flex flex-col">
+              <p className="font-medium">Edit Home Page</p>
+              <p className="text-sm text-muted-foreground">Customize your homepage layout</p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {/* Language */}
+        <Card className="hover:bg-muted transition-colors rounded-xl">
+          <CardContent className="flex items-center gap-4 p-4">
+            <Globe className="text-muted-foreground flex-shrink-0" />
+            <div className="flex flex-col flex-1">
+              <p className="font-medium">Language</p>
+              <p className="text-sm text-muted-foreground">App language preference</p>
+            </div>
+            <Select value={language} onValueChange={setLanguage}>
+              <SelectTrigger className="min-w-[100px] w-auto focus-visible:outline-none">
+                <SelectValue placeholder="System" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="system">System</SelectItem>
+                <SelectItem value="en">English</SelectItem>
+                <SelectItem value="hi">Hindi</SelectItem>
+              </SelectContent>
+            </Select>
+          </CardContent>
+        </Card>
+
+      </div>
+    </div>
+  )
+}

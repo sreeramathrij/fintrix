@@ -2,19 +2,14 @@
 import { Link } from "react-router-dom";
 import {
   User,
-  Bell,
   Calendar,
-  ClipboardList,
   Wallet,
   AlarmClock,
   PiggyBank,
-  Home,
   Settings,
   LayoutDashboard,
   BarChart2,
   Tag,
-  Type,
-  MessageSquare,
   ArrowRight,
   Info
 } from "lucide-react";
