@@ -16,6 +16,7 @@ import EditCategories from "./pages/category"
 import AccountPage from "./pages/account."
 
 import GitHubStyleHeatmap from "./pages/calender"
+import GoalForm from "./pages/goals"
 
 export default function App() {
 return (
@@ -34,6 +35,7 @@ return (
 <Route path="/about" element={< AboutPage />} />
 <Route path="/categories" element={< EditCategories />} />
 <Route path="/accounts" element={< AccountPage />} />
+<Route path="/goals" element={< GoalForm />} />
 
 
 </Routes>
