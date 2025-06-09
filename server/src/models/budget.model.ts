@@ -1,15 +1,15 @@
 import mongoose from "mongoose";
 
 export interface IBudget extends mongoose.Document {
-  userId: mongoose.Types.ObjectId;
+  userId: mongoose.Schema.Types.ObjectId;
   month: string;
   amount: number;
-  categoryId: mongoose.Types.ObjectId;
+  categoryId: mongoose.Schema.Types.ObjectId;
 }
 
 const budgetSchema = new mongoose.Schema({
   userId: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
   },
@@ -25,7 +25,7 @@ const budgetSchema = new mongoose.Schema({
   },
 
   category: {
-    type: mongoose.Types.ObjectId,
+    type: mongoose.Schema.Types.ObjectId,
     ref: "Category",
     default: null,
   }
@@ -35,4 +35,4 @@ const budgetSchema = new mongoose.Schema({
 
 budgetSchema.index({ userId: 1, month: 1, category: 1}, {unique: true});
 
-export const Budget = mongoose.model("Budget", budgetSchema);
+export const Budget = mongoose.model<IBudget>("Budget", budgetSchema);
