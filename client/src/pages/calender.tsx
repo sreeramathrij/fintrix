@@ -85,7 +85,7 @@ export default function GitHubStyleHeatmap() {
         <div className="bg-background p-4">
          
           {/* Month Labels */}
-<div className="flex ml-[30px] text-xs text-muted-foreground">
+<div className="flex ml-[30px] gap-[2px] text-xs text-muted-foreground">
   {weeks.map((week, i) => {
     const firstDate = new Date(week[0]?.date || "")
     const isFirstWeekOfMonth = firstDate.getDate() <= 7
@@ -106,7 +106,7 @@ export default function GitHubStyleHeatmap() {
           <div className="flex mt-1">
             {/* Weekday Labels */}
            
-<div className="flex flex-col text-[10px] text-muted-foreground mr-1">
+<div className="flex flex-col gap-[2px] text-[10px] text-muted-foreground mr-1">
   {weekdayNames.map((name, idx) => (
     <div key={idx} className="h-4 flex items-center justify-end pr-1">
       {name}
