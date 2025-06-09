@@ -10,11 +10,16 @@ import {
 } from "@/components/ui/select"
 import { Card, CardContent } from "@/components/ui/card"
 import { Palette, Home, Globe, Moon } from "lucide-react"
+import { useTheme } from "next-themes"
+
+
 
 export default function SettingsPage() {
-  const [theme, setTheme] = useState("dark")
+ 
   const [language, setLanguage] = useState("system")
   const [accentColor, setAccentColor] = useState("indigo")
+  const { theme, setTheme } = useTheme()
+
 
   return (
     <div className="px-4 py-6 sm:px-6 md:px-8 max-w-2xl mx-auto">
@@ -51,15 +56,16 @@ export default function SettingsPage() {
               <p className="font-medium">Theme Mode</p>
               <p className="text-sm text-muted-foreground">Select light or dark theme</p>
             </div>
-            <Select value={theme} onValueChange={setTheme}>
-              <SelectTrigger className="min-w-[80px] w-auto focus-visible:outline-none">
-                <SelectValue placeholder="Dark" />
-              </SelectTrigger>
-              <SelectContent>
-                <SelectItem value="light">Light</SelectItem>
-                <SelectItem value="dark">Dark</SelectItem>
-              </SelectContent>
-            </Select>
+            <Select  value={theme || "system"} onValueChange={(val) => setTheme(val)}>
+  <SelectTrigger className="min-w-[80px] w-auto focus-visible:outline-none">
+    <SelectValue placeholder="Dark" />
+  </SelectTrigger>
+  <SelectContent>
+    <SelectItem value="light">Light</SelectItem>
+    <SelectItem value="dark">Dark</SelectItem>
+    <SelectItem value="system">System</SelectItem>
+  </SelectContent>
+</Select>
           </CardContent>
         </Card>
 
