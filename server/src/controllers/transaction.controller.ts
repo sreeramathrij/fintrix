@@ -18,7 +18,7 @@ export const addTransaction = async (req: AuthRequest, res: Response): Promise<v
     };
 
     const transaction = await Transaction.create(transactionData);
-    res.status(201).json({ transaction });
+    res.status(201).json({ data: transaction });
 
   } catch (error) {
     console.error("Error in createTransaction controller: ", error);
@@ -26,19 +26,69 @@ export const addTransaction = async (req: AuthRequest, res: Response): Promise<v
   }
 };
 
-export const getTransactions = async (req: AuthRequest, res: Response): Promise<void> => {
-  try {
-    const userId = req.user!._id;
-    const transactions = await Transaction.find({
-      user: userId,
-    }).sort({ date: -1 });
+// export const getTransactions = async (req: AuthRequest, res: Response): Promise<void> => {
+//   try {
+//     const userId = req.user!._id;
+//     const transactions = await Transaction.find({
+//       user: userId,
+//     }).sort({ date: -1 });
 
-    res.status(200).json(transactions);
+//     res.status(200).json(transactions);
+//   } catch (error) {
+//     console.error("Error in getTransactions controller: ", error);
+//     res.status(500).json({ error: "Internal Server Error" });
+//   }
+// };
+
+export const getTransactionsInRange = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!._id as mongoose.Types.ObjectId;
+
+    const { from, to } = req.query;
+    if(from && to){
+      const fromDate = new Date(from as string);
+      const toDate = new Date(to as string);
+
+      const transactionsInRange = await Transaction.aggregate([
+        {
+          $match: {
+            createdBy: userId,
+            date: {
+              $gte: fromDate,
+              $lte: toDate,
+            },
+          },
+        },
+        {
+          $group: {
+            _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" }},
+            totalIncome: {
+              $sum: {
+                $cond: [{ $eq: ["$type", "income"]}, "$amount", 0],
+              },
+            },
+            totalExpense: {
+              $sum: {
+                $cond: [{ $eq: ["$type", "expense"]}, "$amount", 0],
+              },
+            },
+            transactions: { $push: "$$ROOT" },
+          },
+        },
+        { $sort: { _id: 1 }}
+      ])
+
+      res.status(200).json({ transactions: transactionsInRange });
+      return;
+    }
+
+    const allTransactions = await Transaction.find({ createdBy: userId });
+    res.status(200).json({ data: allTransactions })
   } catch (error) {
-    console.error("Error in getTransactions controller: ", error);
+    console.log("Error in getTransactionsInRange Controller: ", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
-};
+}
 
 export const getOneTransaction = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
@@ -58,7 +108,7 @@ export const getOneTransaction = async (req: AuthRequest, res: Response): Promis
       return;
     }
 
-    res.status(200).json(transaction);
+    res.status(200).json({ data: transaction});
   } catch (error) {
     console.error("Error in getOneTransaction controller: ", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -90,7 +140,7 @@ export const editTransaction = async (req: AuthRequest, res: Response): Promise<
       return;
     }
 
-    res.status(200).json({ message: "Transaction Updated", transaction: updatedTransaction });
+    res.status(200).json({ message: "Transaction Updated", updatedTransaction });
   } catch (error) {
     console.error("Error in editTransaction controller: ", error);
     res.status(500).json({ error: "Internal Server Error" });
@@ -105,7 +155,7 @@ export const deleteTransaction = async (req: AuthRequest, res: Response): Promis
       return;
     }
     const deletedTransaction = await Transaction.findOneAndDelete({ _id: id, user: req.user!._id })
-    res.status(200).json({ message: "Deleted Transaction", transaction: deletedTransaction });
+    res.status(200).json({ message: "Deleted Transaction", deletedTransaction });
   } catch (error) {
     console.error("Error in deleteTransaction controller: ", error);
     res.status(500).json({ error: "Internal Server Error" });
