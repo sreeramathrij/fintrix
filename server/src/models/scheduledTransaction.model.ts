@@ -4,10 +4,10 @@ export interface IScheduledTransaction extends mongoose.Document {
   user: mongoose.Schema.Types.ObjectId;
   title: string;
   amount: number;
-  type: string;
-  category: string;
+  type: "income" | "expense";
+  category: mongoose.Schema.Types.ObjectId;
   startDate: Date;
-  frequency: string;
+  frequency: "daily" | "weekly" | "monthly";
   nextRun: Date;
   active: boolean;
 }

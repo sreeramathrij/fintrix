@@ -71,7 +71,7 @@ export const deleteBudget = async (req: AuthRequest, res:Response): Promise<void
       return;
     }
 
-    res.status(200).json({ message: "Budget Deleted", deleteBudget});
+    res.status(200).json({ message: "Budget Deleted", deletedBudget});
 
   } catch (error) {
     console.error("Error in deleteBudget Conroller: ", error);

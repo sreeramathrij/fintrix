@@ -31,8 +31,7 @@ scheduledQueue.process(async (job) => {
     date: new Date()
   })
 
-  const next = getNextRunDate(new Date(), scheduled.frequency)
-  await ScheduledTransaction.findByIdAndUpdate(scheduled._id, { nextRun: next });
+  await ScheduledTransaction.findByIdAndUpdate(scheduled._id, { nextRun: getNextRunDate(new Date(), scheduled.frequency) });
 });
 
 export { scheduledQueue };

@@ -35,7 +35,7 @@ app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/budgets", budgetRoutes);
 app.use("/api/scheduled", scheduledRoutes);
 
-app.get("/", (_: Request , res: Response): Promise<void> => res.send("API is running"));
+app.get("/", (_: Request , res: Response) => { res.send("API is running") });
 
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, ()=> {

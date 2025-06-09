@@ -5,7 +5,8 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
-    "seed:categories": "ts-node src/seeds/category.seed.ts"
+    "seed:categories": "ts-node src/seeds/category.seed.ts",
+    "seed:multiple": "ts-node src/seeds/multiple.seed.ts"
   },
   "keywords": [],
   "author": "",
