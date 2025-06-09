@@ -1,90 +1,164 @@
-import { useState } from "react"
-import { Plus } from "lucide-react"
-import {cn } from "@/lib/utils"
-import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+  TooltipProvider,
+} from "@/components/ui/tooltip"
+import { cn } from "@/lib/utils"
 
-export default function CalendarPage() {
+interface DayData {
+  date: string
+  income: number
+  expense: number
+}
+
+function generateMockData(): DayData[] {
   const today = new Date()
-  const currentYear = today.getFullYear()
+  const days: DayData[] = []
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(today)
+    d.setDate(today.getDate() - i)
+    days.push({
+      date: d.toISOString().split("T")[0],
+      income: Math.random() > 0.5 ? Math.floor(Math.random() * 200) : 0,
+      expense: Math.random() > 0.5 ? Math.floor(Math.random() * 200) : 0,
+    })
+  }
+  return days.reverse()
+}
 
-  const [selectedMonthIndex, setSelectedMonthIndex] = useState(today.getMonth())
-  const [selectedDay, setSelectedDay] = useState(today.getDate())
+function getColor(income: number, expense: number): string {
+  if (income > expense) return "bg-green-500 hover:bg-green-600"
+  if (expense > income) return "bg-red-500 hover:bg-red-600"
+  if (income === 0 && expense === 0) return "bg-gray-300 dark:bg-gray-700"
+  return "bg-gray-400"
+}
 
-  const months = Array.from({ length: 12 }, (_, i) =>
-    new Intl.DateTimeFormat("en-US", { month: "long" }).format(new Date(currentYear, i, 1))
-  )
+function groupDataByWeek(data: DayData[]) {
+  const weeks: DayData[][] = []
+  let currentWeek: DayData[] = []
+  data.forEach((item) => {
+    const date = new Date(item.date)
+    if (date.getDay() === 0 && currentWeek.length > 0) {
+      weeks.push(currentWeek)
+      currentWeek = []
+    }
+    currentWeek.push(item)
+  })
+  if (currentWeek.length > 0) weeks.push(currentWeek)
+  return weeks
+}
 
-  const weekdays = Array.from({ length: 7 }, (_, i) =>
-    new Intl.DateTimeFormat("en-US", { weekday: "short" }).format(new Date(2025, 5, i + 1))
-  )
+const weekdayNames = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"]
+const monthNames = [
+  "Jan",
+  "Feb",
+  "Mar",
+  "Apr",
+  "May",
+  "Jun",
+  "Jul",
+  "Aug",
+  "Sep",
+  "Oct",
+  "Nov",
+  "Dec",
+]
 
-  const daysInMonth = new Date(currentYear, selectedMonthIndex + 1, 0).getDate()
-  const firstDayOfMonth = new Date(currentYear, selectedMonthIndex, 1).getDay()
-  const days = Array.from({ length: daysInMonth }, (_, i) => i + 1)
+export default function GitHubStyleHeatmap() {
+  const [data, setData] = useState<DayData[]>([])
+
+  useEffect(() => {
+    setData(generateMockData())
+  }, [])
+
+  const weeks = groupDataByWeek(data)
 
   return (
-    <div className="p-4 pb-24 sm:pb-32 max-w-md mx-auto min-h-screen bg-background">
-      {/* Header */}
-      <div className="flex items-center gap-4 mb-6">
-        
-        <h1 className="text-2xl sm:text-3xl font-bold">Calendar</h1>
-      </div>
+    <TooltipProvider>
+      <div className="w-full max-w-5xl mx-auto p-6">
+        <h1 className="text-2xl font-bold mb-6 text-center text-primary">
+          📅 Calendar
+        </h1>
 
-      {/* Month Selector */}
-      <div className="flex overflow-x-auto no-scrollbar gap-4 pb-3 mb-4 border-b border-border scroll-smooth snap-x">
-        {months.map((month, idx) => (
-          <button
-            key={month}
-            onClick={() => setSelectedMonthIndex(idx)}
-            className={cn(
-              "px-2 pb-2 text-sm sm:text-base font-medium relative whitespace-nowrap snap-start",
-              selectedMonthIndex === idx ? "text-foreground" : "text-muted-foreground"
-            )}
-          >
-            {month}
-            {selectedMonthIndex === idx && (
-              <div className="absolute left-0 right-0 bottom-0 h-[2px] bg-primary rounded-full" />
-            )}
-          </button>
-        ))}
-      </div>
-
-      {/* Weekdays */}
-      <div className="grid grid-cols-7 text-center text-xs sm:text-sm text-muted-foreground mb-2">
-        {weekdays.map((day) => (
-          <div key={day}>{day}</div>
-        ))}
-      </div>
-
-      {/* Calendar Grid */}
-      <div className="grid grid-cols-7 gap-y-4 text-center text-base font-medium">
-        {Array(firstDayOfMonth).fill(null).map((_, i) => (
-          <div key={`empty-${i}`} />
-        ))}
-        {days.map((day) => (
-          <button
-            key={day}
-            onClick={() => setSelectedDay(day)}
-            className={cn(
-              "w-8 h-8 sm:w-9 sm:h-9 rounded-full mx-auto flex items-center justify-center",
-              selectedDay === day
-                ? "bg-primary text-primary-foreground"
-                : "hover:bg-muted text-foreground"
-            )}
-          >
-            {day}
-          </button>
-        ))}
-      </div>
-
-      {/* Floating Add Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 rounded-2xl bg-muted text-foreground shadow-xl"
+        <div className="bg-background p-4">
+         
+          {/* Month Labels */}
+<div className="flex ml-[30px] text-xs text-muted-foreground">
+  {weeks.map((week, i) => {
+    const firstDate = new Date(week[0]?.date || "")
+    const isFirstWeekOfMonth = firstDate.getDate() <= 7
+    return (
+      <div
+        key={i}
+        className="w-4 h-4 min-w-[16] flex justify-center items-center text-[10px]"
+        style={{ minWidth: 16 }}
       >
-        <Plus />
-      </Button>
+        {isFirstWeekOfMonth ? monthNames[firstDate.getMonth()] : ""}
+      </div>
+    )
+  })}
+</div>
+
+
+          {/* Grid */}
+          <div className="flex mt-1">
+            {/* Weekday Labels */}
+           
+<div className="flex flex-col text-[10px] text-muted-foreground mr-1">
+  {weekdayNames.map((name, idx) => (
+    <div key={idx} className="h-4 flex items-center justify-end pr-1">
+      {name}
     </div>
+  ))}
+</div>
+
+
+            {/* Day Squares */}
+            <div className="flex">
+              {weeks.map((week, i) => (
+                <div
+                  key={i}
+                  className="flex flex-col gap-[2px] mx-[1px]"
+                  style={{ minWidth: 16 }}
+                >
+                  {Array.from({ length: 7 }, (_, dayIndex) => {
+                    const d = week.find(
+                      (d) => new Date(d.date).getDay() === dayIndex
+                    )
+                    return (
+                      <Tooltip key={dayIndex}>
+                        <TooltipTrigger asChild>
+                          <div
+                            className={cn(
+                              "w-4 h-4 min-w-[16] rounded-sm transition-colors",
+                              d
+                                ? getColor(d.income, d.expense)
+                                : "bg-gray-100 dark:bg-gray-800"
+                            )}
+                          />
+                        </TooltipTrigger>
+                        <TooltipContent>
+                          {d ? (
+                            <div className="text-sm">
+                              <p className="font-medium">{d.date}</p>
+                              <p>Income: ₹{d.income}</p>
+                              <p>Expense: ₹{d.expense}</p>
+                            </div>
+                          ) : (
+                            <span>No data</span>
+                          )}
+                        </TooltipContent>
+                      </Tooltip>
+                    )
+                  })}
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </div>
+    </TooltipProvider>
   )
 }

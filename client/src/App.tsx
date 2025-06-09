@@ -9,11 +9,13 @@ import MoreScreen from "./pages/more"
 import RegisterPage from "./pages/Register"
 import LoginPage from "./pages/Login"
 import SettingsPage from "./pages/setting"
-import CalendarPage from "./pages/calender"
+
 import ScheduledPage from "./pages/scheduled"
 import AboutPage from "./pages/about"
 import EditCategories from "./pages/category"
 import AccountPage from "./pages/account."
+
+import GitHubStyleHeatmap from "./pages/calender"
 
 export default function App() {
 return (
@@ -27,7 +29,7 @@ return (
 <Route path="/Register" element={< RegisterPage/>} />
 <Route path="/Login" element={< LoginPage/>} />
 <Route path="/settings" element={< SettingsPage />} />
-<Route path="/calendar" element={< CalendarPage />} />
+<Route path="/calendar" element={<  GitHubStyleHeatmap />} />
 <Route path="/scheduled" element={< ScheduledPage />} />
 <Route path="/about" element={< AboutPage />} />
 <Route path="/categories" element={< EditCategories />} />
