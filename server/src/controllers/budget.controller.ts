@@ -129,13 +129,15 @@ export const getBudgetSummary = async (req: AuthRequest, res: Response): Promise
     const categoryData = categoryId ? await Category.findById(categoryId) : null;
 
     res.status(200).json({
-      category: categoryData ? {
-        _id: categoryData._id,
-        name: categoryData.name,
-      } : null,
-      totalBudget: budget.amount,
-      totalSpent,
-      remaining: budget.amount - totalSpent,
+      data: {
+        category: categoryData ? {
+          _id: categoryData._id,
+          name: categoryData.name,
+        } : null,
+        totalBudget: budget.amount,
+        totalSpent,
+        remaining: budget.amount - totalSpent,
+      }
     })
 
   } catch (error) {
