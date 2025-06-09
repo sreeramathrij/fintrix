@@ -5,7 +5,7 @@ import {
   deleteTransaction,
   editTransaction,
   getOneTransaction,
-  getTransactions
+  getTransactionsInRange
 } from "../controllers/transaction.controller";
 
 const router = express.Router();
@@ -15,7 +15,7 @@ router.use(verifyJWT);
 router
   .route("/")
   .post(addTransaction)
-  .get(getTransactions)
+  .get(getTransactionsInRange)
 
 router
   .route("/:id")

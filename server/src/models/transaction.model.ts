@@ -40,6 +40,7 @@ const transactionSchema = new mongoose.Schema({
     ref: "User",
     required: true,
   },
-});
+},
+{ timestamps: true });
 
 export const Transaction = mongoose.model<ITransaction>("Transaction", transactionSchema);

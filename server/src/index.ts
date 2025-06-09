@@ -3,11 +3,14 @@ import dotenv from 'dotenv';
 import cors from "cors";
 import morgan from "morgan";
 import cookieParser from "cookie-parser";
+
 import { connectDB } from "./config/db";
+
 import authRoutes from "./routes/auth.routes"
 import userRoutes from "./routes/user.routes"
 import transactionRoutes from "./routes/transaction.routes"
 import categoryRoutes from "./routes/category.routes"
+import dashboardRoutes from "./routes/dashboard.routes"
 
 dotenv.config();
 
@@ -22,6 +25,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/user", userRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/transactions", transactionRoutes);
+app.use("/api/dashboard", dashboardRoutes);
 
 app.get("/", (_: Request , res: Response) => res.send("API is running"));
 
