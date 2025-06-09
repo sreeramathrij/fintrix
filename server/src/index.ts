@@ -11,6 +11,7 @@ import userRoutes from "./routes/user.routes"
 import transactionRoutes from "./routes/transaction.routes"
 import categoryRoutes from "./routes/category.routes"
 import dashboardRoutes from "./routes/dashboard.routes"
+import budgetRoutes from "./routes/budget.routes"
 
 dotenv.config();
 
@@ -26,6 +27,7 @@ app.use("/api/user", userRoutes);
 app.use("/api/category", categoryRoutes);
 app.use("/api/transactions", transactionRoutes);
 app.use("/api/dashboard", dashboardRoutes);
+app.use("/api/budgets", budgetRoutes);
 
 app.get("/", (_: Request , res: Response) => res.send("API is running"));
 
