@@ -1,5 +1,4 @@
 import { motion } from "motion/react";
-import { FiChevronDown } from "react-icons/fi";
 import Logo from "./Logo";
 
 interface TitleSectionProps {
@@ -19,12 +18,10 @@ const TitleSection = ({ open }: TitleSectionProps) => {
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.125 }}
             >
-              <span className="block text-xs font-semibold">TomIsLoading</span>
-              <span className="block text-xs text-slate-500">Pro Plan</span>
+              <span className="block text-lg font-bold">Fintrix</span>
             </motion.div>
           )}
         </div>
-        {open && <FiChevronDown className="mr-2" />}
       </div>
     </div>
   );

@@ -19,11 +19,11 @@ const Option = (props: OptionProps) => {
       <motion.button
         layout
         onClick={() => setSelectedPage(title)}
-        className={`relative flex h-10 w-full items-center rounded-md transition-colors ${selectedPage === title ? "bg-foreground text-accent" : "text-primary hover:bg-secondary"}`}
+        className={`relative flex h-14 w-full items-center rounded-md transition-colors ${selectedPage === title ? "bg-foreground text-accent" : "text-primary hover:bg-secondary"}`}
       >
         <motion.div
           layout
-          className="grid h-full w-10 place-content-center text-lg"
+          className="grid h-full w-10 ml-2 place-content-center text-lg"
         >
           <Icon />
         </motion.div>

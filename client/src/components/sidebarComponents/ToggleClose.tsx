@@ -10,7 +10,7 @@ const ToggleClose = () => {
     <motion.button
       layout
       onClick={() => setOpen(!open)}
-      className=" left-0 right-0 border-t border-muted-foreground transition-colors hover:bg-secondary"
+      className="left-0 right-0 border-t border-muted-foreground transition-colors hover:bg-secondary"
     >
       <div className="flex items-center p-2">
         <motion.div
