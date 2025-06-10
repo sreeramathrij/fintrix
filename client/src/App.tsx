@@ -20,9 +20,9 @@ import AccountPage from "./pages/account."
 import GitHubStyleHeatmap from "./pages/calender"
 import GoalForm from "./pages/goals"
 import { Loader } from "lucide-react"
+import GoalsPage from "./pages/goals"
 
 export default function App() {
-
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore(); 
 
   useEffect(() => {
@@ -51,7 +51,7 @@ export default function App() {
           <Route path="/about" element={< AboutPage />} />
           <Route path="/categories" element={< EditCategories />} />
           <Route path="/accounts" element={< AccountPage />} />
-          <Route path="/goals" element={< GoalForm />} />
+          <Route path="/goals" element={< GoalsPage />} />
         </Routes>
       </Layout>
       <Toaster />
