@@ -18,9 +18,9 @@ import AboutPage from "./pages/about"
 import EditCategories from "./pages/category"
 import AccountPage from "./pages/account."
 import GitHubStyleHeatmap from "./pages/calender"
-import GoalForm from "./pages/goals"
 import { Loader } from "lucide-react"
 import GoalsPage from "./pages/goals"
+import SpendingSummary from "./pages/summary"
 
 export default function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore(); 
@@ -52,6 +52,7 @@ export default function App() {
           <Route path="/categories" element={< EditCategories />} />
           <Route path="/accounts" element={< AccountPage />} />
           <Route path="/goals" element={< GoalsPage />} />
+          <Route path="/summary" element={< SpendingSummary />} />
         </Routes>
       </Layout>
       <Toaster />

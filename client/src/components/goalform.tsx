@@ -8,7 +8,18 @@ import { format } from "date-fns"
 import { CalendarIcon, ImageIcon, Palette } from "lucide-react"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
 
-export default function GoalForm() {
+interface GoalFormProps {
+  onSave: (goal: {
+    name: string
+    goalAmount: number
+    startDate?: Date
+    endDate?: Date
+    color?: string
+  }) => void
+  onCancel: () => void
+}
+
+export default function GoalForm({ onSave, onCancel }: GoalFormProps) {
   const [goalType, setGoalType] = useState<"expense" | "savings">("savings")
   const [name, setName] = useState("")
   const [amount, setAmount] = useState("")
@@ -25,11 +36,20 @@ export default function GoalForm() {
     "bg-indigo-500",
   ]
 
+  const handleSubmit = () => {
+    onSave({
+      name,
+      goalAmount: parseFloat(amount),
+      startDate,
+      endDate,
+      color: selectedColor,
+    })
+  }
+
   return (
     <div className="p-4 min-h-screen bg-background text-primary">
       <div className="text-2xl font-bold mb-4">Add Goal</div>
 
-      {/* Goal type toggle */}
       <Tabs defaultValue={goalType} onValueChange={(v) => setGoalType(v as "expense" | "savings")}>
         <TabsList className="w-full grid grid-cols-2 mb-4">
           <TabsTrigger value="expense">Expense goal</TabsTrigger>
@@ -37,7 +57,6 @@ export default function GoalForm() {
         </TabsList>
       </Tabs>
 
-      {/* Icon + Name */}
       <div className="flex items-center gap-3 mb-4">
         <div className="w-12 h-12 bg-muted rounded-xl flex items-center justify-center">
           <ImageIcon className="w-6 h-6 text-muted-foreground" />
@@ -50,7 +69,6 @@ export default function GoalForm() {
         />
       </div>
 
-      {/* Color selection */}
       <div className="flex gap-2 items-center mb-6">
         <Palette className="text-muted-foreground w-5 h-5" />
         {colors.map((color) => (
@@ -62,7 +80,6 @@ export default function GoalForm() {
         ))}
       </div>
 
-      {/* Goal Amount */}
       <div className="mb-4">
         <label className="text-sm text-muted-foreground">Goal</label>
         <Input
@@ -74,7 +91,6 @@ export default function GoalForm() {
         />
       </div>
 
-      {/* Date Range */}
       <div className="flex justify-between gap-4 mb-6">
         <div className="flex-1">
           <label className="text-sm text-muted-foreground">Start</label>
@@ -107,7 +123,10 @@ export default function GoalForm() {
         </div>
       </div>
 
-      <Button className="w-full text-md">Set Name</Button>
+      <div className="flex justify-between gap-4">
+        <Button className="w-full text-md" onClick={handleSubmit}>Save Goal</Button>
+        <Button variant="ghost" className="w-full text-md" onClick={onCancel}>Cancel</Button>
+      </div>
     </div>
   )
 }

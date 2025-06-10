@@ -1,10 +1,7 @@
-
 import { useState } from "react"
-import { Plus,  Car } from "lucide-react"
+import { Plus, Car } from "lucide-react"
 import { Card } from "@/components/ui/card"
 import { Dialog, DialogTrigger, DialogContent } from "@/components/ui/dialog"
-import { Button } from "@/components/ui/button"
-
 import { Progress } from "@/components/ui/progress"
 import GoalForm from "@/components/goalform"
 
@@ -16,7 +13,6 @@ export default function GoalsPage() {
       transactions: 13,
       currentAmount: 195,
       goalAmount: 1500,
-      
     },
     {
       name: "Car Loan Payment",
@@ -28,43 +24,46 @@ export default function GoalsPage() {
     },
   ])
 
-  const [newGoal, setNewGoal] = useState({ name: "", goalAmount: "" })
+  const [dialogOpen, setDialogOpen] = useState(false)
 
-  const handleAddGoal = () => {
-    setGoals([
-      ...goals,
-      {
-        name: newGoal.name,
-        date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }),
-        transactions: 0,
-        currentAmount: 0,
-        goalAmount: parseInt(newGoal.goalAmount),
-        
-      },
-    ])
-    setNewGoal({ name: "", goalAmount: "" })
+  const handleAddGoal = (goal: {
+    name: string
+    goalAmount: number
+    startDate?: Date
+    endDate?: Date
+    color?: string
+  }) => {
+    const newGoal = {
+      name: goal.name,
+      date: new Date().toLocaleDateString("en-US", { month: "short", day: "numeric" }),
+      transactions: 0,
+      currentAmount: 0,
+      goalAmount: goal.goalAmount,
+    }
+
+    setGoals((prev) => [...prev, newGoal])
+    setDialogOpen(false)
   }
 
   return (
     <div className="p-4 space-y-4 min-h-screen bg-background text-white">
       <div className="flex justify-between items-center">
         <h1 className="text-2xl font-bold">Goals</h1>
-        <Dialog>
-  <DialogTrigger asChild>
-    <Button size="icon" variant="ghost">
-      <Plus />
-    </Button>
-  </DialogTrigger>
-  <DialogContent className="max-w-md bg-background p-0">
-    <GoalForm />
-  </DialogContent>
-</Dialog>
       </div>
 
-      {/* Add Goal Placeholder */}
-      <Card className="border-dashed border-2 border-muted-foreground rounded-xl flex items-center justify-center py-12">
-        <Plus className="opacity-40" size={32} />
-      </Card>
+      {/* Dialog wrapping only the large + */}
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogTrigger asChild>
+          <Card
+            className="border-dashed border-2 border-muted-foreground rounded-xl flex items-center justify-center py-12 cursor-pointer hover:opacity-75 transition"
+          >
+            <Plus className="opacity-40" size={32} />
+          </Card>
+        </DialogTrigger>
+        <DialogContent className="max-w-md bg-background p-0">
+          <GoalForm onSave={handleAddGoal} onCancel={() => setDialogOpen(false)} />
+        </DialogContent>
+      </Dialog>
 
       <p className="text-sm text-muted-foreground">Example Goals</p>
 
