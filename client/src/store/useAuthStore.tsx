@@ -1,5 +1,4 @@
 import { create } from "zustand";
-
 import { api } from "@/lib/axios";
 import toast from "react-hot-toast"
 import { AxiosError } from "axios";
@@ -39,7 +38,7 @@ interface AuthStore {
   logout: () => void;
 }
 
-export const useAuthStore = create<AuthStore>((set) => ({
+export const useAuthStore = create< AuthStore >((set) => ({
   authUser: null,
   isAuthenticated: false,
   isSigningUp: false,
