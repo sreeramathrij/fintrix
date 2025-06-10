@@ -20,6 +20,7 @@ import AccountPage from "./pages/account."
 import GitHubStyleHeatmap from "./pages/calender"
 import { Loader } from "lucide-react"
 import GoalsPage from "./pages/goals"
+import SpendingSummary from "./pages/summary"
 
 export default function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore(); 
@@ -35,24 +36,25 @@ export default function App() {
   )
 
   return (
-    <ThemeProvider >
-        <Layout>
-          <Routes>
-            <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
-            <Route path="/transactions" element={authUser ? <TransactionsPage /> : <Navigate to="/login" />} />
-            <Route path="/budgets" element={authUser ? <BudgetsScreen /> : <Navigate to="/login" />} />
-            <Route path="/more" element={authUser ? < MoreScreen/> : <Navigate to="/login" />} />
-            <Route path="/register" element={!authUser ? < RegisterPage/> : <Navigate to="/" />} />
-            <Route path="/Login" element={!authUser ? < LoginPage/> : <Navigate to="/" />} />
-            <Route path="/settings" element={< SettingsPage />} />
-            <Route path="/calendar" element={<  GitHubStyleHeatmap />} />
-            <Route path="/scheduled" element={< ScheduledPage />} />
-            <Route path="/about" element={< AboutPage />} />
-            <Route path="/categories" element={< EditCategories />} />
-            <Route path="/accounts" element={< AccountPage />} />
-            <Route path="/goals" element={< GoalsPage />} />
-          </Routes>
-        </Layout>
+    <ThemeProvider>
+      <Layout>
+        <Routes>
+          <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
+          <Route path="/transactions" element={authUser ? <TransactionsPage /> : <Navigate to="/login" />} />
+          <Route path="/budgets" element={authUser ? <BudgetsScreen /> : <Navigate to="/login" />} />
+          <Route path="/more" element={authUser ? < MoreScreen/> : <Navigate to="/login" />} />
+          <Route path="/register" element={!authUser ? < RegisterPage/> : <Navigate to="/" />} />
+          <Route path="/Login" element={!authUser ? < LoginPage/> : <Navigate to="/" />} />
+          <Route path="/settings" element={< SettingsPage />} />
+          <Route path="/calendar" element={<  GitHubStyleHeatmap />} />
+          <Route path="/scheduled" element={< ScheduledPage />} />
+          <Route path="/about" element={< AboutPage />} />
+          <Route path="/categories" element={< EditCategories />} />
+          <Route path="/accounts" element={< AccountPage />} />
+          <Route path="/goals" element={< GoalsPage />} />
+          <Route path="/summary" element={< SpendingSummary />} />
+        </Routes>
+      </Layout>
       <Toaster />
     </ThemeProvider>
   )

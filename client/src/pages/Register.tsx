@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useAuthStore } from "@/store/useAuthStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { ThemeToggle } from "@/components/ThemeToggle"; // Optional
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { toast } from "react-hot-toast";
-import { Loader2 } from "lucide-react";
+import { Loader2, Eye, EyeOff } from "lucide-react";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -12,6 +12,7 @@ export default function RegisterPage() {
     email: "",
     password: ""
   });
+  const [showPassword, setShowPassword] = useState(false);
 
   const { isSigningUp, register } = useAuthStore();
 
@@ -20,25 +21,25 @@ export default function RegisterPage() {
   };
 
   const validateForm = (): boolean => {
-    if(!form.name.trim()) {
+    if (!form.name.trim()) {
       toast.error("Full name is required!");
       return false;
     }
-    if(!form.email.trim()) {
+    if (!form.email.trim()) {
       toast.error("Email is required!");
       return false;
     }
-    if(!/\S+@\S+\.\S+/.test(form.email)){
+    if (!/\S+@\S+\.\S+/.test(form.email)) {
       toast.error("Invalid Email Format!");
       return false;
     }
 
-    if(!form.password) {
+    if (!form.password) {
       toast.error("Password is required!");
       return false;
     }
-    
-    if(form.password.length < 8) {
+
+    if (form.password.length < 8) {
       toast.error("Password must be at least 8 characters");
       return false;
     }
@@ -48,9 +49,8 @@ export default function RegisterPage() {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Add register logic here
     const success = validateForm();
-    if(success === true) register(form);
+    if (success === true) register(form);
   };
 
   return (
@@ -85,28 +85,37 @@ export default function RegisterPage() {
             />
           </div>
 
-          <div>
+          <div className="relative">
             <label className="block text-sm font-medium mb-1">Password</label>
             <Input
-              type="password"
+              type={showPassword ? "text" : "password"}
               name="password"
               placeholder="••••••••"
               value={form.password}
               onChange={handleChange}
               required
+              className="pr-10"
             />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="absolute right-2 top-[38px] text-muted-foreground"
+              tabIndex={-1}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
 
           <Button type="submit" className="w-full" disabled={isSigningUp}>
             {isSigningUp ? (
               <>
-                <Loader2 className="size-5 animate-spin" />
+                <Loader2 className="size-5 animate-spin mr-2" />
                 Loading...
               </>
             ) : (
               "Register"
             )}
-            </Button>
+          </Button>
         </form>
 
         <p className="text-sm text-muted-foreground text-center">
