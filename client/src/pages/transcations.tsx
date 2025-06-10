@@ -5,7 +5,6 @@ import {
   Search,
   Filter
 } from "lucide-react";
-import NavFooter from "@/components/NavFooter";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import useMeasure from "react-use-measure";
 import Sidebar from "@/components/Sidebar";
