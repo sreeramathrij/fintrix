@@ -11,7 +11,7 @@ interface User {
   authProvider: "local" | "google" | "github";
   profilePic: string;
   createdAt: Date;
-  updatedAu: Date;
+  updatedAt: Date;
 }
 
 interface RegisterData {

@@ -17,12 +17,7 @@ import { Link } from "react-router-dom";
 
 import {
   ResponsiveContainer,
-  LineChart,
-  Line,
-  XAxis,
-  YAxis,
   Tooltip,
-  CartesianGrid,
   PieChart as RePieChart,
   Pie,
   Cell,
@@ -32,6 +27,10 @@ import { motion } from "motion/react"
 import NavFooter from "@/components/NavFooter";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Sidebar from "@/components/Sidebar";
+import { useDashboardStore } from "@/store/useDashboardStore";
+import { useEffect } from "react";
+import AreaChartComponent from "@/components/AreaChartComponent";
+import { TooltipProvider } from "@radix-ui/react-tooltip";
 
 const spendingData = [
   { name: "Mon", amount: 200 },
@@ -51,7 +50,20 @@ const pieData = [
 const COLORS = ["#ef4444", "#22c55e"];
 
 export default function MobileHomePage() {
+
+  const {
+    getDailyTrends,
+    getDashboardSummary,
+    getTransactionSummaryByCategory,
+    getMonthlyTrends,
+    getRecentTransactions
+  } = useDashboardStore();
+
   const [ref, {width}] = useMeasure();
+
+  useEffect(() => {
+    getMonthlyTrends();
+  }, [])
 
   return (
     <motion.div className="flex">
@@ -94,28 +106,14 @@ export default function MobileHomePage() {
         </div>
 
         {/* Charts Section */}
-        <div className="flex flex-col md:flex-row gap-4 h-auto md:h-72">
-          <Card className="w-full md:basis-2/3">
-            <CardHeader className="flex items-center justify-between pb-2">
+        <div className="flex md:flex-row gap-4 h-auto md:h-72">
+          <Card className="flex flex-col w-full md:basis-2/3">
+            <CardHeader className="flex items-center gap-2 pb-2">
               <CardTitle className="text-base">Spending Overview</CardTitle>
               <BarChart2 className="text-muted-foreground" size={18} />
             </CardHeader>
-            <CardContent className="h-64 md:h-40 px-2">
-              <ResponsiveContainer width="100%" height="100%">
-                <LineChart data={spendingData}>
-                  <CartesianGrid strokeDasharray="3 3" />
-                  <XAxis dataKey="name" />
-                  <YAxis />
-                  <Tooltip />
-                  <Line
-                    type="monotone"
-                    dataKey="amount"
-                    stroke="#4f46e5"
-                    strokeWidth={2}
-                    dot={false}
-                  />
-                </LineChart>
-              </ResponsiveContainer>
+            <CardContent className="flex-1 relative h-64 md:h-40 px-2">
+                <AreaChartComponent />
             </CardContent>
           </Card>
 

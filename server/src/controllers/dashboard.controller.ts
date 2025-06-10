@@ -231,7 +231,8 @@ export const getDailyTrends = async (req: AuthRequest, res: Response): Promise<v
             }
           },
         }
-      }
+      },
+      { $sort: { _id: 1 }}
     ])
 
     res.status(200).json({ data: dailyData });
