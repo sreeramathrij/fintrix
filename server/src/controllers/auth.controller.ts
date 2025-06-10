@@ -4,18 +4,24 @@ import jwt from "jsonwebtoken";
 import { User } from "../models/user.model";
 import { registerSchema, loginSchema } from "../schemas/auth.schema";
 import { JWT_SECRET } from "../utils/jwtSecret";
+import { AuthRequest } from "../middlewares/verifyJWT.middleware";
 
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
-  const parsed = registerSchema.safeParse(req.body);
-  if(!parsed.success) {
-    res.status(400).json({ error: parsed.error.flatten() });
-    return;
-  }
-
-  const { name, email, password } = parsed.data;
-
   try {
+    const parsed = registerSchema.safeParse(req.body);
+    if(!parsed.success) {
+      res.status(400).json({ error: parsed.error.flatten() });
+      return;
+    }
+
+    const { name, email, password } = parsed.data;
+
+    if (password.length < 8) {
+      res.status(400).json({ message: "Password must be at least 8 characters long" });
+      return;
+    }
+  
     const existing = await User.findOne({ email });
     if(existing){
       res.status(400).json({ error: { message: "Email already in use" }});
@@ -86,7 +92,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   }
 }
 
-export const logoutUser = (req: Request, res: Response) => {
+export const logoutUser = (_: Request, res: Response) => {
   try {
     res.clearCookie("token", {
       httpOnly: true,
@@ -97,6 +103,15 @@ export const logoutUser = (req: Request, res: Response) => {
     res.status(200).json({ message: "Logged out successfully" });
   } catch (error) {
     console.log("Error in logoutUserController:", error );
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+}
+
+export const checkAuth = (req: AuthRequest, res: Response) => {
+  try {
+    res.status(200).json(req.user!);
+  } catch (error) {
+    console.error("Error in checkAuth Controller: ", error);
     res.status(500).json({ message: "Internal Server Error" });
   }
 }

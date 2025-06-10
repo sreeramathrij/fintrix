@@ -13,6 +13,8 @@ import {
   ArrowRight,
   Info
 } from "lucide-react";
+import { motion } from "motion/react";
+
 import NavFooter from "@/components/NavFooter";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";

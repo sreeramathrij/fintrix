@@ -1,7 +1,10 @@
 import { useState } from "react";
+import { useAuthStore } from "@/store/useAuthStore";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { ThemeToggle } from "@/components/ThemeToggle"; // Optional
+import { toast } from "react-hot-toast";
+import { Loader2 } from "lucide-react";
 
 export default function RegisterPage() {
   const [form, setForm] = useState({
@@ -10,14 +13,44 @@ export default function RegisterPage() {
     password: ""
   });
 
+  const { isSigningUp, register } = useAuthStore();
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
+  };
+
+  const validateForm = (): boolean => {
+    if(!form.name.trim()) {
+      toast.error("Full name is required!");
+      return false;
+    }
+    if(!form.email.trim()) {
+      toast.error("Email is required!");
+      return false;
+    }
+    if(!/\S+@\S+\.\S+/.test(form.email)){
+      toast.error("Invalid Email Format!");
+      return false;
+    }
+
+    if(!form.password) {
+      toast.error("Password is required!");
+      return false;
+    }
+    
+    if(form.password.length < 8) {
+      toast.error("Password must be at least 8 characters");
+      return false;
+    }
+
+    return true;
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     // Add register logic here
-    console.log("Registering:", form);
+    const success = validateForm();
+    if(success === true) register(form);
   };
 
   return (
@@ -64,9 +97,16 @@ export default function RegisterPage() {
             />
           </div>
 
-          <Button type="submit" className="w-full">
-            Register
-          </Button>
+          <Button type="submit" className="w-full" disabled={isSigningUp}>
+            {isSigningUp ? (
+              <>
+                <Loader2 className="size-5 animate-spin" />
+                Loading...
+              </>
+            ) : (
+              "Register"
+            )}
+            </Button>
         </form>
 
         <p className="text-sm text-muted-foreground text-center">
