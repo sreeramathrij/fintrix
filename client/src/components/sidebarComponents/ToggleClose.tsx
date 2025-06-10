@@ -1,17 +1,16 @@
+import { useDesignStore } from "@/store/useDesignStore";
 import { motion } from "motion/react";
 import { FiChevronsRight } from "react-icons/fi";
 
-interface ToggleCloseProps {
-  open: boolean;
-  setOpen: (selected: boolean | ((prevVar: boolean) => boolean) ) => void;
-}
+const ToggleClose = () => {
 
-const ToggleClose = ({ open, setOpen }: ToggleCloseProps) => {
+  const { open, setOpen } = useDesignStore();
+
   return (
     <motion.button
       layout
-      onClick={() => setOpen((pv) => !pv)}
-      className="absolute bottom-0 left-0 right-0 border-t border-slate-300 transition-colors hover:bg-slate-100"
+      onClick={() => setOpen(!open)}
+      className=" left-0 right-0 border-t border-muted-foreground transition-colors hover:bg-secondary"
     >
       <div className="flex items-center p-2">
         <motion.div

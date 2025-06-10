@@ -1,86 +1,79 @@
 import { useState } from "react";
 import {
-  FiBarChart,
   FiDollarSign,
   FiHome,
-  FiMonitor,
-  FiShoppingCart,
-  FiTag,
-  FiUsers,
+  FiLogOut,
 } from "react-icons/fi";
+import { FaPiggyBank } from "react-icons/fa";
+import { IoOptions } from "react-icons/io5";
 import { motion } from "motion/react";
 import Option from "./sidebarComponents/Option";
 import TitleSection from "./sidebarComponents/TitleSection"
 import ToggleClose from "./sidebarComponents/ToggleClose";
+import { useDesignStore } from "@/store/useDesignStore";
 
 const Sidebar = () => {
-  const [open, setOpen] = useState(true);
-  const [selected, setSelected] = useState("Dashboard");
+  const { open } = useDesignStore();
 
   return (
     <motion.nav
       layout
-      className="sticky top-0 h-screen shrink-0 border-r border-slate-300 bg-white p-2"
+      className="sticky z-10 top-0 h-screen shrink-0 border-r flex flex-col border-muted-foreground bg-background p-2"
       style={{
         width: open ? "225px" : "fit-content",
       }}
     >
       <TitleSection open={open} />
 
-      <div className="space-y-1">
+      <div className="space-y-1 flex-1">
         <Option
           Icon={FiHome}
           title="Dashboard"
-          selected={selected}
-          setSelected={setSelected}
+          link=""
           open={open}
         />
         <Option
           Icon={FiDollarSign}
-          title="Sales"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-          notifs={3}
-        />
-        <Option
-          Icon={FiMonitor}
-          title="View Site"
-          selected={selected}
-          setSelected={setSelected}
+          title="Transactions"
+          link="transactions"
           open={open}
         />
         <Option
-          Icon={FiShoppingCart}
-          title="Products"
-          selected={selected}
-          setSelected={setSelected}
+          Icon={FaPiggyBank}
+          title="Budget"
+          link="budgets"
           open={open}
         />
         <Option
-          Icon={FiTag}
-          title="Tags"
-          selected={selected}
-          setSelected={setSelected}
+          Icon={IoOptions}
+          title="More"
+          link="more"
           open={open}
         />
-        <Option
-          Icon={FiBarChart}
-          title="Analytics"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
-        <Option
-          Icon={FiUsers}
-          title="Members"
-          selected={selected}
-          setSelected={setSelected}
-          open={open}
-        />
+        <div className="self-end">
+          <motion.button className={"relative flex h-10 w-full items-center rounded-md transition-colors text-primary hover:bg-secondary"}>
+            <motion.div
+              layout
+              className="grid h-full w-10 place-content-center text-lg"
+            >
+              <FiLogOut />
+            </motion.div>
+            {open && (
+              <motion.span
+                layout
+                initial={{ opacity: 0, y: 12 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.125 }}
+                className="text-xs font-medium"
+              >
+                Logout
+              </motion.span>
+            )}
+          </motion.button>
+        </div>
       </div>
 
-      <ToggleClose open={open} setOpen={setOpen} />
+      <ToggleClose />
     </motion.nav>
   );
 };
