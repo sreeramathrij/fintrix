@@ -27,7 +27,7 @@ scheduledQueue.process(async (job) => {
     amount: scheduled.amount,
     type: scheduled.type,
     category: scheduled.category,
-    createdBy: scheduled.createdBy,
+    user: scheduled.user,
     date: new Date()
   })
 

@@ -98,7 +98,7 @@ export const getBudgetSummary = async (req: AuthRequest, res: Response): Promise
     const end = dayjs(month).endOf("month").toDate();
     
     const filter: any = {
-      user: userId,
+      userId: userId,
       month: month,
     };
 

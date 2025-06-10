@@ -52,7 +52,7 @@ export const getTransactionsInRange = async (req: AuthRequest, res: Response): P
       const transactionsInRange = await Transaction.aggregate([
         {
           $match: {
-            createdBy: userId,
+            user: userId,
             date: {
               $gte: fromDate,
               $lte: toDate,
@@ -82,7 +82,7 @@ export const getTransactionsInRange = async (req: AuthRequest, res: Response): P
       return;
     }
 
-    const allTransactions = await Transaction.find({ createdBy: userId });
+    const allTransactions = await Transaction.find({ user: userId });
     res.status(200).json({ data: allTransactions })
   } catch (error) {
     console.log("Error in getTransactionsInRange Controller: ", error);

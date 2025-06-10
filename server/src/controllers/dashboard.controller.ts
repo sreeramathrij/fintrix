@@ -14,13 +14,15 @@ export const getDashboardSummary = async (req: AuthRequest, res: Response):Promi
     }
 
     const match: any = {
-      createdBy: userId,
+      user: userId,
     }
 
     match.createdAt = {
       $gte: new Date(from as string),
       $lte: new Date(to as string),
     };
+
+    console.log(match);
 
     const transactions = await Transaction.aggregate([
       { $match: match },
@@ -116,13 +118,13 @@ export const getMonthlyTrends = async (req: AuthRequest, res: Response):Promise<
     const trends = await Transaction.aggregate([
       {
         $match: {
-          createdBy: userId,
+          user: userId,
         },
       },
       {
         $group: {
           _id: {
-            month: { $dateToString: { format: "%Y-%m", date: "$createdAt" }},
+            month: { $dateToString: { format: "%Y-%m", date: "$date" }},
             type: "$type",
           },
           totalAmount: { $sum: "$amount" },
@@ -202,14 +204,14 @@ export const getDailyTrends = async (req: AuthRequest, res: Response): Promise<v
     const dailyData = await Transaction.aggregate([
       {
         $match: {
-          createdBy: new mongoose.Types.ObjectId(userId),
-          createdAt: {$gte: startDate, $lte: endDate}
+          user: new mongoose.Types.ObjectId(userId),
+          date: {$gte: startDate, $lte: endDate}
         },
       },
       {
         $group: {
           _id: {
-            date: {$dateToString: {format : "%Y-%m-%d", date: "$createdAt" }},
+            date: {$dateToString: {format : "%Y-%m-%d", date: "$date" }},
             type: "$type",
           },
           total: { $sum: "$amount" }
@@ -244,10 +246,10 @@ export const getRecentTransactions = async (req: AuthRequest, res: Response): Pr
     const userId = req.user!._id;
     const limit = parseInt(req.query.limit as string) || 10;
 
-    const transactions = await Transaction.find({ createdBy: userId })
+    const transactions = await Transaction.find({ user: userId })
                                           .sort({ date: -1 })
                                           .limit(limit)
-                                          .populate("categoryId", "name picture type");
+                                          .populate("category", "name picture type");
 
     res.status(200).json({ data: transactions });
   } catch (error) {
