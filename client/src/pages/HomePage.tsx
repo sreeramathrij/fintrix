@@ -30,6 +30,7 @@ import {
 
 import NavFooter from "@/components/NavFooter";
 import { ThemeToggle } from "@/components/ThemeToggle";
+import Sidebar from "@/components/Sidebar";
 
 const spendingData = [
   { name: "Mon", amount: 200 },
@@ -50,7 +51,8 @@ const COLORS = ["#ef4444", "#22c55e"];
 
 export default function MobileHomePage() {
   return (
-    <div className="max-h-screen overflow-y-auto bg-background text-foreground p-4 space-y-4 pb-28">
+    <div className="max-h-screen overflow-y-auto flex bg-background text-foreground p-4 space-y-4 pb-28">
+      <Sidebar />
       {/* Greeting */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="space-y-1">
@@ -170,8 +172,6 @@ export default function MobileHomePage() {
           <Plus />
         </Button>
       </Link>
-
-      <NavFooter page="homePage" />
     </div>
   );
 }
