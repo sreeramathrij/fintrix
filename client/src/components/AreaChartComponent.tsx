@@ -8,7 +8,7 @@ import {
   YAxis,
   ResponsiveContainer
 } from 'recharts'
-import dayjs from "dayjs"
+
 import React, { useEffect, useState } from 'react'
 
 

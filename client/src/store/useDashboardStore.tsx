@@ -2,7 +2,6 @@ import { create } from "zustand"
 
 import { api } from "@/lib/axios";
 import toast from "react-hot-toast"
-import { AxiosError } from "axios";
 
 interface Summary {
   totalIncome: number;
@@ -60,7 +59,7 @@ interface DashboardStore {
   getTransactionSummaryByCategory: (from: string, to:string) => void;
   getMonthlyTrends: () => void;
   getDailyTrends: (month: string, year: string) => void;
-  getRecentTransactions: (limit: string) => void;
+  getRecentTransactions: (limit?: number) => void;
 }
 
 export const useDashboardStore = create<DashboardStore>((set) => ({
@@ -151,14 +150,15 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
     }
   },
 
-  getRecentTransactions: async (limit) => {
+  getRecentTransactions: async (limit?: number) => {
     set({ isFetchingDashboardData: true });
     try {
-      const res = await api.get("/dashboard/daily-trends", {
+      const limitS = String(limit)
+      const res = limit ? await api.get("/dashboard/recent", {
         params: {
-          limit,
-        }
-      });
+          limitS,
+        } 
+      }) : await api.get("/dashboard/recent");
 
       console.log(res.data);
 

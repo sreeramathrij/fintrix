@@ -9,55 +9,27 @@ import {
   Plus,
   Wallet,
   BarChart2,
-  UserPlus,
 } from "lucide-react";
 
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
 import { Link } from "react-router-dom";
 
-import {
-  ResponsiveContainer,
-  Tooltip,
-  PieChart as RePieChart,
-  Pie,
-  Cell,
-} from "recharts";
 import useMeasure from "react-use-measure"
 import { motion } from "motion/react"
-import NavFooter from "@/components/NavFooter";
+
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Sidebar from "@/components/Sidebar";
 import { useDashboardStore } from "@/store/useDashboardStore";
 import { useEffect } from "react";
 import AreaChartComponent from "@/components/AreaChartComponent";
-import { TooltipProvider } from "@radix-ui/react-tooltip";
-
-const spendingData = [
-  { name: "Mon", amount: 200 },
-  { name: "Tue", amount: 100 },
-  { name: "Wed", amount: 350 },
-  { name: "Thu", amount: 250 },
-  { name: "Fri", amount: 400 },
-  { name: "Sat", amount: 300 },
-  { name: "Sun", amount: 150 },
-];
-
-const pieData = [
-  { name: "Expense", value: 650 },
-  { name: "Income", value: 950 },
-];
-
-const COLORS = ["#ef4444", "#22c55e"];
+import PieChartComponent from "@/components/PieChartComponent";
+import RecentTransactions from "@/components/RecentTransactions";
+import { useDesignStore } from "@/store/useDesignStore";
 
 export default function MobileHomePage() {
 
-  const {
-    getDailyTrends,
-    getDashboardSummary,
-    getTransactionSummaryByCategory,
-    getMonthlyTrends,
-    getRecentTransactions
-  } = useDashboardStore();
+  const { getMonthlyTrends } = useDashboardStore();
+  const { setSelectedPage } = useDesignStore();
 
   const [ref, {width}] = useMeasure();
 
@@ -86,33 +58,33 @@ export default function MobileHomePage() {
         </div>
 
         {/* Quick Access Cards */}
-        <div className="flex flex-col md:flex-row gap-3 h-auto md:h-44">
-          <Link to="/budget" className="flex-1">
-            <Card className="w-full h-full flex items-center justify-center hover:bg-accent transition-colors">
-              <CardContent className="text-center text-muted-foreground text-sm">
+        <div className="flex flex-col md:flex-row gap-3 h-44">
+          <Link to="/budget" className="flex-1 size-full">
+            <Card className="size-full flex items-center justify-center hover:bg-accent transition-colors">
+              <CardContent className="p-0 text-center text-muted-foreground text-sm">
                 <Wallet size={20} className="mx-auto mb-1" />
                 Budget
               </CardContent>
             </Card>
           </Link>
 
-          <Card className="flex-1 border-primary border-2 rounded-xl">
+          {/* <Card className="flex-1 border-primary border-2 rounded-xl">
             <CardContent className="pt-4 pb-2 space-y-1">
               <div className="text-sm font-bold">Bank</div>
               <div className="text-xl font-semibold">₹0 INR</div>
               <div className="text-xs text-muted-foreground">0 transactions</div>
             </CardContent>
-          </Card>
+          </Card> */}
         </div>
 
         {/* Charts Section */}
-        <div className="flex md:flex-row gap-4 h-auto md:h-72">
-          <Card className="flex flex-col w-full md:basis-2/3">
+        <div className="flex flex-col md:flex-row gap-4 h-auto md:h-72">
+          <Card className="w-full md:basis-2/3">
             <CardHeader className="flex items-center gap-2 pb-2">
               <CardTitle className="text-base">Spending Overview</CardTitle>
               <BarChart2 className="text-muted-foreground" size={18} />
             </CardHeader>
-            <CardContent className="flex-1 relative h-64 md:h-40 px-2">
+            <CardContent className="flex-1 relative h-64 md:h-64 px-2">
                 <AreaChartComponent />
             </CardContent>
           </Card>
@@ -122,27 +94,7 @@ export default function MobileHomePage() {
               <CardTitle className="text-base">Income vs Expense</CardTitle>
             </CardHeader>
             <CardContent className="h-64 md:h-48 flex items-center justify-center">
-              <ResponsiveContainer width="100%" height="100%">
-                <RePieChart>
-                  <Pie
-                    data={pieData}
-                    dataKey="value"
-                    nameKey="name"
-                    cx="50%"
-                    cy="50%"
-                    outerRadius={60}
-                    label
-                  >
-                    {pieData.map((_entry, index) => (
-                      <Cell
-                        key={`cell-${index}`}
-                        fill={COLORS[index % COLORS.length]}
-                      />
-                    ))}
-                  </Pie>
-                  <Tooltip />
-                </RePieChart>
-              </ResponsiveContainer>
+              <PieChartComponent />
             </CardContent>
           </Card>
         </div>
@@ -156,9 +108,18 @@ export default function MobileHomePage() {
           </TabsList>
         </Tabs>
 
-        <Button variant="outline" className="w-full">
-          View All Transactions
-        </Button>
+        <RecentTransactions />
+        <Link to="/transactions">
+          <Button
+            variant="outline"
+            className="w-full"
+            onClick={()=>{
+              setSelectedPage("Transactions")
+            }}
+          >
+            View All Transactions
+          </Button>
+        </Link>
 
         {/* Floating Add Button */}
         <Link to="/add">
