@@ -59,6 +59,30 @@ export const getBudgetByMonth = async (req: AuthRequest, res: Response): Promise
   }
 }
 
+export const getBudgetById = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!._id;
+    const budgetId = req.params.id;
+
+    const filter: any = {
+      _id: budgetId,
+      userId: userId,
+    }
+
+    const budget = await Budget.findOne(filter);
+
+    if(!budget){
+      res.status(404).json({ message: "Budget not found" });
+      return;
+    }
+
+    res.status(200).json({ data: budget })
+  } catch (error) {
+    console.error("Error in getBudgetById Conroller: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
 export const deleteBudget = async (req: AuthRequest, res:Response): Promise<void> => {
   try {
     const userId = req.user!._id;
@@ -79,7 +103,7 @@ export const deleteBudget = async (req: AuthRequest, res:Response): Promise<void
   }
 }
 
-export const getBudgetSummary = async (req: AuthRequest, res: Response): Promise<void> => {
+export const getBudgetSummaryByMonth = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const userId = req.user!._id as mongoose.Types.ObjectId;
     const { month, categoryId } = req.query;
@@ -133,6 +157,7 @@ export const getBudgetSummary = async (req: AuthRequest, res: Response): Promise
         category: categoryData ? {
           _id: categoryData._id,
           name: categoryData.name,
+          picture: categoryData.picture,
         } : null,
         totalBudget: budget.amount,
         totalSpent,
@@ -141,7 +166,62 @@ export const getBudgetSummary = async (req: AuthRequest, res: Response): Promise
     })
 
   } catch (error) {
-    console.error("Error in getBudgetSummary: ", error);
+    console.error("Error in getBudgetSummaryByMonth: ", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+}
+
+export const getBudgetSummaryById = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!._id as mongoose.Types.ObjectId;
+    const budgetId = req.params.id;
+    
+    const filter: any = {
+      _id: budgetId,
+      userId: userId,
+    };
+
+    const budget = await Budget.findOne(filter);
+
+    if(!budget) {
+      res.status(400).json({ error: "No budget found for given inputs" });
+      return;
+    }
+
+    const createdDate = budget.createdAt;
+    const start = dayjs(createdDate).startOf("month").toDate();
+    const end = dayjs(createdDate).endOf("month").toDate();
+
+    const txFilter: any = {
+      user: userId,
+      type: "expense",
+      date: {$gte: start, $lte: end },
+    };
+    if(budget.categoryId){
+      txFilter.category = budget.categoryId;
+    }
+
+    const transactions = await Transaction.find(txFilter);
+
+    const totalSpent = transactions.reduce((acc, tx) => acc + tx.amount, 0);
+
+    const categoryData = budget.categoryId ? await Category.findById(budget.categoryId) : null;
+
+    res.status(200).json({
+      data: {
+        category: categoryData ? {
+          _id: categoryData._id,
+          name: categoryData.name,
+          picture: categoryData.picture,
+        } : null,
+        totalBudget: budget.amount,
+        totalSpent,
+        remaining: budget.amount - totalSpent,
+      }
+    })
+
+  } catch (error) {
+    console.error("Error in getBudgetSummaryById: ", error);
     res.status(500).json({ error: "Internal Server Error" });
   }
 }

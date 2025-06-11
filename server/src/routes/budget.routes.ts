@@ -3,7 +3,9 @@ import {
   upsertBudget,
   getBudgetByMonth,
   deleteBudget,
-  getBudgetSummary,
+  getBudgetById,
+  getBudgetSummaryByMonth,
+  getBudgetSummaryById,
 } from "../controllers/budget.controller";
 import { verifyJWT } from "../middlewares/verifyJWT.middleware";
 
@@ -13,7 +15,11 @@ router.use(verifyJWT);
 
 router.post("/", upsertBudget);
 router.get("/", getBudgetByMonth);
+
+router.get("/summary", getBudgetSummaryByMonth)
+router.get("/summary/:id", getBudgetSummaryById)
+
+router.get("/:id", getBudgetById);
 router.delete("/:id", deleteBudget);
-router.get("/summary", getBudgetSummary)
 
 export default router;
