@@ -64,7 +64,7 @@ export const getCategories = async (req:AuthRequest, res: Response): Promise<voi
       $or: [{createdBy: null}, {createdBy: userId}],
     })
 
-    res.status(200).json({ categories })
+    res.status(200).json({data: categories })
   } catch (error) {
     console.error("Error in getCategories controller:", error);
     res.status(500).json({ error: "Internal Server Error" });
