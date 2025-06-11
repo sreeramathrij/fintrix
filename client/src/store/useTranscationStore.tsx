@@ -32,7 +32,7 @@ interface oneTransaction {
     category: {
         _id: string,
         name: string,
-        type: string,
+        type: "income" | "expense",
         picture: string,
         createdBy: string | null,
     }
@@ -58,7 +58,7 @@ interface TransactionsStore {
     groupedTransactions: DailyTransactions[] | null
     selectedTransaction: oneTransaction | null;
     isFetchingTransactions: boolean;
-    getTransactions: () => Promise<void>;
+    getTransactions: (range?:getTransactionsParams) => Promise<void>;
     addTransaction: (data: TransactionData) => Promise<void>;
     editTransaction: (id: string, data: TransactionData) => Promise<void>;
     deleteTransaction: (id: string) => Promise<void>;
@@ -104,38 +104,79 @@ export const useTransactionsStore = create<TransactionsStore>((set, _get) => ({
     },
 
     addTransaction: async (data: TransactionData) => {
-        try {
-            const response = await api.post("/transactions", data);
-            const newTransaction = response.data.data;
-            
-            set((state) => ({
-                transactions: state.transactions 
-                    ? [...state.transactions, newTransaction] 
-                    : [newTransaction]
-            }));
-            
-            toast.success("Transaction added successfully");
-            return newTransaction;
-        } catch (error) {
-            const axiosError = error as AxiosError;
-            console.error("Error adding transaction:", axiosError);
-            toast.error("Failed to add transaction");
-            throw error;
-        }
-    },
+  try {
+    const response = await api.post("/transactions", data);
+    const newTransaction = response.data.data;
+
+    set((state) => {
+      // Update flat list
+      const updatedTransactions = state.transactions
+        ? [...state.transactions, newTransaction]
+        : [newTransaction];
+
+      // Grouping logic
+      const transactionDate = newTransaction.date.split("T")[0]; // e.g., "2025-06-11"
+      let grouped = state.groupedTransactions ? [...state.groupedTransactions] : [];
+
+      const groupIndex = grouped.findIndex((group) => group._id === transactionDate);
+
+      if (groupIndex !== -1) {
+        // Add to existing group
+        grouped[groupIndex].transactions.push(newTransaction);
+      } else {
+        // Create new group
+        grouped.push({
+            _id: transactionDate,
+            transactions: [newTransaction],
+            totalIncome:newTransaction.type==="income"? newTransaction.amount:0,
+            totalExpense: newTransaction.type==="expense"? newTransaction.amount:0
+        });
+      }
+
+      return {
+        transactions: updatedTransactions,
+        groupedTransactions: grouped,
+      };
+    });
+
+    toast.success("Transaction added successfully");
+    return newTransaction;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error("Error adding transaction:", axiosError);
+    toast.error("Failed to add transaction");
+    throw error;
+  }
+},
+
 
     editTransaction: async (id: string, data: TransactionData) => {
         try {
-            const response = await api.put(`/transactions/${id}`, data);
+
+             const response=await api.put(`/transactions/${id}`, data);
             const updatedTransaction = response.data.updatedTransaction;
             
-            set((state) => ({
-                transactions: state.transactions?.map(transaction => 
-                    transaction._id === id ? updatedTransaction : transaction
-                ) || null,
-                selectedTransaction: null
-            }));
-            
+            set((state) => {
+      // Filter from flat transaction list
+      const updatedTransactions = state.transactions?.map(transaction =>
+        transaction._id === id ? updatedTransaction:transaction
+      ) || null;
+
+      // Filter from grouped transactions
+      const updatedGrouped = state.groupedTransactions
+        ?.map(group => ({
+          ...group,
+          transactions: group.transactions.map(tx => tx._id === id?updatedTransaction:tx)
+        }))
+        .filter(group => group.transactions.length > 0) || null;
+
+      return {
+        transactions: updatedTransactions,
+        groupedTransactions: updatedGrouped,
+        selectedTransaction: null
+      };
+    });
+
             toast.success("Transaction updated successfully");
         } catch (error) {
             const axiosError = error as AxiosError;
@@ -145,23 +186,38 @@ export const useTransactionsStore = create<TransactionsStore>((set, _get) => ({
         }
     },
 
-    deleteTransaction: async (id: string) => {
-        try {
-            await api.delete(`/transactions/${id}`);
-            
-            set((state) => ({
-                transactions: state.transactions?.filter(
-                    transaction => transaction._id !== id
-                ) || null,
-                selectedTransaction: null
-            }));
-            
-            toast.success("Transaction deleted successfully");
-        } catch (error) {
-            const axiosError = error as AxiosError;
-            console.error("Error deleting transaction:", axiosError);
-            toast.error("Failed to delete transaction");
-            throw error;
-        }
-    }
+   deleteTransaction: async (id: string) => {
+  try {
+    await api.delete(`/transactions/${id}`);
+
+    set((state) => {
+      // Filter from flat transaction list
+      const updatedTransactions = state.transactions?.filter(
+        transaction => transaction._id !== id
+      ) || null;
+
+      // Filter from grouped transactions
+      const updatedGrouped = state.groupedTransactions
+        ?.map(group => ({
+          ...group,
+          transactions: group.transactions.filter(tx => tx._id !== id)
+        }))
+        .filter(group => group.transactions.length > 0) || null;
+
+      return {
+        transactions: updatedTransactions,
+        groupedTransactions: updatedGrouped,
+        selectedTransaction: null
+      };
+    });
+
+    toast.success("Transaction deleted successfully");
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error("Error deleting transaction:", axiosError);
+    toast.error("Failed to delete transaction");
+    throw error;
+  }
+}
+
 }));
