@@ -91,7 +91,7 @@ const PieChartComponent = () => {
 
 const renderActiveShape = (props: any) => {
   const {
-    cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill, payload
+    cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill
   } = props;
 
   const RADIAN = Math.PI / 180;

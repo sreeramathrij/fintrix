@@ -60,6 +60,17 @@ export const getTransactionsInRange = async (req: AuthRequest, res: Response): P
           },
         },
         {
+          $lookup: {
+            from: "categories", // collection name in MongoDB (usually plural)
+            localField: "category",
+            foreignField: "_id",
+            as: "category",
+          },
+        },
+        {
+          $unwind: "$category",
+        },
+        {
           $group: {
             _id: { $dateToString: { format: "%Y-%m-%d", date: "$date" }},
             totalIncome: {
@@ -78,7 +89,7 @@ export const getTransactionsInRange = async (req: AuthRequest, res: Response): P
         { $sort: { _id: 1 }}
       ])
 
-      res.status(200).json({ transactions: transactionsInRange });
+      res.status(200).json({ data: transactionsInRange });
       return;
     }
 
