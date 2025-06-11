@@ -7,7 +7,7 @@ interface TransactionData {
     amount: number,
     type: string,
     description: string,
-    date: number,
+    date: string,
     category: string,
 }
 
