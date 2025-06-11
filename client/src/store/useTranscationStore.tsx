@@ -41,8 +41,21 @@ interface oneTransaction {
     updatedAt: string,
 }
 
+interface getTransactionsParams{
+    from:string,
+    to:string,
+}
+
+interface DailyTransactions{
+    _id:string,
+    totalIncome:number,
+    totalExpense:number,
+    transactions:oneTransaction[],
+}
+
 interface TransactionsStore {
     transactions: Transactions[] | null;
+    groupedTransactions: DailyTransactions[] | null
     selectedTransaction: oneTransaction | null;
     isFetchingTransactions: boolean;
     getTransactions: () => Promise<void>;
@@ -52,21 +65,35 @@ interface TransactionsStore {
     setSelectedTransaction: (transaction: oneTransaction | null) => void;
 }
 
-export const useTransactionsStore = create<TransactionsStore>((set, get) => ({
+export const useTransactionsStore = create<TransactionsStore>((set, _get) => ({
     transactions: null,
     selectedTransaction: null,
+    groupedTransactions:null,
     isFetchingTransactions: false,
 
     setSelectedTransaction: (transaction) => {
         set({ selectedTransaction: transaction });
     },
 
-    getTransactions: async () => {
+    getTransactions: async (range?:getTransactionsParams) => {
         set({ isFetchingTransactions: true });
         try {
-            const response = await api.get("/transactions");
-            console.log(response.data)
-            set({ transactions: response.data.data });
+    
+            if(range){
+                const response = await api.get("/transactions",{
+                params:{
+                    from:range.from,
+                    to:range.to
+                }
+            })
+            set({ groupedTransactions: response.data.data });
+            
+
+            }else{
+                const response =  await api.get("/transactions")
+                set({ transactions: response.data.data });
+            }
+            
         } catch (error) {
             const axiosError = error as AxiosError;
             console.error("Error fetching transactions:", axiosError);
