@@ -62,7 +62,7 @@ const RecentTransactions = () => {
             {transactions?.map((tx) => (
               <div
                 key={tx._id}
-                className="flex h-16 items-center justify-between rounded-md py-2 px-4 bg-card shadow-sm"
+                className="flex h-20 items-center justify-between rounded-md hover:bg-secondary transition-all duration-300 py-2 px-4 bg-card shadow-sm"
               >
                 {/* Left: image and description */}
                 <div className="flex items-center gap-3">

@@ -38,7 +38,8 @@ interface BudgetStore {
 
   upsertBudget: (data: BudgetData) => void;
   getBudgetByMonth: (month: string) => void;
-  getBudgetSummary: (month: string) => void;
+  getBudgetSummaryByMonth: (month: string) => void;
+  getBudgetSummaryById: (month: string) => void;
   deleteBudget: (budgetId:string) => void;
 }
 
@@ -79,7 +80,7 @@ export const useBudgetStore = create<BudgetStore>((set) => ({
         }
       })
 
-      set({ budgets: res.data.data })
+      set({ budgetSummary: res.data.data })
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error("Error in getBudgetByMonth:", axiosError);
@@ -88,16 +89,30 @@ export const useBudgetStore = create<BudgetStore>((set) => ({
     }
   },
 
-  getBudgetSummary: async (month: string) => {
+  getBudgetSummaryByMonth: async (month:string) => {
     set({ isFetchingBudgetSummary: true })
     try {
-      const res = await api.get("/budgets/summary", {
+      const res = await api.get(`/budgets/summary`, {
         params: {
-          month: month,
+          month,
         }
       })
 
-      set({ budgets: res.data.data })
+      set({ budgetSummary: res.data.data })
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      console.error("Error in getBudgetSummary:", axiosError);
+    } finally {
+      set({ isFetchingBudget: false })
+    }
+  },
+
+  getBudgetSummaryById: async (budgetId:string) => {
+    set({ isFetchingBudgetSummary: true })
+    try {
+      const res = await api.get(`/budgets/summary/${budgetId}`)
+
+      set({ budgetSummary: res.data.data })
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error("Error in getBudgetSummary:", axiosError);

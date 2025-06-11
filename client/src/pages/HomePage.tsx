@@ -25,6 +25,7 @@ import AreaChartComponent from "@/components/AreaChartComponent";
 import PieChartComponent from "@/components/PieChartComponent";
 import RecentTransactions from "@/components/RecentTransactions";
 import { useDesignStore } from "@/store/useDesignStore";
+import BudgetSummaryCard from "@/components/BudgetSummaryCard";
 
 export default function MobileHomePage() {
 
@@ -59,14 +60,7 @@ export default function MobileHomePage() {
 
         {/* Quick Access Cards */}
         <div className="flex flex-col md:flex-row gap-3 h-44">
-          <Link to="/budget" className="flex-1 size-full">
-            <Card className="size-full flex items-center justify-center hover:bg-accent transition-colors">
-              <CardContent className="p-0 text-center text-muted-foreground text-sm">
-                <Wallet size={20} className="mx-auto mb-1" />
-                Budget
-              </CardContent>
-            </Card>
-          </Link>
+          <BudgetSummaryCard />
 
           {/* <Card className="flex-1 border-primary border-2 rounded-xl">
             <CardContent className="pt-4 pb-2 space-y-1">
