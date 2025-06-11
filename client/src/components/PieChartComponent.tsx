@@ -30,7 +30,7 @@ const PieChartComponent = () => {
 
   const { startDate:from, endDate:to } = getMonthStartAndEnd(new Date());
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  const [activeIndex, setActiveIndex] = useState(3);
   const onPieEnter = (_: any, index: number) => setActiveIndex(index);
   const onPieLeave = () => setActiveIndex(null);
 

@@ -69,7 +69,7 @@ const RecentTransactions = () => {
                   <img
                     src={tx.category.picture}
                     alt={tx.category.name}
-                    className="size-14 object-cover rounded-full"
+                    className="size-14 object-cover"
                   />
                   <div>
                     <div className="text-sm font-medium">{tx.description}</div>

@@ -78,58 +78,62 @@ export default function MobileHomePage() {
         </div>
 
         {/* Charts Section */}
-        <div className="flex flex-col md:flex-row gap-4 h-auto md:h-72">
-          <Card className="w-full md:basis-2/3">
-            <CardHeader className="flex items-center gap-2 pb-2">
-              <CardTitle className="text-base">Spending Overview</CardTitle>
-              <BarChart2 className="text-muted-foreground" size={18} />
-            </CardHeader>
-            <CardContent className="flex-1 relative h-64 md:h-64 px-2">
-                <AreaChartComponent />
-            </CardContent>
-          </Card>
+        <div className="flex flex-col lg:flex-row gap-8">
+          <div className="flex flex-col flex-1 md:flex-row lg:flex-col gap-4 h-auto md:h-72">
+            <Card className="w-full md:basis-2/3">
+              <CardHeader className="flex items-center gap-2 pb-2">
+                <CardTitle className="text-base">Spending Overview</CardTitle>
+                <BarChart2 className="text-muted-foreground" size={18} />
+              </CardHeader>
+              <CardContent className="flex-1 relative h-64 md:h-64 px-2">
+                  <AreaChartComponent />
+              </CardContent>
+            </Card>
 
-          <Card className="w-full md:basis-1/3">
-            <CardHeader className="pb-2">
-              <CardTitle className="text-base">Income vs Expense</CardTitle>
-            </CardHeader>
-            <CardContent className="h-64 md:h-48 flex items-center justify-center">
-              <PieChartComponent />
-            </CardContent>
-          </Card>
+            <Card className="w-full md:basis-1/3">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-base">Income vs Expense</CardTitle>
+              </CardHeader>
+              <CardContent className="h-64 md:h-48 flex items-center justify-center">
+                <PieChartComponent />
+              </CardContent>
+            </Card>
+          </div>
+
+          <div className="flex flex-col gap-8 flex-1">
+          {/* Tabs */}
+          <Tabs defaultValue="all" className="w-full">
+            <TabsList className="grid grid-cols-3">
+              <TabsTrigger value="all">All</TabsTrigger>
+              <TabsTrigger value="expense">Expense</TabsTrigger>
+              <TabsTrigger value="income">Income</TabsTrigger>
+            </TabsList>
+          </Tabs>
+
+          <RecentTransactions />
+          <Link to="/transactions">
+            <Button
+              variant="outline"
+              className="w-full"
+              onClick={()=>{
+                setSelectedPage("Transactions")
+              }}
+            >
+              View All Transactions
+            </Button>
+          </Link>
+
+          {/* Floating Add Button */}
+          <Link to="/add">
+            <Button
+              size="icon"
+              className="rounded-full w-14 h-14 fixed bottom-24 right-4 shadow-xl"
+            >
+              <Plus />
+            </Button>
+          </Link>
+          </div>
         </div>
-
-        {/* Tabs */}
-        <Tabs defaultValue="all" className="w-full">
-          <TabsList className="grid grid-cols-3">
-            <TabsTrigger value="all">All</TabsTrigger>
-            <TabsTrigger value="expense">Expense</TabsTrigger>
-            <TabsTrigger value="income">Income</TabsTrigger>
-          </TabsList>
-        </Tabs>
-
-        <RecentTransactions />
-        <Link to="/transactions">
-          <Button
-            variant="outline"
-            className="w-full"
-            onClick={()=>{
-              setSelectedPage("Transactions")
-            }}
-          >
-            View All Transactions
-          </Button>
-        </Link>
-
-        {/* Floating Add Button */}
-        <Link to="/add">
-          <Button
-            size="icon"
-            className="rounded-full w-14 h-14 fixed bottom-24 right-4 shadow-xl"
-          >
-            <Plus />
-          </Button>
-        </Link>
       </motion.div>
     </motion.div>
   );
