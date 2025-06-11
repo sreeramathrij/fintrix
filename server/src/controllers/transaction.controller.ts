@@ -86,7 +86,7 @@ export const getTransactionsInRange = async (req: AuthRequest, res: Response): P
             transactions: { $push: "$$ROOT" },
           },
         },
-        { $sort: { _id: 1 }}
+        { $sort: { _id: -1 }}
       ])
 
       res.status(200).json({ data: transactionsInRange });
