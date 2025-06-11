@@ -104,25 +104,51 @@ export const useTransactionsStore = create<TransactionsStore>((set, _get) => ({
     },
 
     addTransaction: async (data: TransactionData) => {
-        try {
-            const response = await api.post("/transactions", data);
-            const newTransaction = response.data.data;
-            
-            set((state) => ({
-                transactions: state.transactions 
-                    ? [...state.transactions, newTransaction] 
-                    : [newTransaction]
-            }));
-            
-            toast.success("Transaction added successfully");
-            return newTransaction;
-        } catch (error) {
-            const axiosError = error as AxiosError;
-            console.error("Error adding transaction:", axiosError);
-            toast.error("Failed to add transaction");
-            throw error;
-        }
-    },
+  try {
+    const response = await api.post("/transactions", data);
+    const newTransaction = response.data.data;
+
+    set((state) => {
+      // Update flat list
+      const updatedTransactions = state.transactions
+        ? [...state.transactions, newTransaction]
+        : [newTransaction];
+
+      // Grouping logic
+      const transactionDate = newTransaction.date.split("T")[0]; // e.g., "2025-06-11"
+      let grouped = state.groupedTransactions ? [...state.groupedTransactions] : [];
+
+      const groupIndex = grouped.findIndex((group) => group._id === transactionDate);
+
+      if (groupIndex !== -1) {
+        // Add to existing group
+        grouped[groupIndex].transactions.push(newTransaction);
+      } else {
+        // Create new group
+        grouped.push({
+            _id: transactionDate,
+            transactions: [newTransaction],
+            totalIncome:newTransaction.type==="income"? newTransaction.amount:0,
+            totalExpense: newTransaction.type==="expense"? newTransaction.amount:0
+        });
+      }
+
+      return {
+        transactions: updatedTransactions,
+        groupedTransactions: grouped,
+      };
+    });
+
+    toast.success("Transaction added successfully");
+    return newTransaction;
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error("Error adding transaction:", axiosError);
+    toast.error("Failed to add transaction");
+    throw error;
+  }
+},
+
 
     editTransaction: async (id: string, data: TransactionData) => {
         try {

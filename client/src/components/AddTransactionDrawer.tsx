@@ -18,7 +18,7 @@ const isEditing = !!selectedTransaction;
     description: selectedTransaction?.description || "",
     amount: selectedTransaction?.amount || "",
     type: selectedTransaction?.type ||"expense",
-    category: selectedTransaction?.category || "",
+    categoryId: selectedTransaction?.category || "",
     date:selectedTransaction?.date || new Date().toISOString().split("T")[0], // Default to today
   });
   useEffect(()=>{
@@ -31,7 +31,7 @@ const isEditing = !!selectedTransaction;
       description: selectedTransaction.description,
       amount: selectedTransaction.amount,
       type:selectedTransaction.type,
-      category:selectedTransaction.category,
+      categoryId:selectedTransaction.category,
       date:selectedTransaction.date,
     });
   }
@@ -44,7 +44,7 @@ const isEditing = !!selectedTransaction;
   };
 
   const handleTypeChange = (type: "income" | "expense") => {
-    setForm((prev) => ({ ...prev, type, category: "" }));
+    setForm((prev) => ({ ...prev, type, categoryId: "" }));
   };
   const handleSubmit = () => {
   if (isEditing) {
@@ -52,7 +52,7 @@ const isEditing = !!selectedTransaction;
       description: form.description,
       amount: Number(form.amount),
       type: form.type,
-      category: form.category,
+      category: form.categoryId,
       date: form.date,
     });
   } else {
@@ -60,7 +60,7 @@ const isEditing = !!selectedTransaction;
       description: form.description,
       amount: Number(form.amount),
       type: form.type,
-      category: form.category,
+      category: form.categoryId,
       date: form.date,
     });
 
