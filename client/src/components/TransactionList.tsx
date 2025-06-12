@@ -34,7 +34,7 @@ export default function TransactionList({ groupedTransactions }: Props) {
      const { setSelectedTransaction, deleteTransaction } = useTransactionsStore();
   return (
     <div className="space-y-6">
-      {groupedTransactions.reverse().map((group) => {
+      {groupedTransactions.map((group) => {
         const date = new Date(group._id);
         const formattedDate = date.toLocaleDateString("en-US", {
           month: "long",

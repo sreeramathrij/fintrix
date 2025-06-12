@@ -7,8 +7,8 @@ import {
 import { Button } from "../components/ui/button";
 import {
   Plus,
-  Wallet,
   BarChart2,
+  Wallet,
 } from "lucide-react";
 
 import { Tabs, TabsList, TabsTrigger } from "../components/ui/tabs";
@@ -20,14 +20,24 @@ import { motion } from "motion/react"
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Sidebar from "@/components/Sidebar";
 import { useDashboardStore } from "@/store/useDashboardStore";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import AreaChartComponent from "@/components/AreaChartComponent";
 import PieChartComponent from "@/components/PieChartComponent";
 import RecentTransactions from "@/components/RecentTransactions";
 import { useDesignStore } from "@/store/useDesignStore";
 import BudgetSummaryCard from "@/components/BudgetSummaryCard";
+import { useAuthStore } from "@/store/useAuthStore";
+import { useBudgetStore } from "@/store/useBudgetStore";
 
 export default function MobileHomePage() {
+
+  const { authUser } = useAuthStore()
+  const { budgetSummaries } = useBudgetStore();
+  
+  const today = useMemo(()=>new Date(), []);
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const year = String(today.getFullYear());
+  const monthString = `${year}-${month}`;
 
   const { getMonthlyTrends } = useDashboardStore();
   const { setSelectedPage } = useDesignStore();
@@ -44,13 +54,13 @@ export default function MobileHomePage() {
       <motion.div
         ref={ref}
         animate={{ width, transition: {duration: 2} }}
-        className="max-h-screen overflow-y-auto overflow-x-hidden flex-1 bg-background text-foreground p-4 space-y-4 pb-28"
+        className="max-h-screen overflow-y-auto flex flex-col overflow-x-hidden flex-1 bg-background text-foreground p-4 space-y-4 pb-28"
       >
         {/* Greeting */}
         <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
           <div className="space-y-1">
             <p className="text-muted-foreground text-sm">What's up</p>
-            <h1 className="text-2xl font-bold">Alwin Albert</h1>
+            <h1 className="text-2xl font-bold">{authUser?.name}</h1>
           </div>
 
           <div className="flex flex-col items-start sm:items-end space-y-2">
@@ -59,9 +69,19 @@ export default function MobileHomePage() {
         </div>
 
         {/* Quick Access Cards */}
-        <div className="flex flex-col md:flex-row gap-3 h-44">
-          <BudgetSummaryCard />
-
+        <div className="flex flex-col md:flex-row gap-3">
+          {!budgetSummaries ? (
+              <Card className="size-full flex items-center justify-center hover:bg-accent transition-colors h-64">
+                <CardContent className="p-0 text-center text-muted-foreground text-sm">
+                  <Wallet size={20} className="mx-auto mb-1" />
+                  Budget
+                </CardContent>
+              </Card>
+          ): (
+          <Link to="/budgets" className="flex-1 size-full">
+            <BudgetSummaryCard month={monthString} title={`${today.toLocaleString("default", { month: "long"})} Expenses`} />
+          </Link>
+          )}
           {/* <Card className="flex-1 border-primary border-2 rounded-xl">
             <CardContent className="pt-4 pb-2 space-y-1">
               <div className="text-sm font-bold">Bank</div>

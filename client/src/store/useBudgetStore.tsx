@@ -29,116 +29,142 @@ interface BudgetData {
 }
 
 interface BudgetStore {
-  budgets: Budget[] | null;
-  budgetSummary: BudgetSummary | null;
+  budgets: Budget[];
+  budgetSummaries: Record<string, BudgetSummary>;
   isUpdatingBudget: boolean;
   isFetchingBudget: boolean;
   isFetchingBudgetSummary: boolean;
   isDeletingBudget: boolean;
 
   upsertBudget: (data: BudgetData) => void;
-  getBudgetByMonth: (month: string) => void;
-  getBudgetSummaryByMonth: (month: string) => void;
+  getBudgetsByMonth: (month: string) => void;
+  getBudgetSummaryByMonth: (month: string, categoryId?: string) => void;
   getBudgetSummaryById: (month: string) => void;
   deleteBudget: (budgetId:string) => void;
 }
 
 export const useBudgetStore = create<BudgetStore>((set) => ({
-  budgets: null,
-  budgetSummary: null,
+  budgets: [],
+  budgetSummaries: {},
   isUpdatingBudget: false,
   isFetchingBudget: false,
   isFetchingBudgetSummary: false,
-  isDeletingBudget: true,
+  isDeletingBudget: false,
 
   upsertBudget: async (data: BudgetData) => {
-    set({ isUpdatingBudget: true })
+    set({ isUpdatingBudget: true });
     try {
       const res = await api.post("/budgets", data);
-
       const savedBudget = res.data.savedBudget;
 
-      set((state) => ({
-        budgets: state.budgets ? [...state.budgets, savedBudget] : [savedBudget]
-      }));
-      toast.success("Category added successfully");
+      set((state) => {
+        const budgets = [...state.budgets.filter(b => b._id !== savedBudget._id), savedBudget];
+
+        const key = `${data.month}-${data.category || "all"}`;
+        const prevSummary = state.budgetSummaries[key];
+
+        const updatedSummary = prevSummary
+          ? {
+              ...prevSummary,
+              totalBudget: prevSummary.totalBudget + (data.amount - (state.budgets.find(b => b._id === savedBudget._id)?.amount || 0)),
+              remaining: prevSummary.remaining + (data.amount - (state.budgets.find(b => b._id === savedBudget._id)?.amount || 0))
+            }
+          : state.budgetSummaries[key]; 
+
+        return {
+          budgets,
+          budgetSummaries: {
+            ...state.budgetSummaries,
+            ...(updatedSummary && { [key]: updatedSummary }),
+          },
+        };
+      });
+
+      toast.success("Budget updated successfully");
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error("Error adding/editing budget:", axiosError);
       toast.error("Failed to add budget");
     } finally {
-      set({ isUpdatingBudget: false })
+      set({ isUpdatingBudget: false });
     }
   },
 
-  getBudgetByMonth: async (month: string) => {
-    set({ isFetchingBudget: true })
+  getBudgetsByMonth: async (month: string) => {
+    set({ isFetchingBudget: true });
     try {
-      const res = await api.get("/budgets", {
-        params: {
-          month: month,
-        }
-      })
-
-      set({ budgetSummary: res.data.data })
+      const res = await api.get("/budgets", { params: { month } });
+      set({ budgets: res.data.data });
     } catch (error) {
       const axiosError = error as AxiosError;
       console.error("Error in getBudgetByMonth:", axiosError);
     } finally {
-      set({ isFetchingBudget: false })
+      set({ isFetchingBudget: false });
     }
   },
 
-  getBudgetSummaryByMonth: async (month:string) => {
-    set({ isFetchingBudgetSummary: true })
+  getBudgetSummaryByMonth: async (month: string, categoryId?: string) => {
+    set({ isFetchingBudgetSummary: true });
+    const key = `${month}-${categoryId ?? "all"}`;
     try {
-      const res = await api.get(`/budgets/summary`, {
-        params: {
-          month,
-        }
-      })
-
-      set({ budgetSummary: res.data.data })
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Error in getBudgetSummary:", axiosError);
-    } finally {
-      set({ isFetchingBudget: false })
-    }
-  },
-
-  getBudgetSummaryById: async (budgetId:string) => {
-    set({ isFetchingBudgetSummary: true })
-    try {
-      const res = await api.get(`/budgets/summary/${budgetId}`)
-
-      set({ budgetSummary: res.data.data })
-    } catch (error) {
-      const axiosError = error as AxiosError;
-      console.error("Error in getBudgetSummary:", axiosError);
-    } finally {
-      set({ isFetchingBudget: false })
-    }
-  },
-
-  deleteBudget: async (budgetId:string) => {
-    set({ isDeletingBudget: true })
-    try {
-      const res = await api.delete(`/budgets/${budgetId}`);
+      const res = await api.get("/budgets/summary", {
+        params: { month, ...(categoryId ? { categoryId } : {}) },
+      });
 
       set((state) => ({
-        budgets: state.budgets?.filter(
-            budget => budget._id !== budgetId
-        ) || null,
+        budgetSummaries: {
+          ...state.budgetSummaries,
+          [key]: res.data.data,
+        },
       }));
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      console.error("Error in getBudgetSummaryByMonth:", axiosError);
+    } finally {
+      set({ isFetchingBudgetSummary: false });
+    }
+  },
+
+  getBudgetSummaryById: async (budgetId: string) => {
+    set({ isFetchingBudgetSummary: true });
+    try {
+      const res = await api.get(`/budgets/summary/${budgetId}`);
+      const key = budgetId;
+
+      set((state) => ({
+        budgetSummaries: {
+          ...state.budgetSummaries,
+          [key]: res.data.data,
+        },
+      }));
+    } catch (error) {
+      const axiosError = error as AxiosError;
+      console.error("Error in getBudgetSummaryById:", axiosError);
+    } finally {
+      set({ isFetchingBudgetSummary: false });
+    }
+  },
+
+  deleteBudget: async (budgetId: string) => {
+    set({ isDeletingBudget: true });
+    try {
+      await api.delete(`/budgets/${budgetId}`);
+      set((state) => {
+        const updatedSummaries = state.budgetSummaries
+        delete updatedSummaries[budgetId]
+        return{
+          budgets: state.budgets.filter((b) => b._id !== budgetId),
+          budgetSummaries: updatedSummaries,
+        }
+      });
 
       toast.success("Category deleted successfully");
     } catch (error) {
       const axiosError = error as AxiosError;
-      console.error("Error adding/editing budget:", axiosError);
-      toast.error("Failed to add budget");
+      console.error("Error deleting budget:", axiosError);
+      toast.error("Failed to delete budget");
     } finally {
       set({ isDeletingBudget: false });
     }
   },
-}))
+}));

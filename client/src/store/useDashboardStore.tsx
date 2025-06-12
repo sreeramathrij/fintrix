@@ -1,7 +1,6 @@
 import { create } from "zustand"
 
 import { api } from "@/lib/axios";
-import toast from "react-hot-toast"
 
 interface Summary {
   totalIncome: number;

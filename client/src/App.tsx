@@ -21,6 +21,7 @@ import GitHubStyleHeatmap from "./components/calender"
 import { Loader } from "lucide-react"
 import GoalsPage from "./components/goals"
 import SpendingSummary from "./components/summary"
+import RouteSync from "./components/RouteSync"
 
 export default function App() {
   const { authUser, checkAuth, isCheckingAuth } = useAuthStore(); 
@@ -38,6 +39,7 @@ export default function App() {
   return (
     <ThemeProvider>
       <Layout>
+        <RouteSync />
         <Routes>
           <Route path="/" element={authUser ? <HomePage /> : <Navigate to="/login" />} />
           <Route path="/transactions" element={authUser ? <TransactionsPage /> : <Navigate to="/login" />} />

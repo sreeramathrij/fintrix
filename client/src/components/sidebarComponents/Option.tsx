@@ -18,8 +18,8 @@ const Option = (props: OptionProps) => {
     <Link to={`/${link}`} >
       <motion.button
         layout
-        onClick={() => setSelectedPage(title)}
-        className={`relative flex h-14 w-full items-center rounded-md transition-colors ${selectedPage === title ? "bg-foreground text-accent" : "text-primary hover:bg-secondary"}`}
+        onClick={() => setSelectedPage(link)}
+        className={`relative flex h-14 w-full items-center rounded-md transition-colors ${selectedPage === link ? "bg-foreground text-accent" : "text-primary hover:bg-secondary"}`}
       >
         <motion.div
           layout
