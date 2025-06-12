@@ -25,7 +25,7 @@ interface BudgetSummary {
 interface BudgetData {
   amount: number;
   month: string;
-  category: string;
+  category?: string;
 }
 
 interface BudgetStore {

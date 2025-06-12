@@ -4,8 +4,21 @@ import {
   CardContent,
   CardTitle,
 } from "@/components/ui/card";
+
+import {
+  AlertDialog,
+  AlertDialogTrigger,
+  AlertDialogContent,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogCancel,
+  AlertDialogAction,
+} from "@/components/ui/alert-dialog"
+
 import { useBudgetStore } from "@/store/useBudgetStore";
-import { Loader2, Wallet } from "lucide-react";
+import { Loader2, Trash2, Wallet } from "lucide-react";
 import { useEffect } from "react";
 
 interface BudgetSummaryProps {
@@ -14,6 +27,8 @@ interface BudgetSummaryProps {
   title?: string;
   showProgress?: boolean;
   showDailyTip?: boolean;
+  editable?: boolean;
+  onDelete?: () => void;
 }
 
 const BudgetSummaryCard = ({
@@ -22,16 +37,14 @@ const BudgetSummaryCard = ({
   title,
   showProgress = true,
   showDailyTip = true,
+  editable = false,
+  onDelete,
 }: BudgetSummaryProps) => {
-  const { getBudgetSummaryByMonth, budgetSummaries, isFetchingBudgetSummary } = useBudgetStore();
+  const { getBudgetSummaryByMonth, budgetSummaries, isFetchingBudgetSummary, deleteBudget  } = useBudgetStore();
 
   useEffect(() => {
     categoryId ? getBudgetSummaryByMonth(month, categoryId) : getBudgetSummaryByMonth(month);
   }, [month, categoryId]);
-
-  console.log(title);
-  console.log(month)
-  console.log(budgetSummaries)
 
   const summaryKey = `${month}-${categoryId ?? "all"}`;
   const budgetSummary = budgetSummaries[summaryKey];
@@ -71,10 +84,39 @@ const BudgetSummaryCard = ({
   const dailyLimit = daysRemaining > 0 ? (remaining / daysRemaining).toFixed(0) : "0";
 
   return (
-      <Card className="size-full flex flex-col justify-between h-fit overflow-hidden rounded-md hover:bg-accent transition-colors">
-        <CardHeader className="flex flex-col items-start justify-center bg-gradient-to-br from-sky-500 to-indigo-500 text-primary">
-          <CardTitle className="text-lg font-bold">{title ?? "Budget Summary"}</CardTitle>
-          <p className="text-sm">{`₹${remaining} left of ₹${totalBudget}`}</p>
+      <Card className="size-full flex flex-col justify-between h-fit overflow-hidden border-2 border-dashed bg-popover rounded-md transition-colors">
+        <CardHeader className="flex items-start justify-between bg-gradient-to-br from-sky-500 to-indigo-500 text-primary">
+          <div className="flex flex-col">
+            <CardTitle className="text-lg font-bold">{title ?? "Budget Summary"}</CardTitle>
+            <p className="text-sm">{`₹${remaining} left of ₹${totalBudget}`}</p>
+          </div>
+          {editable && (
+            <AlertDialog>
+              <AlertDialogTrigger asChild>
+                <button className="text-sm text-background hover:text-red-500 hover:scale-105 transition-all duration-300">
+                  <Trash2 size={36}/>
+                </button>
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle>Delete Budget?</AlertDialogTitle>
+                  <AlertDialogDescription>
+                    This will permanently remove the budget and all its data.
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                  <AlertDialogAction
+                    onClick={() => {
+                      if (onDelete) onDelete();
+                    }}
+                  >
+                    Delete
+                  </AlertDialogAction>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
+          )}
         </CardHeader>
         <CardContent className="p-8 text-sm text-muted-foreground">
           {showProgress && (

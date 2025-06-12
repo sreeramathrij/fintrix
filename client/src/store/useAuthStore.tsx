@@ -91,7 +91,7 @@ export const useAuthStore = create< AuthStore >((set) => ({
       const res = await api.post("/auth/login", data);
       set({ authUser: res.data.user });
       
-      toast.success(`Logged in as ${res.data.name}`);
+      toast.success(`Logged in as ${res.data.user.name}`);
     } catch (error) {
       if (error instanceof AxiosError && error.response) {
         toast.error(error.response.data.message);

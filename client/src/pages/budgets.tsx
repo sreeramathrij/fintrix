@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   Pencil,
 } from "lucide-react";
@@ -7,10 +7,34 @@ import { motion } from "motion/react";
 import Sidebar from "@/components/Sidebar";
 import useMeasure from "react-use-measure";
 import BudgetSummaryCard from "@/components/BudgetSummaryCard";
+import { useBudgetStore } from "@/store/useBudgetStore";
+import { useCategoryStore } from "@/store/useCategoryStore";
+import AddBudgetDrawerForm from "@/components/AddBudgetDrawer";
 
 export default function BudgetsScreen() {
   const [ref, {width}] = useMeasure();
   
+  const { budgets, getBudgetsByMonth, deleteBudget } = useBudgetStore();
+  const { categories, getCategories } = useCategoryStore()
+
+  const today = useMemo(()=>new Date(), []);
+  const month = String(today.getMonth() + 1).padStart(2, "0");
+  const year = String(today.getFullYear());
+  const monthString = `${year}-${month}`;
+
+  useEffect(() => {
+    getBudgetsByMonth(monthString);
+    getCategories();
+  }, [])
+
+  
+  const categoryMap = useMemo(() => {
+    if (!categories) return {};
+    return Object.fromEntries(
+      categories.map((c) => [c._id, c.name])
+    );
+  }, [categories]);
+
 
   return (
     
@@ -31,7 +55,26 @@ export default function BudgetsScreen() {
         </div>
         </div>
 
-        <BudgetSummaryCard month="2025-06"/>
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+          {budgets.map(budget =>
+            <div className="hover:scale-105 transition-all duration-300">
+              <BudgetSummaryCard
+                month={budget.month}
+                categoryId={budget.category} 
+                title={budget.category
+                ? `${new Date().toLocaleString("default", { month: "long" })} Expenses for ${categoryMap[budget.category]}`
+                : `${new Date().toLocaleString("default", { month: "long" })} Expenses` }
+                editable={true}
+                onDelete={() => {
+                  if (budget._id) {
+                    deleteBudget(budget._id);
+                  }
+                }}
+                />
+            </div>
+          )}
+          <AddBudgetDrawerForm />
+        </div>
     </motion.div>
    </motion.div>
   );
