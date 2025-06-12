@@ -21,13 +21,14 @@ import GitHubStyleHeatmap from "./components/calender"
 import { Loader } from "lucide-react"
 import GoalsPage from "./components/goals"
 import SpendingSummary from "./components/summary"
+import ProfilePage from "./components/profilepage"
 
 export default function App() {
-  const { authUser, checkAuth, isCheckingAuth } = useAuthStore(); 
+  const { authUser, checkAuth, isCheckingAuth,isAuthenticated } = useAuthStore(); 
 
   useEffect(() => {
     checkAuth();
-  },[checkAuth])
+  },[checkAuth,isAuthenticated])
 
   if(isCheckingAuth && !authUser) return (
     <div className="flex items-center justify-center h-screen">
@@ -53,6 +54,8 @@ export default function App() {
           <Route path="/accounts" element={< AccountPage />} />
           <Route path="/goals" element={< GoalsPage />} />
           <Route path="/summary" element={< SpendingSummary />} />
+          <Route path="/profile" element={< ProfilePage />} />
+
         </Routes>
       </Layout>
       <Toaster />

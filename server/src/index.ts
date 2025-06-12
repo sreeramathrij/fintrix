@@ -22,8 +22,10 @@ const app = express();
 
 app.use(cors({ origin: "http://localhost:5173", credentials:true }));
 app.use(morgan("dev"));
-app.use(express.json());
 app.use(cookieParser());
+
+app.use(express.json({ limit: "10mb" }));
+app.use(express.urlencoded({ limit: "10mb", extended: true }));
 
 cron.schedule("0 0 * * *", enqueueScheduledtransaction);
 
@@ -34,6 +36,7 @@ app.use("/api/transactions", transactionRoutes);
 app.use("/api/dashboard", dashboardRoutes);
 app.use("/api/budgets", budgetRoutes);
 app.use("/api/scheduled", scheduledRoutes);
+
 
 app.get("/", (_: Request , res: Response) => { res.send("API is running") });
 

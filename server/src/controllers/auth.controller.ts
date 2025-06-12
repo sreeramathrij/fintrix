@@ -5,6 +5,7 @@ import { User } from "../models/user.model";
 import { registerSchema, loginSchema } from "../schemas/auth.schema";
 import { JWT_SECRET } from "../utils/jwtSecret";
 import { AuthRequest } from "../middlewares/verifyJWT.middleware";
+import cloudinary from "../utils/cloudinary";
 
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {
@@ -47,7 +48,15 @@ export const registerUser = async (req: Request, res: Response): Promise<void> =
       sameSite: "lax",
     })
     .status(201)
-    .json({ message: "User registered", user: { id: user._id, name, email }})
+    .json({ message: "User registered", user: { 
+      id: user._id,
+       name: user.name, 
+       email: user.email,
+       authProvider:user.authProvider,
+       profilePic:user.profilePic,
+       createdAt:user.createdAt,
+       updatedAt:user.updatedAt,
+    }})
   } catch (error) {
     console.log("Error in registerUserController: ", error);
     res.status(500).json({ error: { message: "Internal Server Error" }})
@@ -66,7 +75,7 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
   try {
     const user = await User.findOne({ email });
     if(!user || user.authProvider !== "local") {
-      res.status(400).json({ erro: { message: "Invalid credentials" }});
+      res.status(400).json({ error: { message: "Invalid credentials" }});
       return;
     }
 
@@ -84,7 +93,17 @@ export const loginUser = async (req: Request, res: Response): Promise<void> => {
       sameSite: "lax",
     })
     .status(201)
-    .json({ message: "Logged In", user: { id: user._id, name: user.name, email: user.email }});
+    .json({ message: "Logged In", user: { 
+      id: user._id,
+       name: user.name, 
+       email: user.email,
+       authProvider:user.authProvider,
+       profilePic:user.profilePic,
+       createdAt:user.createdAt,
+       updatedAt:user.updatedAt,
+
+
+     }});
 
   } catch (error) {
     console.log("Error in loginUserController: ", error);
@@ -115,3 +134,41 @@ export const checkAuth = (req: AuthRequest, res: Response) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 }
+
+export const updateProfile = async (req: AuthRequest, res: Response) => {
+  try {
+    const userId = req.user?._id;
+    const { name, password, profilePic } = req.body;
+
+    const updateData: Partial<{ name: string; password: string; profilePic: string }> = {};
+
+    if (name) updateData.name = name;
+     const uploadResponse = await cloudinary.uploader.upload(profilePic)
+     if(!uploadResponse){
+      res.status(500).json({message:"something went wrong"})
+     }
+    if (profilePic) updateData.profilePic = uploadResponse.secure_url;
+    if (password) {
+      if (password.length < 8) {
+        res.status(400).json({ message: "Password must be at least 8 characters long" });
+        return;
+      }
+      const salt = await bcrypt.genSalt(10);
+      updateData.password = await bcrypt.hash(password, salt);
+    }
+
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { $set: updateData },
+      { new: true }
+    ).select("-password");
+
+    res.status(200).json({
+      message: "Profile updated successfully",
+      user: updatedUser,
+    });
+  } catch (error) {
+    console.error("Error in updateProfile:", error);
+    res.status(500).json({ message: "Internal Server Error" });
+  }
+};

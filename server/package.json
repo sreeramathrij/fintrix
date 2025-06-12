@@ -17,6 +17,7 @@
     "@types/ioredis": "^5.0.0",
     "bcrypt": "^6.0.0",
     "bull": "^4.16.5",
+    "cloudinary": "^2.6.1",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "dayjs": "^1.11.13",

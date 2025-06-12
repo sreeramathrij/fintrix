@@ -23,12 +23,19 @@ interface LoginData {
   email: string;
   password: string;
 }
+interface UpdateProfileData{
+   name: string;
+  password: string;
+  profilePic:string,
+
+}
 
 interface AuthStore {
   authUser: User | null;
   isSigningUp: boolean;
   isLoggingIn: boolean;
   isAuthenticated: boolean;
+  isUpdatingProfile:boolean;
 
   isCheckingAuth: boolean;
 
@@ -36,6 +43,7 @@ interface AuthStore {
   register: (data: RegisterData) => void;
   logIn: (data: LoginData) => void;
   logout: () => void;
+  updateProfile:(data: UpdateProfileData)=> void;
 }
 
 export const useAuthStore = create< AuthStore >((set) => ({
@@ -81,7 +89,7 @@ export const useAuthStore = create< AuthStore >((set) => ({
     set({ isLoggingIn: true });
     try {
       const res = await api.post("/auth/login", data);
-      set({ authUser: res.data });
+      set({ authUser: res.data.user });
       
       toast.success(`Logged in as ${res.data.name}`);
     } catch (error) {
@@ -109,4 +117,22 @@ export const useAuthStore = create< AuthStore >((set) => ({
       }
     }
   },
+
+  updateProfile: async (data: UpdateProfileData)=>{
+  set({ isUpdatingProfile: true });
+    try {
+      const res = await api.put("/auth/update-profile", data);
+      set({ authUser: res.data.user });
+      
+      toast.success(`updated profile completed`);
+    } catch (error) {
+      if (error instanceof AxiosError && error.response) {
+        toast.error(error.response.data.message);
+      } else {
+        toast.error("An unexpected error occurred.");
+      }
+    } finally {
+      set({ isUpdatingProfile: false });
+    }
+  }
 }))
