@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { AuthRequest } from "../middlewares/verifyJWT.middleware";
 import { transactionSchema } from "../schemas/transaction.schema";
-import { Transaction, type ITransaction } from "../models/transaction.model";
+import { Transaction, } from "../models/transaction.model";
 import mongoose from "mongoose";
 
 export const addTransaction = async (req: AuthRequest, res: Response): Promise<void> => {
