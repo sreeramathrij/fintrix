@@ -1,19 +1,25 @@
-import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, DrawerTrigger } from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerHeader, DrawerTitle, } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type Dispatch, type SetStateAction } from "react";
 import { useCategoryStore } from "@/store/useCategoryStore";
 import { useTransactionsStore } from "@/store/useTranscationStore";
 import { cn } from "@/lib/utils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
-export default function AddTransactionDrawer() {
+interface AddTransactionDrawerProps{
+  open:boolean,
+  setOpen:Dispatch<SetStateAction<boolean>>
+}
+
+export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawerProps) {
+  
 const { selectedTransaction, setSelectedTransaction,editTransaction,addTransaction } = useTransactionsStore();
 const isEditing = !!selectedTransaction;
   const { categories,getCategories } = useCategoryStore();
- const [open, setOpen] = useState(false);
+
   const [form, setForm] = useState({
     description: selectedTransaction?.description || "",
     amount: selectedTransaction?.amount || "",
@@ -72,9 +78,9 @@ const isEditing = !!selectedTransaction;
 };
   return (
     <Drawer open={open} onOpenChange={setOpen}>
-      <DrawerTrigger asChild>
-        <Button onClick={() => setOpen(true)}>Add Transaction</Button>
-      </DrawerTrigger>
+     
+       
+      
       <DrawerContent className="p-4 space-y-4">
         <DrawerHeader>
           <DrawerTitle>Add Transaction</DrawerTitle>

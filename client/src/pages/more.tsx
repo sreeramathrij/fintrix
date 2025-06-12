@@ -15,8 +15,6 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import useMeasure from "react-use-measure";
-
-import NavFooter from "@/components/NavFooter";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
@@ -28,10 +26,9 @@ export default function MoreScreen() {
     icon: User,
     name: "Alwin Albert",
     email: "alwin@email.com",
-    phone: "+01 2345678910",
+   
     link: "/profile",
-    balance: 3756,
-    budget: 10000,
+   
   }
 
   const sections = [
@@ -74,8 +71,7 @@ export default function MoreScreen() {
   ];
 
   const [theme, setTheme] = useState("dark");
-  const progress = (((user.budget - user.balance) / user.budget) * 100);
-  console.log(progress);
+  
 
   return (
     
@@ -104,7 +100,7 @@ export default function MoreScreen() {
                 {user.name}
               </p>
                 <p className="text-sm">{user.email}</p>
-                <p className="text-sm">{user.phone}</p>
+               
               </div>
             </div>
             <ArrowRight className="w-5 h-5" />   

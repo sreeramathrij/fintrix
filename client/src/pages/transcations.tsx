@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Search, Filter } from "lucide-react";
+import { Search, Filter, Plus } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Sidebar from "@/components/Sidebar";
 import { Input } from "@/components/ui/input";
@@ -30,6 +30,7 @@ const getLast12Months = (): { label: string; month: number; year: number }[] => 
 
 
 export default function TransactionsScreen() {
+  const [showDrawer, setShowDrawer] = useState(false)
  const [searchTerm, setSearchTerm] = useState("");
 
   const monthList = useMemo(() => getLast12Months(), []);
@@ -92,10 +93,12 @@ export default function TransactionsScreen() {
 
             </div>
             <ThemeToggle />
-            <Button variant="ghost" size="icon">
-              <Filter className="w-5 h-5" />
-            </Button>
-            <AddTransactionDrawer/>
+           <Button
+                size="icon"
+                onClick={() => setShowDrawer(true)}
+                className="rounded-full w-14 h-14 fixed bottom-24 right-4 shadow-xl">
+                <Plus />
+              </Button>
           </div>
         </div>
 
@@ -132,6 +135,7 @@ export default function TransactionsScreen() {
   </div>
 )}
       </motion.div>
+      <AddTransactionDrawer open={showDrawer} setOpen={setShowDrawer} />
     </motion.div>
   );
 }

@@ -2,10 +2,10 @@ import { useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar, History, Filter } from "lucide-react"
+import { Calendar,Filter } from "lucide-react"
 
 export default function SpendingSummary() {
-  const [activeTab, setActiveTab] = useState("current")
+ 
   const [filterPeriod, setFilterPeriod] = useState("All Time")
   const [viewMode, setViewMode] = useState("outgoing")
 
@@ -17,12 +17,7 @@ export default function SpendingSummary() {
       </div>
 
       {/* Tabs for Current/History */}
-      <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
-        <TabsList className="grid grid-cols-2 bg-muted rounded-xl">
-          <TabsTrigger value="current" className="py-2"><Calendar className="inline mr-2" size={16} />Current</TabsTrigger>
-          <TabsTrigger value="history" className="py-2"><History className="inline mr-2" size={16} />History</TabsTrigger>
-        </TabsList>
-      </Tabs>
+      
 
       {/* Filter by Time */}
       <div className="flex items-center justify-between bg-muted p-2 rounded-xl">
