@@ -3,6 +3,7 @@ import { Response } from "express";
 import { AuthRequest } from "../middlewares/verifyJWT.middleware";
 import { Category } from "../models/category.model";
 import { categorySchema } from "../schemas/category.schema";
+import mongoose from "mongoose";
 
 export const createCategory = async (req: AuthRequest, res:Response): Promise<void> => {
   try {
@@ -70,3 +71,30 @@ export const getCategories = async (req:AuthRequest, res: Response): Promise<voi
     res.status(500).json({ error: "Internal Server Error" });
   }
 }
+export const deleteCategory = async (req: AuthRequest, res: Response): Promise<void> => {
+  try {
+    const userId = req.user!._id;
+    const categoryId = req.params.id;
+
+    // Validate categoryId
+    if (!mongoose.Types.ObjectId.isValid(categoryId)) {
+      res.status(400).json({ message: "Invalid category ID" });
+      return;
+    }
+
+    // Check if the category exists and belongs to the user
+    const category = await Category.findOne({ _id: categoryId, createdBy: userId });
+
+    if (!category) {
+      res.status(404).json({ message: "Category not found or cannot be deleted" });
+      return;
+    }
+
+    await Category.deleteOne({ _id: categoryId });
+    res.status(200).json({ message: "Category deleted successfully" });
+
+  } catch (error) {
+    console.error("Error in deleteCategory controller:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+};

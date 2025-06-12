@@ -13,19 +13,43 @@ interface DayData {
   expense: number
 }
 
-function generateMockData(): DayData[] {
-  const today = new Date()
-  const days: DayData[] = []
+async function fetchHeatmapData(): Promise<DayData[]> {
+  const year = new Date().getFullYear()
+
+  // Create all 12 fetches
+  const fetchPromises = Array.from({ length: 12 }, (_, i) => {
+    const month = String(i + 1).padStart(2, "0")
+    return fetch(
+      `http://localhost:5001/api/dashboard/daily-trends?month=${month}&year=${year}`,
+      { credentials: "include" }
+    ).then((res) => res.json())
+  })
+
+  const allMonthData = await Promise.all(fetchPromises)
+
+  // Flatten and map by date
+  const fetchedMap = new Map<string, { income: number; expense: number }>()
+  allMonthData.forEach((res) => {
+    res.data.forEach((d: any) => {
+      fetchedMap.set(d._id, { income: d.income, expense: d.expense })
+    })
+  })
+
+  // Generate fallback for all 365 days
+  const allDays: DayData[] = []
+  const startDate = new Date(`${year}-01-01`)
   for (let i = 0; i < 365; i++) {
-    const d = new Date(today)
-    d.setDate(today.getDate() - i)
-    days.push({
-      date: d.toISOString().split("T")[0],
-      income: Math.random() > 0.5 ? Math.floor(Math.random() * 200) : 0,
-      expense: Math.random() > 0.5 ? Math.floor(Math.random() * 200) : 0,
+    const d = new Date(startDate)
+    d.setDate(startDate.getDate() + i)
+    const dateStr = d.toISOString().split("T")[0]
+    allDays.push({
+      date: dateStr,
+      income: fetchedMap.get(dateStr)?.income || 0,
+      expense: fetchedMap.get(dateStr)?.expense || 0,
     })
   }
-  return days.reverse()
+
+  return allDays
 }
 
 function getColor(income: number, expense: number): string {
@@ -70,8 +94,8 @@ export default function GitHubStyleHeatmap() {
   const [data, setData] = useState<DayData[]>([])
 
   useEffect(() => {
-    setData(generateMockData())
-  }, [])
+    fetchHeatmapData().then(setData)
+  },[])
 
   const weeks = groupDataByWeek(data)
 

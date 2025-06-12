@@ -24,6 +24,7 @@ interface CategoryStore {
   categories: Category[] | null;
   getCategories: () => Promise<void>;
   addCategories: (data: CategoryData) => Promise<void>;
+  deleteCategory: (id: string) => Promise<void>;
 }
 
 // Zustand store definition
@@ -46,7 +47,7 @@ export const useCategoryStore = create<CategoryStore>((set) => ({
   addCategories: async (data: CategoryData) => {
     try {
       const response = await api.post("/category", data);
-      const newCategory = response.data.data;
+      const newCategory = response.data.category;
       set((state) => ({
         categories: state.categories
           ? [...state.categories, newCategory]
@@ -60,4 +61,19 @@ export const useCategoryStore = create<CategoryStore>((set) => ({
       throw error;
     }
   },
+
+  deleteCategory: async (id: string) => {
+  try {
+    await api.delete(`/category/${id}`);
+    set((state) => ({
+      categories: state.categories?.filter((cat) => cat._id !== id) || null,
+    }));
+    toast.success("Category deleted");
+  } catch (error) {
+    const axiosError = error as AxiosError;
+    console.error("Error deleting category:", axiosError);
+    toast.error("Failed to delete category");
+  }
+},
+
 }));
