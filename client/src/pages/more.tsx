@@ -15,23 +15,23 @@ import {
 } from "lucide-react";
 import { motion } from "motion/react";
 import useMeasure from "react-use-measure";
-
-import NavFooter from "@/components/NavFooter";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { useState } from "react";
 import Sidebar from "@/components/Sidebar";
+import { useAuthStore } from "@/store/useAuthStore";
 
 export default function MoreScreen() {
   const [ref, { width }] = useMeasure();
+  const {authUser}=useAuthStore();
+  
 
   const user = {
     icon: User,
     name: "Alwin Albert",
     email: "alwin@email.com",
-    phone: "+01 2345678910",
+   
     link: "/profile",
-    balance: 3756,
-    budget: 10000,
+   
   }
 
   const sections = [
@@ -74,8 +74,7 @@ export default function MoreScreen() {
   ];
 
   const [theme, setTheme] = useState("dark");
-  const progress = (((user.budget - user.balance) / user.budget) * 100);
-  console.log(progress);
+  
 
   return (
     
@@ -97,14 +96,15 @@ export default function MoreScreen() {
         <Link to={user.link} className="h-32 w-[100%] group relative flex items-center justify-center overflow-hidden text-primary-foreground shadow rounded-2xl">
           <div className={`text-primary-foreground absolute left-0 z-[1] h-[100%] w-[200%] bg-gradient-to-r ${theme === "dark" ? "from-pink-200 via-purple-200  to-indigo-300" : "from-purple-400 via-blue-500  to-indigo-700"} px-8 py-4 transition-all duration-400 group-hover:left-[-100%]`}></div>
           <div className="z-10 flex w-[95%] items-center justify-between">    
-            <div className="flex justify-between items-center">
-              <user.icon className="size-24" />
+            <div className="gap-2 flex justify-between items-center">
+              <img className="border size-20 rounded-full object-cover" 
+              src={authUser?.profilePic}/>
               <div>
-              <p className="font-bold text-lg">
-                {user.name}
+              <p className="font-bold text-xl">
+                {authUser?.name}
               </p>
-                <p className="text-sm">{user.email}</p>
-                <p className="text-sm">{user.phone}</p>
+                <p className="text-lg">{authUser?.email}</p>
+               
               </div>
             </div>
             <ArrowRight className="w-5 h-5" />   

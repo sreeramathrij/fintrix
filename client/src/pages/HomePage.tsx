@@ -28,12 +28,14 @@ import { useDesignStore } from "@/store/useDesignStore";
 import BudgetSummaryCard from "@/components/BudgetSummaryCard";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useBudgetStore } from "@/store/useBudgetStore";
+import { useState } from "react";
+import AddTransactionDrawer from "@/components/AddTransactionDrawer";
 
 export default function MobileHomePage() {
 
   const { authUser } = useAuthStore()
   const { budgetSummaries } = useBudgetStore();
-  
+  const [showDrawer, setShowDrawer] = useState(false)
   const today = useMemo(()=>new Date(), []);
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const year = String(today.getFullYear());
@@ -138,17 +140,17 @@ export default function MobileHomePage() {
           </Link>
 
           {/* Floating Add Button */}
-          <Link to="/add">
-            <Button
-              size="icon"
-              className="rounded-full w-14 h-14 fixed bottom-24 right-4 shadow-xl"
-            >
-              <Plus />
-            </Button>
-          </Link>
+         <Button
+                size="icon"
+                onClick={() => setShowDrawer(true)}
+                className="rounded-full w-14 h-14 fixed bottom-24 right-4 shadow-xl">
+                <Plus />
+              </Button>
+
           </div>
         </div>
       </motion.div>
+      <AddTransactionDrawer open={showDrawer} setOpen={setShowDrawer} />
     </motion.div>
   );
 }
