@@ -49,9 +49,6 @@ export default function BudgetsScreen() {
           <h1 className="text-3xl font-bold tracking-tight">Budgets</h1>
           <div className="flex items-center gap-2">
             <ThemeToggle/>
-          <button className=" p-2 rounded-full hover:bg-black/10 transition">
-            <Pencil className="w-5 h-5" />
-          </button>
         </div>
         </div>
 

@@ -12,8 +12,9 @@ import { Input } from "@/components/ui/input";
 import { useState } from "react";
 import { useBudgetStore } from "@/store/useBudgetStore";
 import { useCategoryStore } from "@/store/useCategoryStore";
-import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
+// import { Select, SelectTrigger, SelectContent, SelectItem, SelectValue } from "@/components/ui/select";
 import AddBudgetCard from "./AddBudgetCard";
+import CategoryRadioGroup from "./CategoryRadioGroup";
 
 const AddBudgetDrawerForm = () => {
   const { upsertBudget } = useBudgetStore();
@@ -53,18 +54,11 @@ const AddBudgetDrawerForm = () => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
           />
-          <Select value={category} onValueChange={setCategory}>
-            <SelectTrigger>
-              <SelectValue placeholder="Select Category (Optional)" />
-            </SelectTrigger>
-            <SelectContent>
-              {categories?.map((cat) => (
-                <SelectItem key={cat._id} value={cat._id}>
-                  {cat.name}
-                </SelectItem>
-              ))}
-            </SelectContent>
-          </Select>
+          <CategoryRadioGroup
+            categories={categories ?? []}
+            selectedCategory={category}
+            onSelect={setCategory}
+          />
         </div>
         <DrawerFooter>
           <Button onClick={handleSubmit}>Save Budget</Button>

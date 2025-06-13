@@ -8,6 +8,7 @@ import { useTransactionsStore } from "@/store/useTranscationStore";
 import { cn } from "@/lib/utils";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
+import CategoryRadioGroup from "./CategoryRadioGroup";
 
 interface AddTransactionDrawerProps{
   open:boolean,
@@ -15,9 +16,9 @@ interface AddTransactionDrawerProps{
 }
 
 export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawerProps) {
-  
-const { selectedTransaction, setSelectedTransaction,editTransaction,addTransaction } = useTransactionsStore();
-const isEditing = !!selectedTransaction;
+  const [category, setCategory] = useState<string | undefined>(undefined);
+  const { selectedTransaction, setSelectedTransaction,editTransaction,addTransaction } = useTransactionsStore();
+  const isEditing = !!selectedTransaction;
   const { categories,getCategories } = useCategoryStore();
 
   const [form, setForm] = useState({
@@ -130,20 +131,11 @@ const isEditing = !!selectedTransaction;
 
           <div>
             <Label>Category</Label>
-            <select
-              name="categoryId"
-              value={form.categoryId}
-              onChange={handleChange}
-              className="w-full p-2 rounded-md border bg-background"
-            >
-              <option value="">Select category</option>
-              {categories?.filter((cat) => cat.type === form.type)
-                .map((cat) => (
-                  <option key={cat._id} value={cat._id}>
-                    {cat.name}
-                  </option>
-                ))}
-            </select>
+            <CategoryRadioGroup
+              categories={categories ?? []}
+              selectedCategory={category}
+              onSelect={setCategory}
+            />
           </div>
 
           <div className="flex flex-col gap-2">

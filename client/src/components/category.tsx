@@ -22,7 +22,7 @@ export default function EditCategories() {
 
   useEffect(() => {
     getCategories();
-  }, [categories]);
+  }, []);
 
   const [search, setSearch] = useState("");
 

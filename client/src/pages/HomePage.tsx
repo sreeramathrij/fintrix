@@ -32,10 +32,10 @@ import { useState } from "react";
 import AddTransactionDrawer from "@/components/AddTransactionDrawer";
 
 export default function MobileHomePage() {
-
   const { authUser } = useAuthStore()
   const { budgetSummaries } = useBudgetStore();
   const [showDrawer, setShowDrawer] = useState(false)
+  const [filter, setFilter] = useState("all");
   const today = useMemo(()=>new Date(), []);
   const month = String(today.getMonth() + 1).padStart(2, "0");
   const year = String(today.getFullYear());
@@ -118,7 +118,7 @@ export default function MobileHomePage() {
 
           <div className="flex flex-col gap-8 flex-1">
           {/* Tabs */}
-          <Tabs defaultValue="all" className="w-full">
+          <Tabs value={filter} onValueChange={setFilter} className="w-full">
             <TabsList className="grid grid-cols-3">
               <TabsTrigger value="all">All</TabsTrigger>
               <TabsTrigger value="expense">Expense</TabsTrigger>
@@ -126,7 +126,7 @@ export default function MobileHomePage() {
             </TabsList>
           </Tabs>
 
-          <RecentTransactions />
+          <RecentTransactions filter={filter} />
           <Link to="/transactions">
             <Button
               variant="outline"
