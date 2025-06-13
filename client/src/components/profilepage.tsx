@@ -86,15 +86,22 @@ export default function ProfilePage() {
       <Drawer open={isDrawerOpen} onClose={() => setIsDrawerOpen(false)}>
         <DrawerContent>
           <DrawerHeader>
-            <DrawerTitle>Edit Profile</DrawerTitle>
+          
           </DrawerHeader>
           <div className="px-4 space-y-4">
+            <div>
+              Edit username
+            </div>
             <Input
               type="text"
+              
               value={name}
               onChange={(e) => setName(e.target.value)}
               placeholder="New username"
             />
+            <div>
+              Edit password
+            </div>
             <Input
               type="password"
               value={password}
@@ -102,7 +109,7 @@ export default function ProfilePage() {
               placeholder="New password"
             />
                                 <div className="space-y-2">
-                    <label className="text-sm font-medium">Profile Picture</label>
+                    <label className="text-sm font-medium"> Edit Profile Picture</label>
                     {profilePic && (
                                     <img
                                     src={profilePic}
