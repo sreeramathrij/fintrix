@@ -12,6 +12,7 @@ import { Card } from "./ui/card";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { AddCategoryDrawer } from "./AddCategoryDrawer";
+import BackButton from "./BackButton";
 
 export default function EditCategories() {
   const {
@@ -33,7 +34,10 @@ export default function EditCategories() {
   );
 
   return (
-    <div className="p-4 pb-24">
+    <div className="relative py-4 px-8 pb-24">
+      <div className="relative right-4">
+        <BackButton />
+      </div>
       <div className="text-2xl font-bold mb-4">Edit Categories</div>
 
       <div className="relative mb-6">

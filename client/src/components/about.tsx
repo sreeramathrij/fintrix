@@ -92,25 +92,25 @@ export default function AboutPage() {
               </CardHeader>
               <CardContent>
                 <p className="text-muted-foreground">
-                  Architected the backend with Node.js, Express, MongoDB, and TypeScript — enabling secure, scalable API endpoints with JWT, Zod, and OAuth-ready architecture.
+                  Architected the backend with Node.js, Express, MongoDB, and TypeScript — enabling secure, scalable API endpoints with JWT, Zod architecture.
                 </p>
                 <div className="flex gap-4 mt-4">
                   <a
-  href="https://github.com/sreeramathrij"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="sreeram GitHub"
->
-  <Github className="w-5 h-5 hover:text-primary" />
-</a>
-<a
-  href="https://www.linkedin.com/in/sreeramathrij/"
-  target="_blank"
-  rel="noopener noreferrer"
-  aria-label="sreeram LinkedIn"
->
-  <Linkedin className="w-5 h-5 hover:text-primary" />
-</a>
+                    href="https://github.com/sreeramathrij"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="sreeram GitHub"
+                  >
+                    <Github className="w-5 h-5 hover:text-primary" />
+                  </a>
+                  <a
+                    href="https://www.linkedin.com/in/sreeramathrij/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="sreeram LinkedIn"
+                  >
+                    <Linkedin className="w-5 h-5 hover:text-primary" />
+                  </a>
                 </div>
               </CardContent>
             </Card>
