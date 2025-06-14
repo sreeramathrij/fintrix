@@ -16,7 +16,7 @@ interface AddTransactionDrawerProps{
 }
 
 export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawerProps) {
-  const [category, setCategory] = useState<string | undefined>(undefined);
+  const [category, setCategory] = useState<string>("");
   const { selectedTransaction, setSelectedTransaction,editTransaction,addTransaction } = useTransactionsStore();
   const isEditing = !!selectedTransaction;
   const { categories,getCategories } = useCategoryStore();
@@ -59,7 +59,7 @@ export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawer
       description: form.description,
       amount: Number(form.amount),
       type: form.type,
-      category: form.categoryId,
+      category: category,
       date: form.date,
     });
   } else {
@@ -67,7 +67,7 @@ export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawer
       description: form.description,
       amount: Number(form.amount),
       type: form.type,
-      category: form.categoryId,
+      category: category,
       date: form.date,
     });
 
@@ -135,6 +135,7 @@ export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawer
               categories={categories ?? []}
               selectedCategory={category}
               onSelect={setCategory}
+              type={form.type as "income" | "expense"}
             />
           </div>
 

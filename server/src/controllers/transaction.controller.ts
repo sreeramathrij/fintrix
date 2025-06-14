@@ -18,6 +18,7 @@ export const addTransaction = async (req: AuthRequest, res: Response): Promise<v
     };
 
     const transaction = await Transaction.create(transactionData);
+    await transaction.populate("category");
     res.status(201).json({ data: transaction });
 
   } catch (error) {
@@ -150,6 +151,8 @@ export const editTransaction = async (req: AuthRequest, res: Response): Promise<
       res.status(404).json({ message: "Transaction not found" });
       return;
     }
+
+    await updatedTransaction.populate("category");
 
     res.status(200).json({ message: "Transaction Updated", updatedTransaction });
   } catch (error) {

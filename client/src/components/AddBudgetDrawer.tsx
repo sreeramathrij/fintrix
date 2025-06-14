@@ -58,6 +58,7 @@ const AddBudgetDrawerForm = () => {
             categories={categories ?? []}
             selectedCategory={category}
             onSelect={setCategory}
+            type={"expense"}
           />
         </div>
         <DrawerFooter>
