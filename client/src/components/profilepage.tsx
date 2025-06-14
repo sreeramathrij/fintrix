@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { LogOut, Pencil } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import { Drawer, DrawerContent, DrawerFooter, DrawerHeader, DrawerTitle } from "@/components/ui/drawer";
+import { Drawer, DrawerContent, DrawerFooter, DrawerHeader,  } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import toast from "react-hot-toast";
 
