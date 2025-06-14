@@ -14,6 +14,11 @@ import { useState } from "react";
 import { type DateRange } from "react-day-picker";
 import { DateRangePicker } from "./ui/date-range-picker";
 
+
+type FilterDrawerProps = {
+  onApply: (filters: { from: string; to: string }) => void;
+};
+
 export function TransactionFilterDrawer({ onApply }: {
   onApply: (filters: {
     dateRange: DateRange | undefined,
@@ -42,9 +47,6 @@ export function TransactionFilterDrawer({ onApply }: {
             <p className="text-sm font-medium mb-2">Date Range</p>
             <DateRangePicker value={dateRange} onChange={setDateRange} />
           </div>
-
-          {/* Optional: Add a category select here */}
-          {/* You can map categories here */}
         </div>
 
         <DrawerFooter>

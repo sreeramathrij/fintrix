@@ -63,7 +63,7 @@ interface DashboardStore {
   getRecentTransactions: (limit?: number) => void;
 }
 
-export const useDashboardStore = create<DashboardStore>((set) => ({
+export const useDashboardStore = create<DashboardStore>((set, get) => ({
   summary: null,
   categorySummary: null,
   monthlyTrends: null,
@@ -85,6 +85,7 @@ export const useDashboardStore = create<DashboardStore>((set) => ({
       console.log(res.data);
 
       set({ summary: res.data.data });
+      console.log(get().summary)
     } catch (error) {
       console.error("Error in getDashboardSummary: ", error);
       set({ summary: null });
