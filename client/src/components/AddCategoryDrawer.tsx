@@ -12,8 +12,10 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { useCategoryStore } from "@/store/useCategoryStore";
 import { Label } from "@/components/ui/label";
+import CategoryRadioGroup from "./CategoryRadioGroup";
 
 export function AddCategoryDrawer() {
+  const [category, setCategory] = useState<string | undefined>(undefined);
   const { categories, getCategories, addCategories } = useCategoryStore();
 
   const [open, setOpen] = useState(false);
@@ -41,8 +43,8 @@ export function AddCategoryDrawer() {
       await addCategories(form);
       setForm({ name: "", type: "expense", referenceCategoryId: "" });
       setOpen(false);
-    } catch (err) {
-      console.error("Error adding category", err);
+    } catch (error) {
+      console.error("Error adding category", error);
     }
   };
 
@@ -90,22 +92,17 @@ export function AddCategoryDrawer() {
               <option value="income">Income</option>
             </select>
           </div>
+          
 
           <div>
-            <Label className="mb-1 block"> Category</Label>
-            <select
-              value={form.referenceCategoryId}
-              onChange={(e) => setForm({ ...form, referenceCategoryId: e.target.value })}
-              className="w-full px-3 py-2 rounded-md bg-zinc-800 text-white"
-            >
-              {defaultCategories.map((cat) => (
-                <option key={cat._id} value={cat._id}>
-                  {cat.name}
-                </option>
-              ))}
-            </select>
+            <Label>Category</Label>
+            <CategoryRadioGroup
+              categories={categories ?? []}
+              selectedCategory={category}
+              onSelect={setCategory}
+            />
           </div>
-        </div>
+          </div>
 
         <DrawerFooter className="mt-4">
           <Button onClick={handleSubmit}>Add</Button>
