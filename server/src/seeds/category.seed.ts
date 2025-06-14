@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 import dotenv from "dotenv";
-import { Category } from "../models/category.model";
+import { Category } from "../models/category.model.js";
 
 dotenv.config();
 const CLOUDINARY_BASE_URL = "https://res.cloudinary.com/dz1hss7pf/image/upload/v1749269692"

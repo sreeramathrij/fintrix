@@ -1,6 +1,6 @@
 import { Response } from "express";
 
-import { AuthRequest } from "../middlewares/verifyJWT.middleware";
+import { AuthRequest } from "../middlewares/verifyJWT.middleware.js";
 
 export const getMyProfile = async (req: AuthRequest, res: Response): Promise<void> => {
   try {

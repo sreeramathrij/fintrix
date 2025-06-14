@@ -1,8 +1,8 @@
 import { Response } from "express";
 
-import { AuthRequest } from "../middlewares/verifyJWT.middleware";
-import { Category } from "../models/category.model";
-import { categorySchema } from "../schemas/category.schema";
+import { AuthRequest } from "../middlewares/verifyJWT.middleware.js";
+import { Category } from "../models/category.model.js";
+import { categorySchema } from "../schemas/category.schema.js";
 import mongoose from "mongoose";
 
 export const createCategory = async (req: AuthRequest, res:Response): Promise<void> => {

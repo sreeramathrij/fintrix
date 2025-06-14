@@ -2,9 +2,9 @@ import { Response } from "express";
 import dayjs from "dayjs";
 import mongoose from "mongoose";
 
-import { AuthRequest } from "../middlewares/verifyJWT.middleware";
-import { ScheduledTransaction } from "../models/scheduledTransaction.model";
-import { scheduledTransactionsSchema } from "../schemas/scheduledTransaction.schema";
+import { AuthRequest } from "../middlewares/verifyJWT.middleware.js";
+import { ScheduledTransaction } from "../models/scheduledTransaction.model.js";
+import { scheduledTransactionsSchema } from "../schemas/scheduledTransaction.schema.js";
 
 export const createScheduledTransaction = async (req: AuthRequest, res: Response): Promise<void> => {
   try {

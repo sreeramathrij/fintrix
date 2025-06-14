@@ -1,11 +1,11 @@
 import { Request, Response } from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
-import { User } from "../models/user.model";
-import { registerSchema, loginSchema } from "../schemas/auth.schema";
-import { JWT_SECRET } from "../utils/jwtSecret";
-import { AuthRequest } from "../middlewares/verifyJWT.middleware";
-import cloudinary from "../utils/cloudinary";
+import { User } from "../models/user.model.js";
+import { registerSchema, loginSchema } from "../schemas/auth.schema.js";
+import { JWT_SECRET } from "../utils/jwtSecret.js";
+import { AuthRequest } from "../middlewares/verifyJWT.middleware.js";
+import cloudinary from "../utils/cloudinary.js";
 
 
 export const registerUser = async (req: Request, res: Response): Promise<void> => {

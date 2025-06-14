@@ -1,9 +1,7 @@
 import mongoose from "mongoose";
-import { Transaction } from "../models/transaction.model";
-import { Budget } from "../models/budget.model";
-import { ScheduledTransaction } from "../models/scheduledTransaction.model";
-import { Category } from "../models/category.model";
-import { User } from "../models/user.model"; // Assuming user model exists
+import { Transaction } from "../models/transaction.model.js";
+import { Category } from "../models/category.model.js";
+import { User } from "../models/user.model.js"; // Assuming user model exists
 import dotenv from "dotenv";
 
 dotenv.config();

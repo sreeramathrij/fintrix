@@ -2,11 +2,11 @@ import { Response } from "express";
 import mongoose from "mongoose";
 import dayjs from 'dayjs'
 
-import { AuthRequest } from "../middlewares/verifyJWT.middleware";
-import { Budget } from "../models/budget.model";
-import { Transaction } from "../models/transaction.model";
-import { Category } from "../models/category.model";
-import { budgetSchema } from "../schemas/budget.schema";
+import { AuthRequest } from "../middlewares/verifyJWT.middleware.js";
+import { Budget } from "../models/budget.model.js";
+import { Transaction } from "../models/transaction.model.js";
+import { Category } from "../models/category.model.js";
+import { budgetSchema } from "../schemas/budget.schema.js";
 
 
 export const upsertBudget = async (req: AuthRequest, res: Response): Promise<void> => {

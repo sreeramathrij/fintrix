@@ -6,7 +6,7 @@ import {
   editTransaction,
   getOneTransaction,
   getTransactionsInRange
-} from "../controllers/transaction.controller";
+} from "../controllers/transaction.controller.js";
 
 const router = express.Router();
 

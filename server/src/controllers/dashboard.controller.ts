@@ -1,7 +1,7 @@
 import e, { Response } from "express";
 
-import { AuthRequest } from "../middlewares/verifyJWT.middleware";
-import { Transaction } from "../models/transaction.model";
+import { AuthRequest } from "../middlewares/verifyJWT.middleware.js";
+import { Transaction } from "../models/transaction.model.js";
 import mongoose from "mongoose";
 import { format } from "path";
 

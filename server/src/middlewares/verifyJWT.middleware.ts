@@ -2,8 +2,8 @@ import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import { HydratedDocument } from "mongoose";
 
-import { User, IUser } from "../models/user.model";
-import { JWT_SECRET } from "../utils/jwtSecret";
+import { User, IUser } from "../models/user.model.js";
+import { JWT_SECRET } from "../utils/jwtSecret.js";
 
 export interface AuthRequest extends Request {
   user?: HydratedDocument<Omit<IUser, "password">>

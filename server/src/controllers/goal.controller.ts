@@ -1,8 +1,7 @@
-import { AuthRequest } from "../middlewares/verifyJWT.middleware";
+import { AuthRequest } from "../middlewares/verifyJWT.middleware.js";
 import { Response } from "express";
-import { goalSchema } from "../schemas/goals.schema";
-import { Goal } from "../models/goal.model";
-import { parse } from "path";
+import { goalSchema } from "../schemas/goals.schema.js";
+import { Goal } from "../models/goal.model.js";
 
 export const createGoal = async (req: AuthRequest, res: Response): Promise<void> => {
   try {

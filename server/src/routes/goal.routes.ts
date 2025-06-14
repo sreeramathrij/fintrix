@@ -4,8 +4,8 @@ import {
   getGoals,
   updateGoal,
   deleteGoal,
-} from "../controllers/goal.controller";
-import { verifyJWT } from "../middlewares/verifyJWT.middleware";
+} from "../controllers/goal.controller.js";
+import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 
 const router = express.Router();
 
