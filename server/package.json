@@ -8,7 +8,7 @@
     "seed:categories": "ts-node src/seeds/category.seed.ts",
     "seed:multiple": "ts-node src/seeds/multiple.seed.ts",
     "build": "tsc",
-    "start": "node dist/index.js"
+    "start": "node --import tsx dist/index.js"
   },
   "keywords": [],
   "author": "",
