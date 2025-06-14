@@ -10,6 +10,7 @@ import {
 import { Card, CardContent } from "@/components/ui/card"
 import { Palette, Home, Globe, Moon } from "lucide-react"
 import { useTheme } from "../context/ThemeProvider"
+import BackButton from "./BackButton"
 
 
 
@@ -54,6 +55,8 @@ useEffect(() => {
 }, [accentColor])
 
   return (
+    <div className="p-4">
+      <BackButton/>
     <div className="px-4 py-6 sm:px-6 md:px-8 max-w-2xl mx-auto">
       <h1 className="text-2xl font-bold mb-6">Settings</h1>
 
@@ -137,6 +140,7 @@ useEffect(() => {
         </Card>
 
       </div>
+    </div>
     </div>
   )
 }

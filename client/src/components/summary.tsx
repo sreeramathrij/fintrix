@@ -10,6 +10,7 @@ import { useMemo } from "react";
 import TransactionList from "./TransactionList"
 import { useTransactionsStore } from "@/store/useTranscationStore"
 import { motion, AnimatePresence } from "motion/react"
+import BackButton from "./BackButton"
 
 
 type PayloadItem = {
@@ -101,6 +102,8 @@ export default function SpendingSummary() {
   ];
 
   return (
+    <div className="p-4">
+      <BackButton/>
     <div className="p-4 min-h-screen bg-background text-primary space-y-4">
       {/* Header */}
       <div className="flex justify-between items-center">
@@ -200,6 +203,7 @@ export default function SpendingSummary() {
           }
         </div>
       </div>
+    </div>
     </div>
   )
 }
