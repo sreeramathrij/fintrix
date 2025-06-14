@@ -17,7 +17,7 @@ export const getDashboardSummary = async (req: AuthRequest, res: Response):Promi
       user: userId,
     }
 
-    match.createdAt = {
+    match.date = {
       $gte: new Date(from as string),
       $lte: new Date(to as string),
     };
@@ -34,6 +34,7 @@ export const getDashboardSummary = async (req: AuthRequest, res: Response):Promi
         },
       },
     ]);
+
     let totalIncome = 0;
     let totalExpense = 0;
     let incomeCount = 0;
@@ -43,7 +44,7 @@ export const getDashboardSummary = async (req: AuthRequest, res: Response):Promi
       if( tx._id === "income") {
         totalIncome = tx.total;
         incomeCount = tx.count;
-      }else if(tx._id === "expense"){
+      } else if(tx._id === "expense"){
         totalExpense = tx.total;
         expenseCount = tx.count;
       }

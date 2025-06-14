@@ -81,6 +81,7 @@ export default function SpendingSummary() {
   const [to, setTo] = useState(`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`)
   
   useEffect(()=> {
+    console.log(from, to);
     getRecentTransactions();
     getTransactionSummaryByCategory(from, to);
     getDashboardSummary(from, to);
@@ -114,11 +115,26 @@ export default function SpendingSummary() {
         <Button variant="ghost" className="text-primary font-medium px-4 py-2 rounded-lg">
           <Calendar size={16} className="mr-2" /> {filterPeriod}
         </Button>
-        <Button size="icon" variant="ghost">
-          <TransactionFilterDrawer onApply={(filters) => {
-            console.log("Filters Applied:", filters);
-          }} />
-        </Button>
+        <TransactionFilterDrawer
+          onApply={({ dateRange }) => {
+            if (dateRange?.from && dateRange?.to) {
+              const fromStr = dateRange.from.toISOString().split("T")[0];
+              const toStr = dateRange.to.toISOString().split("T")[0];
+
+              setFrom(fromStr);
+              setTo(toStr);
+
+              const formatDate = (d: Date) =>
+                `${d.getDate().toString().padStart(2, "0")}/${(d.getMonth() + 1).toString().padStart(2, "0")}/${d.getFullYear()}`;
+
+              if (fromStr === toStr) {
+                setFilterPeriod(`On ${formatDate(dateRange.from)}`);
+              } else {
+                setFilterPeriod(`${formatDate(dateRange.from)} - ${formatDate(dateRange.to)}`);
+              }
+            }
+          }}
+        />
       </div>
 
       {/* Net Total Card */}
@@ -131,7 +147,7 @@ export default function SpendingSummary() {
       {/* Expense and Income Card */}
       
       <div className="flex flex-col lg:flex-row gap-8">
-        <div>
+        <div className="flex-1">
           <Card className="bg-card p-4">
             <div className="flex justify-between">
               <div>
@@ -144,7 +160,7 @@ export default function SpendingSummary() {
               </div>
             </div>
           </Card>
-          <div className="flex-1 h-60 w-full mx-auto my-6">
+          <div className="h-60 w-full mx-auto my-6">
             <Tabs defaultValue={viewMode} onValueChange={setViewMode} className="">
               <TabsList className="grid grid-cols-2 bg-muted rounded-xl">
                 <TabsTrigger value="expense" className="text-red-400">Outgoing</TabsTrigger>
@@ -177,11 +193,12 @@ export default function SpendingSummary() {
             )}
           </div>
         </div>
-        {groupedTransactions &&
-          <div className="flex-1">
-          <TransactionList groupedTransactions={groupedTransactions} editable={false} />
-          </div>
-        }
+        
+        <div className="flex-1">
+          {groupedTransactions &&
+            <TransactionList groupedTransactions={groupedTransactions} editable={false} />
+          }
+        </div>
       </div>
     </div>
   )
