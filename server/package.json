@@ -7,7 +7,7 @@
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "seed:categories": "ts-node src/seeds/category.seed.ts",
     "seed:multiple": "ts-node src/seeds/multiple.seed.ts",
-    "start": "node src/index.ts"
+    "start": "ts-node src/index.ts"
   },
   "keywords": [],
   "author": "",
