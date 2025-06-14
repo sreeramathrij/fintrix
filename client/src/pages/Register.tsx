@@ -36,8 +36,8 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen bg-background flex items-center justify-center px-4">
-      <div className="w-full max-w-6xl grid grid-cols-1 md:grid-cols-2 bg-secondary rounded-3xl shadow-2xl overflow-hidden">
+    <div className="py-20 bg-background flex items-center justify-center px-4">
+      <div className="w-full h-full max-w-6xl grid grid-cols-1 md:grid-cols-2 bg-secondary rounded-3xl shadow-2xl overflow-hidden">
         
         {/* Left Panel: Form */}
         <motion.div
@@ -52,7 +52,7 @@ export default function RegisterPage() {
             
           </div>
 
-          <h2 className="text-3xl font-semibold mb-6">Create Account 👋</h2>
+          <h2 className="text-3xl font-semibold mb-6">Create Account </h2>
 
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
@@ -153,7 +153,7 @@ export default function RegisterPage() {
       Fintrix
     </motion.h1>
     <div className="bold">
-        --Track smarter. Spend better. Save more--
+        Track smarter. Spend better. Save more
       </div>
         </div>
    </motion.div>
