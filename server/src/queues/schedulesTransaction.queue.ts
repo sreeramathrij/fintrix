@@ -1,7 +1,7 @@
 import Bull from "bull";
 
-import { ScheduledTransaction } from "../models/scheduledTransaction.model";
-import { Transaction } from "../models/transaction.model";
+import { ScheduledTransaction } from "../models/scheduledTransaction.model.js";
+import { Transaction } from "../models/transaction.model.js";
 
 const scheduledQueue = new Bull("scheduled-transaction", {
   redis: {

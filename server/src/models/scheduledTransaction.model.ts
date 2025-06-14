@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export interface IScheduledTransaction extends mongoose.Document {
+export interface IScheduledTransaction {
   user: mongoose.Schema.Types.ObjectId;
   title: string;
   amount: number;

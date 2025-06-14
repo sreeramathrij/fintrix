@@ -6,8 +6,8 @@ import {
   getBudgetById,
   getBudgetSummaryByMonth,
   getBudgetSummaryById,
-} from "../controllers/budget.controller";
-import { verifyJWT } from "../middlewares/verifyJWT.middleware";
+} from "../controllers/budget.controller.js";
+import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 
 const router = express.Router();
 

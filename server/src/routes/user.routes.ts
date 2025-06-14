@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getMyProfile } from "../controllers/user.controller";
-import { verifyJWT } from "../middlewares/verifyJWT.middleware";
+import { getMyProfile } from "../controllers/user.controller.js";
+import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 
 const router = Router();
 

@@ -1,5 +1,5 @@
 import express from "express";
-import { verifyJWT } from "../middlewares/verifyJWT.middleware";
+import { verifyJWT } from "../middlewares/verifyJWT.middleware.js";
 import {
   addTransaction,
   deleteTransaction,

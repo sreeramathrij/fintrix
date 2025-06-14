@@ -1,6 +1,6 @@
 import { HydratedDocument } from "mongoose";
-import { IScheduledTransaction, ScheduledTransaction } from "../models/scheduledTransaction.model";
-import { scheduledQueue } from "../queues/schedulesTransaction.queue";
+import { IScheduledTransaction, ScheduledTransaction } from "../models/scheduledTransaction.model.js";
+import { scheduledQueue } from "../queues/schedulesTransaction.queue.js";
 
 export const enqueueScheduledtransaction = async () => {
   const now = new Date();

@@ -6,8 +6,8 @@ import {
   getDailyTrends,
   getRecentTransactions,
   getTransactionSummaryByCategory
-} from "../controllers/dashboard.controller";
-import { verifyJWT } from '../middlewares/verifyJWT.middleware';
+} from "../controllers/dashboard.controller.js";
+import { verifyJWT } from '../middlewares/verifyJWT.middleware.js';
 
 const router = express.Router();
 

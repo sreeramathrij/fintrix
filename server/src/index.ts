@@ -7,17 +7,17 @@ import cron from "node-cron"
 
 import path from "path";
 
-import { connectDB } from "./config/db";
-import { enqueueScheduledtransaction } from "./jobs/scheduler";
+import { connectDB } from "./config/db.js";
+import { enqueueScheduledtransaction } from "./jobs/scheduler.js";
 
-import authRoutes from "./routes/auth.routes"
-import userRoutes from "./routes/user.routes"
-import transactionRoutes from "./routes/transaction.routes"
-import categoryRoutes from "./routes/category.routes"
-import dashboardRoutes from "./routes/dashboard.routes"
-import budgetRoutes from "./routes/budget.routes"
-import scheduledRoutes from "./routes/scheduled.routes"
-import goalRoutes from "./routes/goal.routes"
+import authRoutes from "./routes/auth.routes.js"
+import userRoutes from "./routes/user.routes.js"
+import transactionRoutes from "./routes/transaction.routes.js"
+import categoryRoutes from "./routes/category.routes.js"
+import dashboardRoutes from "./routes/dashboard.routes.js"
+import budgetRoutes from "./routes/budget.routes.js"
+import scheduledRoutes from "./routes/scheduled.routes.js"
+import goalRoutes from "./routes/goal.routes.js"
 
 dotenv.config();
 
