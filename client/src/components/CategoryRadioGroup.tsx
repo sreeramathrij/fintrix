@@ -12,17 +12,19 @@ interface CategoryRadioGroupProps {
   categories: Category[];
   selectedCategory?: string;
   onSelect: (categoryId?: string) => void;
+  type: "income" | "expense",
 }
 
 const CategoryRadioGroup = ({
   categories,
   selectedCategory,
   onSelect,
+  type,
 }: CategoryRadioGroupProps) => {
   return (
     <div className="space-y-2">
       <div className="flex flex-wrap gap-4">
-        {categories.filter(tx => tx.type === "expense").map((cat) => (
+        {categories.filter(tx => tx.type === type).map((cat) => (
           <div
             key={cat._id}
             className="group relative flex flex-col justify-start items-center"

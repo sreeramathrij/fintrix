@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Button } from "@/components/ui/button";
-import { Search, Filter, Plus } from "lucide-react";
+import { Search, Plus } from "lucide-react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import Sidebar from "@/components/Sidebar";
 import { Input } from "@/components/ui/input";

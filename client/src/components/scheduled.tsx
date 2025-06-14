@@ -1,14 +1,35 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { Plus, Search } from "lucide-react"
 import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
+import { Switch } from "@/components/ui/switch"
+import { AddScheduledTransactionDrawer } from "./AddScheduledDrawer"
+import { useScheduledTransactionStore } from "@/store/useScheduledTransacitonStore"
+import { Loader2 } from "lucide-react";
 
 export default function ScheduledPage() {
-  const [period, setPeriod] = useState("Monthly")
   const [tab, setTab] = useState("All")
 
-  const periods = ["Monthly", "Yearly", "Total"]
   const tabs = ["All", "Upcoming", "Overdue"]
+  const [loadingId, setLoadingId] = useState<string | null>(null);
+
+  const { scheduledTransactions, getScheduledTransaction, toggleScheduledTransaction } = useScheduledTransactionStore();
+
+
+  const handleToggle = async (id: string) => {
+  try {
+    setLoadingId(id);
+    await toggleScheduledTransaction(id); // wait for it to finish
+  } catch (err) {
+    console.error("Toggle failed:", err);
+  } finally {
+    setLoadingId(null);
+  }
+};
+
+  useEffect(() => {
+    getScheduledTransaction();
+  }, []);
 
   return (
     <div className="flex flex-col px-4 sm:px-6 pt-6 pb-24 items-center mx-auto w-full min-h-[100dvh] bg-background">
@@ -21,24 +42,6 @@ export default function ScheduledPage() {
       <div className="text-center mb-6">
         <div className="text-4xl font-bold tracking-wide">₹0</div>
         <p className="text-sm text-muted-foreground">Averaged monthly upcoming</p>
-      </div>
-
-      {/* Period Filter */}
-      <div className="flex justify-center gap-3 mb-6 flex-wrap">
-        {periods.map((p) => (
-          <button
-            key={p}
-            onClick={() => setPeriod(p)}
-            className={cn(
-              "px-4 py-1.5 rounded-full text-sm font-medium transition",
-              period === p
-                ? "bg-muted text-primary"
-                : "bg-background border border-border text-muted-foreground"
-            )}
-          >
-            {p}
-          </button>
-        ))}
       </div>
 
       {/* Tab Selector */}
@@ -63,23 +66,33 @@ export default function ScheduledPage() {
       </div>
 
       {/* Empty State */}
-      <div className="flex flex-col items-center justify-center text-center text-muted-foreground mt-12 px-4">
-        <img
-          src="/no-transactions.png"
-          alt="No transactions"
-          className="w-56 h-56 sm:w-64 sm:h-64 object-contain mb-4"
-        />
-        <p className="text-sm">No transactions found.</p>
-      </div>
+      {scheduledTransactions && scheduledTransactions.length > 0 ? scheduledTransactions?.map((txn) => (
+        <div key={txn._id} className="w-full flex justify-between items-center bg-muted p-4 rounded-lg mb-2">
+          <div>
+            <p className="font-semibold">{txn.title}</p>
+            <p className="text-sm text-muted-foreground">₹{txn.amount} | Next payment - {`${new Date(txn.nextRun).toLocaleString("en-US", {year:"numeric", month: "long", day: "numeric"})}`}</p>
+          </div>
+          <div className="flex items-center gap-2">
+            <Switch
+              checked={txn.active}
+              onCheckedChange={() => handleToggle(txn._id)}
+              disabled={loadingId === txn._id}
+            />
+          </div>
+        </div>
+      )) : 
+        <div className="flex flex-col items-center justify-center text-center text-muted-foreground mt-12 px-4">
+          <img
+            src="/no-transactions.png"
+            alt="No transactions"
+            className="w-56 h-56 sm:w-64 sm:h-64 object-contain mb-4"
+          />
+          <p className="text-sm">No transactions found.</p>
+        </div>
+      }
 
       {/* Floating Add Button */}
-      <Button
-        variant="ghost"
-        size="icon"
-        className="fixed bottom-6 right-6 sm:bottom-8 sm:right-8 rounded-2xl bg-muted text-foreground shadow-lg"
-      >
-        <Plus />
-      </Button>
+      <AddScheduledTransactionDrawer />
     </div>
   )
 }
