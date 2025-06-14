@@ -1,12 +1,16 @@
-// src/pages/AboutPage.tsx
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import { Github, Linkedin } from "lucide-react"
 import { motion } from "framer-motion"
+import BackButton from "./BackButton"
 
 export default function AboutPage() {
   return (
+    
     <div className="min-h-screen bg-background py-10 px-4 md:px-16">
+      <div className="absolute top-4 left-4 z-10">
+    <BackButton />
+  </div>
       <div className="max-w-4xl mx-auto space-y-12">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -120,5 +124,6 @@ export default function AboutPage() {
         </div>
       </div>
     </div>
+   
   )
 }

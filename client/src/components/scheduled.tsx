@@ -1,11 +1,9 @@
 import { useEffect, useState } from "react"
-import { Plus, Search } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { Switch } from "@/components/ui/switch"
 import { AddScheduledTransactionDrawer } from "./AddScheduledDrawer"
 import { useScheduledTransactionStore } from "@/store/useScheduledTransacitonStore"
-import { Loader2 } from "lucide-react";
+import BackButton from "./BackButton"
 
 export default function ScheduledPage() {
   const [tab, setTab] = useState("All")
@@ -32,9 +30,14 @@ export default function ScheduledPage() {
   }, []);
 
   return (
+   
+      
     <div className="flex flex-col px-4 sm:px-6 pt-6 pb-24 items-center mx-auto w-full min-h-[100dvh] bg-background">
       {/* Header */}
-      <div className="mb-6 w-full">
+      <div className="relative mb-4 w-full">
+        <div className="relative right-4 pb-4">
+        <BackButton/>
+        </div>
         <h1 className="text-2xl font-bold ">Scheduled</h1>
       </div>
 
@@ -60,9 +63,7 @@ export default function ScheduledPage() {
             </button>
           ))}
         </div>
-        <Button variant="ghost" size="icon" className="rounded-full">
-          <Search className="h-5 w-5" />
-        </Button>
+        
       </div>
 
       {/* Empty State */}
@@ -94,5 +95,6 @@ export default function ScheduledPage() {
       {/* Floating Add Button */}
       <AddScheduledTransactionDrawer />
     </div>
+    
   )
 }

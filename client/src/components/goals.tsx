@@ -18,6 +18,7 @@ import {
   AlertDialogCancel,
   AlertDialogAction,
 } from "@/components/ui/alert-dialog"
+import BackButton from "./BackButton"
 
 
 export default function GoalsPage() {
@@ -39,10 +40,13 @@ export default function GoalsPage() {
 
  
   return (
-    <div className="p-4 space-y-4 min-h-screen bg-background text-primary">
-      <div className="flex justify-between items-center">
-        <h1 className="text-2xl font-bold">Goals</h1>
-      </div>
+    <div className="p-4 min-h-screen bg-background">
+  <div className="relative flex flex-col  justify-between mb-4">
+    <div className="relative right-4 gap-2">
+    <BackButton />
+    </div>
+    <h1 className="text-2xl font-bold">Goals</h1>
+  </div>
 
       {/* Dialog wrapping only the large + */}
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
@@ -134,5 +138,6 @@ export default function GoalsPage() {
 
                     </div>
                   </div>
+           
                 )
               }
