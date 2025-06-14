@@ -6,6 +6,7 @@ import {
   TooltipProvider,
 } from "@/components/ui/tooltip"
 import { cn } from "@/lib/utils"
+import BackButton from "./BackButton"
 
 interface DayData {
   date: string
@@ -100,6 +101,8 @@ export default function GitHubStyleHeatmap() {
   const weeks = groupDataByWeek(data)
 
   return (
+    <div className="p-4">
+      <BackButton/>
     <TooltipProvider>
       <div className="w-full max-w-5xl mx-auto p-6">
         <h1 className="text-2xl font-bold mb-6 text-center text-primary">
@@ -184,5 +187,6 @@ export default function GitHubStyleHeatmap() {
         </div>
       </div>
     </TooltipProvider>
+    </div>
   )
 }
