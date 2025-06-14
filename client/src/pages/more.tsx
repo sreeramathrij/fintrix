@@ -65,7 +65,7 @@ export default function MoreScreen() {
     {
        name:"Utilities",
       items: [
-        { icon: Wallet, label: "Accounts", link: "/accounts" },
+        
         { icon: BarChart2, label: "Budgets", link: "/budgets" },
         { icon: Tag, label: "Categories", link: "/categories" },
    
