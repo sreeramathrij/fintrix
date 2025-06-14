@@ -1,5 +1,4 @@
 import { useState,useEffect } from "react"
-
 import {
   Select,
   SelectContent,
@@ -94,16 +93,16 @@ useEffect(() => {
               <p className="font-medium">Theme Mode</p>
               <p className="text-sm text-muted-foreground">Select light or dark theme</p>
             </div>
-            <Select  value={theme || "system"} onValueChange={(val) => setTheme(val)}>
-  <SelectTrigger className="min-w-[80px] w-auto focus-visible:outline-none">
-    <SelectValue placeholder="Dark" />
-  </SelectTrigger>
-  <SelectContent>
-    <SelectItem value="light">Light</SelectItem>
-    <SelectItem value="dark">Dark</SelectItem>
-    <SelectItem value="system">System</SelectItem>
-  </SelectContent>
-</Select>
+            <Select  value={theme || "system"} onValueChange={(val) => setTheme(val as "dark" | "light")}>
+              <SelectTrigger className="min-w-[80px] w-auto focus-visible:outline-none">
+                <SelectValue placeholder="Dark" />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="light">Light</SelectItem>
+                <SelectItem value="dark">Dark</SelectItem>
+                <SelectItem value="system">System</SelectItem>
+              </SelectContent>
+            </Select>
           </CardContent>
         </Card>
 

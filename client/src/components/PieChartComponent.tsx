@@ -2,12 +2,11 @@ import { useDashboardStore } from '@/store/useDashboardStore';
 import { useEffect, useState } from 'react';
 import { PieChart, Pie, Sector, Cell, ResponsiveContainer, Tooltip } from 'recharts';
 
-const COLORS =["#5f5", "#f11"]
 
 const PieChartComponent = () => {
 
   const { summary, getDashboardSummary } = useDashboardStore();
-  const [pieData, setPieData] = useState([]);
+  const [pieData, setPieData] = useState<{name: string, amount: number}[]>([]);
 
   const getMonthStartAndEnd = (date = new Date()) => {
     const year = date.getFullYear();
@@ -32,7 +31,7 @@ const PieChartComponent = () => {
 
   const [activeIndex, setActiveIndex] = useState(3);
   const onPieEnter = (_: any, index: number) => setActiveIndex(index);
-  const onPieLeave = () => setActiveIndex(null);
+  const onPieLeave = () => setActiveIndex(3);
 
   useEffect(() => {
     getDashboardSummary(from, to);
@@ -91,16 +90,9 @@ const PieChartComponent = () => {
 
 const renderActiveShape = (props: any) => {
   const {
-    cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle, fill
+    cx, cy, innerRadius, outerRadius, startAngle, endAngle, fill
   } = props;
-
-  const RADIAN = Math.PI / 180;
   
-  const sin = Math.sin(-RADIAN * midAngle);
-  const cos = Math.cos(-RADIAN * midAngle);
-  const sx = cx + (outerRadius + 10) * cos;
-  const sy = cy + (outerRadius + 10) * sin;
-
   return (
     <g>
       <Sector

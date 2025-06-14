@@ -9,7 +9,7 @@ import {
   ResponsiveContainer
 } from 'recharts'
 
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 
 
 type RecordInput = {
@@ -28,7 +28,7 @@ type RecordOutput = {
 const AreaChartComponent = () => {
 
   const { dailyTrends, getDailyTrends } = useDashboardStore();
-  const [ chartData, setChartData ] = useState([]);
+  const [ chartData, setChartData ] = useState<RecordOutput[]>([]);
 
   const today = new Date();
   const month = String(today.getMonth() + 1).padStart(2, '0');

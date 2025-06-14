@@ -36,10 +36,6 @@ export function AddCategoryDrawer() {
 
   const filteredCategories = categories?.filter(cat => cat.createdBy === null);
 
-  // Filter default (immutable) categories
-  const defaultCategories =
-    categories?.filter((cat) => cat.createdBy === null && cat.type === form.type) || [];
-
   const handleSubmit = async () => {
     if (!form.name.trim()) return;
 
@@ -103,7 +99,7 @@ export function AddCategoryDrawer() {
             <CategoryRadioGroup
               categories={filteredCategories ?? []}
               selectedCategory={category}
-              onSelect={setCategory}
+              onSelect={setCategory as (categoryId?: string | undefined) => void}
               type={form.type}
             />
           </div>

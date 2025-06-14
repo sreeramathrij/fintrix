@@ -9,15 +9,11 @@ import {
   DrawerTrigger
 } from "@/components/ui/drawer";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, FilterIcon } from "lucide-react";
+import { FilterIcon } from "lucide-react";
 import { useState } from "react";
 import { type DateRange } from "react-day-picker";
 import { DateRangePicker } from "./ui/date-range-picker";
 
-
-type FilterDrawerProps = {
-  onApply: (filters: { from: string; to: string }) => void;
-};
 
 export function TransactionFilterDrawer({ onApply }: {
   onApply: (filters: {
@@ -27,7 +23,7 @@ export function TransactionFilterDrawer({ onApply }: {
 }) {
   const [open, setOpen] = useState(false);
   const [dateRange, setDateRange] = useState<DateRange | undefined>(undefined);
-  const [categoryId, setCategoryId] = useState<string | null>(null);
+  const [categoryId] = useState<string | null>(null);
 
   return (
     <Drawer open={open} onOpenChange={setOpen}>

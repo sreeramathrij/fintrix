@@ -3,27 +3,11 @@ import {
 } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import { CalendarIcon, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useScheduledTransactionStore } from "@/store/useScheduledTransacitonStore";
 import CategoryRadioGroup from "./CategoryRadioGroup";
 import { useCategoryStore } from "@/store/useCategoryStore";
-
-
-interface ScheduledTransaction {
-  _id: string;
-  user: string;
-  title: string;
-  amount: number;
-  type: "income" | "expense";
-  category: string;
-  startDate: string;
-  frequency: "daily" | "weekly" | "monthly";
-  nextRun: string;
-  active: boolean
-  createdAt: string;
-  updatedAt: string;
-}
 
 
 export function AddScheduledTransactionDrawer() {
@@ -31,20 +15,16 @@ export function AddScheduledTransactionDrawer() {
   const [form, setForm] = useState({
     title: "",
     amount: 0,
-    type: "expense",
+    type: "expense" as "expense" | "income",
     category: "",
     startDate: new Date().toISOString().split("T")[0],
-    frequency: "monthly",
+    frequency: "monthly" as "monthly" | "weekly" | "daily",
   });
 
   const { categories, getCategories } = useCategoryStore();
   const [category, setCategory] = useState<string>("");
 
-  const { createScheduledTransaction, scheduledTransactions, getScheduledTransactions } = useScheduledTransactionStore();
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }));
-  };
+  const { createScheduledTransaction } = useScheduledTransactionStore();
 
   const handleSubmit = () => {
     createScheduledTransaction({
@@ -97,7 +77,7 @@ export function AddScheduledTransactionDrawer() {
             value={form.type}
             onChange={(e) => {setForm(prev => ({
               ...prev,
-              type: e.target.value,
+              type: e.target.value as "expense" | "income",
             }))}}
             className="w-full p-2 border bg-background rounded"
           >
@@ -108,7 +88,7 @@ export function AddScheduledTransactionDrawer() {
           <CategoryRadioGroup
             categories={categories ?? []}
             selectedCategory={category}
-            onSelect={setCategory}
+            onSelect={setCategory as (categoryId?: string | undefined) => void}
             type={form.type as "income" | "expense"}
           />
 
@@ -126,7 +106,7 @@ export function AddScheduledTransactionDrawer() {
             value={form.frequency}
             onChange={(e) => {setForm(prev => ({
               ...prev,
-              frequency: e.target.value,
+              frequency: e.target.value as "monthly" | "weekly" | "daily",
             }))}}
             className="w-full p-2 bg-background border rounded"
           >

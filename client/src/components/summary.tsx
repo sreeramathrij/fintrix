@@ -2,11 +2,10 @@ import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Calendar,Filter } from "lucide-react"
+import { Calendar } from "lucide-react"
 import { TransactionFilterDrawer } from "./TransactionFilterDrawer"
 import { PieChart, Pie, Cell, Tooltip, ResponsiveContainer } from "recharts";
 import { useDashboardStore } from "@/store/useDashboardStore";
-import { useMemo } from "react";
 import TransactionList from "./TransactionList"
 import { useTransactionsStore } from "@/store/useTranscationStore"
 import { motion, AnimatePresence } from "motion/react"
@@ -30,7 +29,6 @@ type Props = {
 const CustomTooltip: React.FC<Props> = ({ active, payload }) => {
   if (active && payload && payload.length > 0) {
     const item = payload[0];
-    const { name, value, payload: { picture } } = item;
 
     return (
     <AnimatePresence>
@@ -184,7 +182,7 @@ export default function SpendingSummary() {
                     outerRadius={100}
                     fill="#8884d8"
                   >
-                    {pieData.map((entry, index) => (
+                    {pieData.map((_, index) => (
                       <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                     ))}
                   </Pie>

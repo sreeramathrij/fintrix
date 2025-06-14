@@ -1,7 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import {
-  Pencil,
-} from "lucide-react";
+import { useEffect, useMemo } from "react";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { motion } from "motion/react";
 import Sidebar from "@/components/Sidebar";
@@ -49,7 +46,7 @@ export default function BudgetsScreen() {
           <h1 className="text-3xl font-bold tracking-tight">Budgets</h1>
           <div className="flex items-center gap-2">
             <ThemeToggle/>
-        </div>
+          </div>
         </div>
 
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">

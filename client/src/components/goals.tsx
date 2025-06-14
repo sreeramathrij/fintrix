@@ -22,11 +22,11 @@ import BackButton from "./BackButton"
 
 
 export default function GoalsPage() {
-  const {goals,getGoals,createGoal,deleteGoal}=useGoalStore()
+  const {goals, getGoals, deleteGoal}=useGoalStore()
 
   const [dialogOpen, setDialogOpen] = useState(false)
 
-  const { categories, getCategories } = useCategoryStore()
+  const { getCategories } = useCategoryStore()
 
   useEffect(() => {
     getCategories()

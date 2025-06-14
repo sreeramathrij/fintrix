@@ -28,6 +28,13 @@ export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawer
     categoryId: selectedTransaction?.category || "",
     date:selectedTransaction?.date || new Date().toISOString().split("T")[0], // Default to today
   });
+
+  const changeDate = (date: Date | null) => {
+                    setForm((prev) => ({
+                    ...prev,
+                    date: date!.toISOString().split("T")[0],
+                    }))}
+
   useEffect(()=>{
     getCategories()
   },[])
@@ -134,7 +141,7 @@ export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawer
             <CategoryRadioGroup
               categories={categories ?? []}
               selectedCategory={category}
-              onSelect={setCategory}
+              onSelect={setCategory as (categoryId?: string | undefined) => void}
               type={form.type as "income" | "expense"}
             />
           </div>
@@ -142,16 +149,11 @@ export default function AddTransactionDrawer({open,setOpen}:AddTransactionDrawer
           <div className="flex flex-col gap-2">
             <Label>Date</Label>
            <DatePicker
-                selected={new Date(form.date)}
-                onChange={(date: Date) =>
-                    setForm((prev) => ({
-                    ...prev,
-                    date: date.toISOString().split("T")[0],
-                    }))
-                }
-  className="w-full p-2 border rounded-md bg-background text-primary"
-  dateFormat="yyyy-MM-dd"
-/>
+              selected={new Date(form.date)}
+              onChange={changeDate}
+              className="w-full p-2 border rounded-md bg-background text-primary"
+              dateFormat="yyyy-MM-dd"
+            />
           </div>
 
           <Button onClick={handleSubmit} className="w-full">

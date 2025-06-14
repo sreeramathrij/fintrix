@@ -40,7 +40,7 @@ const BudgetSummaryCard = ({
   editable = false,
   onDelete,
 }: BudgetSummaryProps) => {
-  const { getBudgetSummaryByMonth, budgetSummaries, isFetchingBudgetSummary, deleteBudget  } = useBudgetStore();
+  const { getBudgetSummaryByMonth, budgetSummaries, isFetchingBudgetSummary  } = useBudgetStore();
 
   useEffect(() => {
     categoryId ? getBudgetSummaryByMonth(month, categoryId) : getBudgetSummaryByMonth(month);

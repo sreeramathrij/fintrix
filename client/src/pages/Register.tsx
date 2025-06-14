@@ -36,24 +36,18 @@ export default function RegisterPage() {
   };
 
   return (
-    <div className="py-20 bg-background flex items-center justify-center px-4">
+    <div className="p-20 h-screen bg-background flex items-center justify-center">
       <div className="w-full h-full max-w-6xl grid grid-cols-1 md:grid-cols-2 bg-secondary rounded-3xl shadow-2xl overflow-hidden">
         
         {/* Left Panel: Form */}
         <motion.div
-  className="p-8 md:p-12"
-  initial={{ x: -50, opacity: 0 }}
-  animate={{ x: 0, opacity: 1 }}
-  transition={{ duration: 0.5, ease: "easeOut" }}
->
-        <div className="p-8 md:p-12">
-          <div className="flex items-center justify-between mb-4">
-            
-            
-          </div>
-
-          <h2 className="text-3xl font-semibold mb-6">Create Account </h2>
-
+          className="p-8 md:p-12 flex flex-col justify-center"
+          initial={{ x: -50, opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.5, ease: "easeOut" }}
+        >
+        <div className="p-8 md:p-12 w-full">
+          <h2 className="text-3xl font-semibold mb-6">Create Account</h2>
           <form className="space-y-4" onSubmit={handleSubmit}>
             <div>
               <label className="block text-sm font-medium mb-1">Name</label>

@@ -6,7 +6,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "seed:categories": "ts-node src/seeds/category.seed.ts",
-    "seed:multiple": "ts-node src/seeds/multiple.seed.ts"
+    "seed:multiple": "ts-node src/seeds/multiple.seed.ts",
+    "start": "node src/index.ts"
   },
   "keywords": [],
   "author": "",
@@ -23,6 +24,7 @@
     "dayjs": "^1.11.13",
     "dotenv": "^16.5.0",
     "express": "^5.1.0",
+    "fintrix": "file:..",
     "ioredis": "^5.6.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.15.1",

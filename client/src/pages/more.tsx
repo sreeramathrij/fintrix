@@ -3,7 +3,6 @@ import { Link } from "react-router-dom";
 import {
   User,
   Calendar,
-  Wallet,
   AlarmClock,
   PiggyBank,
   Settings,
