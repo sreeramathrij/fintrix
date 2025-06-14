@@ -28,24 +28,33 @@ export const getDashboardSummary = async (req: AuthRequest, res: Response):Promi
       { $match: match },
       {
         $group: {
-        _id: "$type",
-        total: { $sum: "$amount" },
+          _id: "$type",
+          total: { $sum: "$amount" },
+          count: { $sum: 1 }
         },
       },
     ]);
     let totalIncome = 0;
     let totalExpense = 0;
+    let incomeCount = 0;
+    let expenseCount = 0;
 
     for (const tx of transactions) {
-      if( tx._id === "income") totalIncome = tx.total;
-      if(tx._id === "expense") totalExpense = tx.total;
+      if( tx._id === "income") {
+        totalIncome = tx.total;
+        incomeCount = tx.count;
+      }else if(tx._id === "expense"){
+        totalExpense = tx.total;
+        expenseCount = tx.count;
+      }
     }
-
     res.status(200).json({
       data: {
         totalIncome,
         totalExpense,
         balance: totalIncome - totalExpense,
+        incomeCount,
+        expenseCount
       }
     })
 

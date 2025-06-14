@@ -121,7 +121,7 @@ export default function TransactionsScreen() {
 
         {/* Empty State */}
         {filteredTransactions && filteredTransactions.length > 0 ? (
-  <TransactionList groupedTransactions={filteredTransactions} />
+  <TransactionList groupedTransactions={filteredTransactions} editable={true} />
 ) : (
   <div className="flex flex-col items-center justify-center h-full mt-20 text-muted-foreground">
     <img

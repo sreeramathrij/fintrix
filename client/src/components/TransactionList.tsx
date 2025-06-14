@@ -28,9 +28,10 @@ type TransactionGroup = {
 
 type Props = {
   groupedTransactions: TransactionGroup[];
+  editable: boolean;
 };
 
-export default function TransactionList({ groupedTransactions }: Props) {
+export default function TransactionList({ groupedTransactions, editable }: Props) {
      const { setSelectedTransaction, deleteTransaction } = useTransactionsStore();
   return (
     <div className="space-y-6">
@@ -75,14 +76,16 @@ export default function TransactionList({ groupedTransactions }: Props) {
                   >
                     {tx.type === "income" ? "+" : "-"}₹{tx.amount}
                   </p>
+                  {editable && <>
                    <Pencil
-                  className="w-4 h-4 cursor-pointer hover:text-primary"
-                  onClick={() => setSelectedTransaction(tx)}
-                />
-                <Trash2
-                  className="w-4 h-4 text-destructive cursor-pointer hover:opacity-80"
-                  onClick={() => deleteTransaction(tx._id)}
-                />
+                      className="w-4 h-4 cursor-pointer hover:text-primary"
+                      onClick={() => setSelectedTransaction(tx)}
+                    />
+                    <Trash2
+                      className="w-4 h-4 text-destructive cursor-pointer hover:opacity-80"
+                      onClick={() => deleteTransaction(tx._id)}
+                    />
+                  </>}
                 </div>
 
                 </div>
