@@ -40,6 +40,9 @@ export const createCategory = async (req: AuthRequest, res:Response): Promise<vo
       }
 
       picture = refCategory.picture;
+    } else {
+      res.status(400).json({ message: "Reference picture not selected" });
+      return;
     }
 
     const newCategory = await Category.create({

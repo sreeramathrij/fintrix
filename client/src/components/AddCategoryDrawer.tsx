@@ -15,7 +15,7 @@ import { Label } from "@/components/ui/label";
 import CategoryRadioGroup from "./CategoryRadioGroup";
 
 export function AddCategoryDrawer() {
-  const [category, setCategory] = useState<string | undefined>(undefined);
+  const [category, setCategory] = useState("");
   const { categories, getCategories, addCategories } = useCategoryStore();
 
   const [open, setOpen] = useState(false);
@@ -27,10 +27,14 @@ export function AddCategoryDrawer() {
 
   // Fetch categories once when drawer opens
   useEffect(() => {
+    console.log(category)
+    setForm(prev => ({...prev, referenceCategoryId: category}))
     if (open && !categories) {
       getCategories();
     }
-  }, [open]);
+  }, [open, category]);
+
+  const filteredCategories = categories?.filter(cat => cat.createdBy === null);
 
   // Filter default (immutable) categories
   const defaultCategories =
@@ -59,7 +63,7 @@ export function AddCategoryDrawer() {
         </Button>
       </DrawerTrigger>
 
-      <DrawerContent className="p-4 bg-zinc-900 text-white">
+      <DrawerContent className="p-4 bg-background text-primary">
         <DrawerHeader>
           <DrawerTitle>Add New Category</DrawerTitle>
         </DrawerHeader>
@@ -71,7 +75,7 @@ export function AddCategoryDrawer() {
               placeholder="Category Name"
               value={form.name}
               onChange={(e) => setForm({ ...form, name: e.target.value })}
-              className="bg-zinc-800 border-none text-white"
+              className="bg-secondary border-none text-primary"
             />
           </div>
 
@@ -86,7 +90,7 @@ export function AddCategoryDrawer() {
                   referenceCategoryId: "", // reset selected default
                 });
               }}
-              className="w-full px-3 py-2 rounded-md bg-zinc-800 text-white"
+              className="w-full px-3 py-2 rounded-md bg-secondary text-primary"
             >
               <option value="expense">Expense</option>
               <option value="income">Income</option>
@@ -95,11 +99,12 @@ export function AddCategoryDrawer() {
           
 
           <div>
-            <Label>Category</Label>
+            <Label>Picture</Label>
             <CategoryRadioGroup
-              categories={categories ?? []}
+              categories={filteredCategories ?? []}
               selectedCategory={category}
               onSelect={setCategory}
+              type={form.type}
             />
           </div>
           </div>

@@ -43,7 +43,7 @@ export default function EditCategories() {
           placeholder="Search categories..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="pl-10 rounded-xl bg-zinc-800 border-none text-white"
+          className="pl-10 rounded-xl bg-muted border-none text-primary"
         />
       </div>
 
@@ -51,13 +51,13 @@ export default function EditCategories() {
         {filtered?.map((category) => (
           <Card
             key={category._id}
-            className="bg-zinc-900 text-white rounded-xl flex items-center justify-between px-4 py-3"
+            className="bg-secondary text-primary rounded-xl flex items-center justify-between px-4 py-3"
           >
             <div className="flex items-center gap-3">
               <div
                 className={clsx(
                   "w-10 h-10 rounded-full flex items-center justify-center text-xl",
-                  "bg-zinc-700" // you can adjust this to use color if saved
+                  "bg-secondary" // you can adjust this to use color if saved
                 )}
               >
                 <img
