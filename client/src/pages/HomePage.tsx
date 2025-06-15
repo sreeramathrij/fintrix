@@ -6,7 +6,7 @@ import {
 } from "../components/ui/card";
 import { Button } from "../components/ui/button";
 import {
-  Plus,
+//  Plus,
   BarChart2,
   Wallet,
 } from "lucide-react";
@@ -29,12 +29,12 @@ import BudgetSummaryCard from "@/components/BudgetSummaryCard";
 import { useAuthStore } from "@/store/useAuthStore";
 import { useBudgetStore } from "@/store/useBudgetStore";
 import { useState } from "react";
-import AddTransactionDrawer from "@/components/AddTransactionDrawer";
+//import AddTransactionDrawer from "@/components/AddTransactionDrawer";
 
 export default function MobileHomePage() {
   const { authUser } = useAuthStore()
   const { budgetSummaries } = useBudgetStore();
-  const [showDrawer, setShowDrawer] = useState(false)
+  //const [showDrawer, setShowDrawer] = useState(false)
   const [filter, setFilter] = useState("all");
   const today = useMemo(()=>new Date(), []);
   const month = String(today.getMonth() + 1).padStart(2, "0");
