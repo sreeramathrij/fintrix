@@ -53,8 +53,9 @@ if(process.env.NODE_ENV === "production") {
 
 app.get("/", (_: Request , res: Response) => { res.send("API is running") });
 
+connectDB();
+
 const PORT = process.env.PORT || 5001;
 app.listen(PORT, ()=> {
   console.log(`Server running on http://localhost:${PORT}`);
-  connectDB();
 })
