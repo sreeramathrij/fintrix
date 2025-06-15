@@ -27,7 +27,6 @@ export function AddCategoryDrawer() {
 
   // Fetch categories once when drawer opens
   useEffect(() => {
-    console.log(category)
     setForm(prev => ({...prev, referenceCategoryId: category}))
     if (open && !categories) {
       getCategories();

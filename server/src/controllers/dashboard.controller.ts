@@ -22,8 +22,6 @@ export const getDashboardSummary = async (req: AuthRequest, res: Response):Promi
       $lte: new Date(to as string),
     };
 
-    console.log(match);
-
     const transactions = await Transaction.aggregate([
       { $match: match },
       {

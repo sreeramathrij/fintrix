@@ -80,7 +80,6 @@ export default function SpendingSummary() {
   const [to, setTo] = useState(`${today.getFullYear()}-${today.getMonth() + 1}-${today.getDate()}`)
   
   useEffect(()=> {
-    console.log(from, to);
     getRecentTransactions();
     getTransactionSummaryByCategory(from, to);
     getDashboardSummary(from, to);

@@ -57,7 +57,6 @@ const AreaChartComponent = () => {
   useEffect(() => {
     if(dailyTrends) {
       setChartData(transformRecords(dailyTrends));
-      console.log(chartData);
     }
   }, [dailyTrends])
 

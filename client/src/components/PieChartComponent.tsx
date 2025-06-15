@@ -39,12 +39,10 @@ const PieChartComponent = () => {
 
   useEffect(() => {
     if(summary) {
-      console.log(summary);
       setPieData(() => [
         {name:"Total Income", amount: summary.totalIncome},
         {name:"Total Expense", amount: summary.totalExpense}
       ]);
-      console.log(pieData)
     }
   }, [summary])
 

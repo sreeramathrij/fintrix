@@ -36,7 +36,6 @@ export function AddScheduledTransactionDrawer() {
 
   useEffect(() => {
     getCategories();
-    console.log(category)
   }, [category])
 
   return (

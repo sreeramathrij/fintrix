@@ -138,19 +138,17 @@ export default function MobileHomePage() {
               View All Transactions
             </Button>
           </Link>
-
-          {/* Floating Add Button */}
-         <Button
-                size="icon"
-                onClick={() => setShowDrawer(true)}
-                className="rounded-full w-14 h-14 fixed bottom-24 right-4 shadow-xl">
-                <Plus />
-              </Button>
-
+          {/* <Button
+            size="icon"
+            onClick={() => setShowDrawer(true)}
+            className="rounded-full w-14 h-14 fixed bottom-24 right-4 shadow-xl"
+          >
+            <Plus />
+          </Button> */}
           </div>
         </div>
       </motion.div>
-      <AddTransactionDrawer open={showDrawer} setOpen={setShowDrawer} />
+      {/* <AddTransactionDrawer open={showDrawer} setOpen={setShowDrawer} /> */}
     </motion.div>
   );
 }

@@ -63,7 +63,7 @@ interface DashboardStore {
   getRecentTransactions: (limit?: number) => void;
 }
 
-export const useDashboardStore = create<DashboardStore>((set, get) => ({
+export const useDashboardStore = create<DashboardStore>((set) => ({
   summary: null,
   categorySummary: null,
   monthlyTrends: null,
@@ -82,10 +82,7 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         }
       });
 
-      console.log(res.data);
-
       set({ summary: res.data.data });
-      console.log(get().summary)
     } catch (error) {
       console.error("Error in getDashboardSummary: ", error);
       set({ summary: null });
@@ -104,8 +101,6 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         }
       });
 
-      console.log(res.data);
-
       set({ categorySummary: res.data.data });
     } catch (error) {
       console.error("Error in getTransactionSummaryByCategory: ", error);
@@ -120,7 +115,6 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
     try {
       const res = await api.get("/dashboard/monthly-trends");
 
-      console.log(res.data);
 
       set({ monthlyTrends: res.data.data });
     } catch (error) {
@@ -141,7 +135,6 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
         }
       });
 
-      console.log(res.data);
 
       set({ dailyTrends: res.data.data });
     } catch (error) {
@@ -161,8 +154,6 @@ export const useDashboardStore = create<DashboardStore>((set, get) => ({
           limitS,
         } 
       }) : await api.get("/dashboard/recent");
-
-      console.log(res.data);
 
       set({ recentTransactions: res.data.data });
     } catch (error) {
